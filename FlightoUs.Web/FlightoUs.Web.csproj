@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlightoUs.Bll\FlightoUs.Bll.csproj" />
+    <ProjectReference Include="..\FlightoUs.Model\FlightoUs.Model.csproj" />
+  </ItemGroup>
+
+</Project>
