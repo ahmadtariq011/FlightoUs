@@ -6,8 +6,8 @@ using System.Text;
 
 namespace FlightoUs.Model.Data
 {
-    [Table("User")]
-    public partial class User
+    [Table("Lead")]
+    public partial class Lead
     {
         [Key]
         public int Id { get; set; }
@@ -24,8 +24,7 @@ namespace FlightoUs.Model.Data
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public string Password { get; set; }
+        public string Address { get; set; }
 
         [Required]
         [StringLength(500)]
@@ -35,17 +34,27 @@ namespace FlightoUs.Model.Data
         [StringLength(20)]
         public string Telephone { get; set; }
 
-        public int UserType { get; set; }
+        public int CreatedBy { get; set; }
 
+        [ForeignKey("User")]
+        public int AssignToUser { get; set; }
         [Required]
         [StringLength(100)]
         public string CNIC { get; set; }
 
-        public string Picture { get; set; }
+        public int LeadType { get; set; }
+        public int LeadTypeDemand { get; set; }
+        public int LeadStatus { get; set; }
 
-        public int GenderType { get; set; }
 
-        public virtual ICollection<Lead> Leads { get; set; }
+
+        public virtual User User { get; set; }
+        public virtual ICollection<Remarks> Remarks { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual Hotel Hotels { get; set; }
+
+
+
 
     }
 }
