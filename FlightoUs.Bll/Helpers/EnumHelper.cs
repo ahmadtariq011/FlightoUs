@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FlightoUs.Bll.Helpers
+
 {
     public static class EnumHelper
     {
