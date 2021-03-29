@@ -31,6 +31,8 @@ namespace FlightoUs.Model.Data
         [StringLength(500)]
         public string Email { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+
         [Required]
         [StringLength(20)]
         public string Telephone { get; set; }
@@ -40,8 +42,6 @@ namespace FlightoUs.Model.Data
         [Required]
         [StringLength(100)]
         public string CNIC { get; set; }
-
-        public string Picture { get; set; }
 
         public int GenderType { get; set; }
 

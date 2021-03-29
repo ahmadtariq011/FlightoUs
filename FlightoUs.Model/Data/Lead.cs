@@ -36,6 +36,9 @@ namespace FlightoUs.Model.Data
 
         public int CreatedBy { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime AssignDate { get; set; }
+
         [ForeignKey("User")]
         public int AssignToUser { get; set; }
         [Required]
