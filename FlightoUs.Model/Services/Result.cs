@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LillyLifestyle.Models.Services
+namespace FlightoUs.Model.Services
 {
     public class ServiceResponse
     {

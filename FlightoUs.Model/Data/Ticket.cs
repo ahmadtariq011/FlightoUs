@@ -25,8 +25,22 @@ namespace FlightoUs.Model.Data
         public DateTime DepartureDate { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal UnitPrice { get; set; }
+        public decimal NetValue { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal TotalValue { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal PSF { get; set; }
+
         public DateTime ArrivalDate { get; set; }
+
+        [Required]
+        public string City { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        [Required]
+        public string Country { get; set; }
 
         [ForeignKey("Lead")]
         public int Lead_Id { get; set; }

@@ -14,20 +14,18 @@ namespace FlightoUs.Model.Enums
     public enum GenderType
     {
         Male=1,
-        Female=2,
-        Other=3
+        Female=2
     }
     public enum LeadType
     {
         Normal=1,
-        Immediate=2
+        priority = 2
     }
     public enum LeadStatus
     {
         Open=1,
         Close= 2,
         Success = 3
-
     }
     public enum TripType
     {
