@@ -11,7 +11,7 @@ namespace FlightoUs.Web.APIController
 {
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
-    public class UserController : Controller
+    public class UserAPIController : Controller
     {
         BllUser bllUser = new BllUser();
         private ServiceResponse result = new ServiceResponse { IsSucceeded = true };
