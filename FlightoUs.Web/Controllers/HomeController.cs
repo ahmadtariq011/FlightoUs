@@ -30,7 +30,14 @@ namespace FlightoUs.Web.Controllers
         {
             return View("Views/CRM/Admin/Dashboard/Index.cshtml");
         }
-
+        public IActionResult UserIndex()
+        {
+            return View("Views/CRM/Admin/Users/Index.cshtml");
+        }
+        public IActionResult LeadsIndex()
+        {
+            return View("Views/CRM/Admin/Leads/Index.cshtml");
+        }
         public IActionResult Privacy()
         {
             return View();
