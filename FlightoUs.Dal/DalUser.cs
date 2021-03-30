@@ -44,7 +44,7 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
-                return entities.Users.FirstOrDefault(p => p.Email == email);
+                return entities.Users.SingleOrDefault(p => p.Email == email);
             }
         }
 
@@ -121,15 +121,8 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
-                try
-                {
-                    return entities.Users.ToList();
-                }
-                catch (Exception ex)
-                {
-                    // Log Exception
-                    throw ex;
-                }
+            
+                return entities.Users.ToList();
             }
         }
 
