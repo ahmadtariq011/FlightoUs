@@ -17,4 +17,10 @@
     <ProjectReference Include="..\FlightoUs.Model\FlightoUs.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\CRM\Admin\Leads\" />
+    <Folder Include="Views\CRM\Admin\Users\" />
+    <Folder Include="Views\CRM\User\" />
+  </ItemGroup>
+
 </Project>

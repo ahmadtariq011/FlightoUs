@@ -26,6 +26,10 @@ namespace FlightoUs.Web.Controllers
         {
             return View("Views/CRM/Admin/Login.cshtml");
         }
+        public IActionResult Dashboard()
+        {
+            return View("Views/CRM/Admin/Dashboard/Index.cshtml");
+        }
 
         public IActionResult Privacy()
         {
