@@ -1,6 +1,6 @@
 ﻿
 <div class="right mT10">
-    <a class="btn btn-success btn-sm" href="/Admin/Users/AddEditUser"><i class="material-icons" style="font-size: inherit; " id="iconcss">add</i> Add User</a>
+    <a class="btn btn-success btn-sm" href="/Admin/Users/AddEditUser"> Add User</a>
 </div>
 <div class="clearfix"></div>
 <div class="row">
@@ -10,14 +10,14 @@
                 <strong class="card-title">Users</strong>&nbsp; <span id="spanTotalRecords"></span>
             </div>
             <div class="card-body">
-                @if (ViewData["Message"] != null)
+                @*@if (ViewData["Message"] != null)
                 {
                     <div id="div_message_upload_file" class="note success" style="display:block !important;">
                         <p>
                             <span id="span_message_upload_file">@ViewData["Message"].ToString()</span>
                         </p>
                     </div>
-                }
+                }*@
                 <div id="div_message" class="note failure">
                     <p>
                         <span id="span_message"></span>
@@ -45,7 +45,6 @@
                     <tbody></tbody>
                 </table>
                 @*Show Pager*@
-                @Html.Partial("~/Pages/Shared/_GridPager.cshtml", "Users")
 
                 <div id="div_no_found" class="alert alert-info hide" role="alert">
                     No User Found. Please click on Add User button to add a user.
@@ -64,7 +63,7 @@
 
 
 
-<script id="ListTemplateCustomers" type="text/x-jsrender">
+@*<script id="ListTemplateCustomers" type="text/x-jsrender">
     <tr>
         <td>{{:FirstName}}</td>
         <td>{{:LastName}}</td>
@@ -77,4 +76,4 @@
     </tr>
 
 
-</script>
+</script>*@
