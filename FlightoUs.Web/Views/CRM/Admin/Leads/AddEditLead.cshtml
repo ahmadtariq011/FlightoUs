@@ -1,5 +1,5 @@
 ﻿
-@using FlightoUs.Model.Data 
+@using FlightoUs.Model.Data
 @section Scripts
 {
     <script src="~/js/CRM/Admin/User/AddEditLead.js?v=@DateTime.Now.Ticks.ToString()"></script>
@@ -7,13 +7,14 @@
 @{
     var data = (Lead)ViewBag.data;
     var Title = ViewBag.title;
- }
+}
+
 <input type="hidden" id="hfLeadId" value="@data.Id" />
 <div class="row">
 
     <div class="col-lg-3"></div>
     <div class="col-lg-6">
-        <div id="BasicInfo" class="card">
+        <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
             <div class="card-header">
                 <strong>@Title</strong>
             </div>
@@ -51,11 +52,33 @@
 
 
                 <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label"> User</label></div>
+                    <div class="col-12 col-md-9">
+                        <select class="form-control" id="ddlUser" name="ddlUser" required @(Model.IsAdd ? "" : "disabled")>
+                            <option value="">Please Select</option>
+                            @foreach (var user in Model.Users)
+                            {
+                                if (Model.ProductModel.User_Id == user.Id)
+                                {
+                                    <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
                     <div class="col-12 col-md-9">
                         <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CNIC" required maxlength="20">
                     </div>
                 </div>
+
 
 
                 <div class="row form-group">
@@ -67,80 +90,14 @@
 
 
                 <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Address</label></div>
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtAddress" type="text" value="@data.Address" required maxlength="500">
+                        <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
                     </div>
                 </div>
 
 
-
-
             </div>
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
-                </div>
-            </div>
-
-
-
-            @*<div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type Demand</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtLeadTypeDemand" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadTypeDemand" required maxlength="20">
-                </div>
-
-            </div>
-
-
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Status</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtLeadStatus" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadStatus" required maxlength="20">
-                </div>
-
-            </div>
-
-
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtLeadType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadType" required maxlength="20">
-                </div>
-
-            </div>
-
-                *@
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtCreatedBy" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CreatedBy" required maxlength="20">
-                </div>
-            </div>
-
-
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CreatedDate" required maxlength="20">
-                </div>
-            </div>
-
-
-
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Assign Date</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtAssignDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.AssignDate" required maxlength="20">
-                </div>
-            </div>
-
-
-
-
-        </div>
 
         </div>
 
@@ -154,6 +111,6 @@
             </button>
         </div>
     </div>
-
+</div>
 <div class="col-lg-3"></div>
 
