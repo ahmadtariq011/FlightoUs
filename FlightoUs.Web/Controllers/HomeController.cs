@@ -1,4 +1,5 @@
-﻿using FlightoUs.Web.Models;
+﻿using FlightoUs.Bll;
+using FlightoUs.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -46,8 +47,9 @@ namespace FlightoUs.Web.Controllers
 
         public IActionResult AddEditUser(int id)
         {
-
-            return View("Views/CRM/Admin/User/AddEditUser.cshtml");
+            BllUser blluser = new BllUser();
+            var Status= blluser.GetByPK(id);
+            return View("Views/CRM/Admin/Users/AddEditUser.cshtml", Status);
         }
         public IActionResult Privacy()
         {
@@ -57,7 +59,7 @@ namespace FlightoUs.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }
