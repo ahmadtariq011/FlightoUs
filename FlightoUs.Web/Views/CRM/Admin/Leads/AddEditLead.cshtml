@@ -1,5 +1,155 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿
+
+@section Scripts
+{
+    <script src="~/js/CRM/Admin/User/AddEditLead.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
+<input type="hidden" id="hfLeadId" value="@Model.LeadModel.Id" />
+<div class="row">
+
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div id="BasicInfo" class="card">
+            <div class="card-header">
+                <strong>@ViewData["Title"]</strong>
+            </div>
+
+            <div class="card-body card-block">
+                <div id="div_message" class="note failure">
+                    <p>
+                        <span id="span_message"></span>
+                    </p>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtFirstName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.FirstName" required maxlength="20">
+                    </div>
+                </div>
+
+
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Last Name</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LastName" required maxlength="20">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtUserName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.UserName" required maxlength="20">
+                    </div>
+                </div>
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.CNIC" required maxlength="20">
+                    </div>
+                </div>
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Email</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtEmail" type="text" value="@Model.LeadModel.Email" required maxlength="500">
+                    </div>
+                </div>
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Address</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtAddress" type="text" value="@Model.LeadModel.Address" required maxlength="500">
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@Model.LeadModel.Telephone" maxlength="20">
+                </div>
+            </div>
+
+
+
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type Demand</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtLeadTypeDemand" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadTypeDemand" required maxlength="20">
+                </div>
+
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Status</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtLeadStatus" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadStatus" required maxlength="20">
+                </div>
+
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtLeadType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadType" required maxlength="20">
+                </div>
+
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtCreatedBy" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.CreatedBy" required maxlength="20">
+                </div>
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.CreatedDate" required maxlength="20">
+                </div>
+            </div>
+
+
+
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Assign Date</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtAssignDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.AssignDate" required maxlength="20">
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        </div>
+
+
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary btn-sm" onclick="SaveUser();">
+                <i class="material-icons " id="iconcss" style="">save</i>Save
+            </button>
+            <button type="reset" class="btn btn-danger btn-sm" onclick="Cancel();">
+                <i class="material-icons" id="iconcss">cancel</i>Cancel
+            </button>
+        </div>
+    </div>
+
+<div class="col-lg-3"></div>
+
