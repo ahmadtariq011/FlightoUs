@@ -8,7 +8,7 @@
     var data = (Lead)ViewBag.data;
     var Title = ViewBag.title;
  }
-<input type="hidden" id="hfLeadId" value="@Model.LeadModel.Id" />
+<input type="hidden" id="hfLeadId" value="@data.Id" />
 <div class="row">
 
     <div class="col-lg-3"></div>
@@ -28,7 +28,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtFirstName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.FirstName" required maxlength="20">
+                        <input class="form-control" id="txtFirstName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.FirstName" required maxlength="20">
                     </div>
                 </div>
 
@@ -38,14 +38,14 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Last Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LastName" required maxlength="20">
+                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.LastName" required maxlength="20">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtUserName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.UserName" required maxlength="20">
+                        <input class="form-control" id="txtUserName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.UserName" required maxlength="20">
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.CNIC" required maxlength="20">
+                        <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CNIC" required maxlength="20">
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Email</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtEmail" type="text" value="@Model.LeadModel.Email" required maxlength="500">
+                        <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Address</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtAddress" type="text" value="@Model.LeadModel.Address" required maxlength="500">
+                        <input class="form-control" id="txtAddress" type="text" value="@data.Address" required maxlength="500">
                     </div>
                 </div>
 
@@ -80,13 +80,13 @@
             <div class="row form-group">
                 <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
                 <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@Model.LeadModel.Telephone" maxlength="20">
+                    <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
                 </div>
             </div>
 
 
 
-            <div class="row form-group">
+            @*<div class="row form-group">
                 <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type Demand</label></div>
                 <div class="col-12 col-md-9">
                     <input class="form-control" id="txtLeadTypeDemand" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.LeadTypeDemand" required maxlength="20">
@@ -112,11 +112,11 @@
 
             </div>
 
-
+                *@
             <div class="row form-group">
                 <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
                 <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtCreatedBy" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.CreatedBy" required maxlength="20">
+                    <input class="form-control" id="txtCreatedBy" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CreatedBy" required maxlength="20">
                 </div>
             </div>
 
@@ -124,7 +124,7 @@
             <div class="row form-group">
                 <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
                 <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.CreatedDate" required maxlength="20">
+                    <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CreatedDate" required maxlength="20">
                 </div>
             </div>
 
@@ -133,7 +133,7 @@
             <div class="row form-group">
                 <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Assign Date</label></div>
                 <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtAssignDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LeadModel.AssignDate" required maxlength="20">
+                    <input class="form-control" id="txtAssignDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.AssignDate" required maxlength="20">
                 </div>
             </div>
 
