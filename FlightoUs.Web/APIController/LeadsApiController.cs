@@ -23,6 +23,7 @@ namespace FlightoUs.Web.APIController
             {
                 result.Message = bllLead.GetSearchCount(filter);
                 result.IsSucceeded = true;
+                result.TotalCount = bllLead.GetSearchCount(filter);
             }
             catch (Exception ex)
             {
@@ -34,6 +35,20 @@ namespace FlightoUs.Web.APIController
         }
 
 
+        [HttpPost]
+        public ServiceResponse GetUsers(LeadSearchFilter filter)
+        {
+            try
+            {
+                result.Message = bllLead.Search(filter);
+            }
+            catch (Exception ex)
+            {
+                result.IsSucceeded = false;
+                result.Message = ex.Message + "<br>" + ex.StackTrace;
+            }
+            return result;
+        }
 
         [HttpPost]
         public ServiceResponse SaveLeads(Lead lead)
