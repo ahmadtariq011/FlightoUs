@@ -1,13 +1,13 @@
-﻿@section Scripts
+﻿@using FlightoUs.Model.Data
+@section Scripts
 {
     <script src="~/js/CRM/Admin/User/AddEditUser.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
+@{ 
+    var data = (User)ViewBag.data;
+}
 
-
-@Html.BeginForm("AddEditUser", "Home"){
-
-
-<input type="hidden" id="hfLeadId" value="@Model.Status.Id" />
+<input type="hidden" id="hfLeadId" value="@data.Id" />
 <div class="row">
 
     <div class="col-lg-3"></div>
@@ -27,7 +27,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtFirstName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.FirstName" required maxlength="20">
+                        <input class="form-control" id="txtFirstName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.FirstName" required maxlength="20">
                     </div>
                 </div>
 
@@ -37,14 +37,14 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Last Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.LastName" required maxlength="20">
+                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.LastName" required maxlength="20">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtUserName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.UserName" required maxlength="20">
+                        <input class="form-control" id="txtUserName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.UserName" required maxlength="20">
                     </div>
                 </div>
 
@@ -52,12 +52,12 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.CNIC" required maxlength="20">
+                        <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CNIC" required maxlength="20">
                     </div>
                 </div>
 
 
-                <div class="row form-group">
+                @*<div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
                     <div class="col-12 col-md-9">
                         <input class="form-control" id="txtUserType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.UserType" required maxlength="20">
@@ -71,26 +71,26 @@
                         <input class="form-control" id="txtGenderType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.Status.GenderType" required maxlength="20">
                     </div>
 
-                </div>
+                </div>*@
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.Status.CreatedDate" required maxlength="20">
+                        <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CreatedDate" required maxlength="20">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Email</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtEmail" type="text" value="@Model.Status.Email" required maxlength="500">
+                        <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Password</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtPassword" type="password" value="@Model.Status.Password" required maxlength="50" />
+                        <input class="form-control" id="txtPassword" type="password" value="@data.Password" required maxlength="50" />
                         <input id="chkShowHidePassword" type="checkbox" onchange="ShowHidePassword(this, 'txtPassword');" style="margin-top:15px;" />
                         <label for="chkShowHidePassword" style="margin-bottom:0px;"> Show Password</label>
                     </div>
@@ -98,7 +98,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@Model.Status.Telephone" maxlength="20">
+                        <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
                     </div>
                 </div>
 
