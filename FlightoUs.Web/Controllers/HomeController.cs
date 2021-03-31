@@ -44,9 +44,10 @@ namespace FlightoUs.Web.Controllers
             return View("Views/CRM/Admin/Leads/AddEditLead.cshtml");
         }
 
-        public IActionResult AddEditUser()
+        public IActionResult AddEditUser(int id)
         {
-            return View("Views/CRM/Admin/Leads/AddEditUser.cshtml");
+
+            return View("Views/CRM/Admin/User/AddEditUser.cshtml");
         }
         public IActionResult Privacy()
         {
