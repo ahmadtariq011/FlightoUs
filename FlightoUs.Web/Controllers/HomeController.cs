@@ -55,6 +55,10 @@ namespace FlightoUs.Web.Controllers
                 ViewBag.data = blllead.GetByPK(id);
                 ViewBag.title = "Edit Lead";
             }
+
+            BllUser bllUser = new BllUser();
+            ViewBag.UsersList = bllUser.GetAllUsers();
+
             return View("Views/CRM/Admin/Leads/AddEditLead.cshtml");
         }
 

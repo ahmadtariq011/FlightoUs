@@ -1,4 +1,4 @@
-﻿
+﻿@using FlightoUs.Bll
 @using FlightoUs.Model.Data
 @section Scripts
 {
@@ -7,6 +7,8 @@
 @{
     var data = (Lead)ViewBag.data;
     var Title = ViewBag.title;
+    BllUser bllUser = new BllUser();
+    var userdata =bllUser.GetAllUsers();
 }
 
 <input type="hidden" id="hfLeadId" value="@data.Id" />
@@ -56,9 +58,9 @@
                     <div class="col-12 col-md-9">
                         <select class="form-control" id="ddlUser" name="ddlUser" required @(Model.IsAdd ? "" : "disabled")>
                             <option value="">Please Select</option>
-                            @foreach (var user in Model.Users)
+                            @foreach (var user in userdata)
                             {
-                                if (Model.ProductModel.User_Id == user.Id)
+                                if (user == user.Id)
                                 {
                                     <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
                                 }
