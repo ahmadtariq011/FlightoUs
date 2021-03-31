@@ -41,8 +41,20 @@ namespace FlightoUs.Web.Controllers
             return View("Views/CRM/Admin/Leads/Index.cshtml");
         }
 
-        public IActionResult AddEditLead()
+        public IActionResult AddEditLead(int id)
         {
+            BllLead blllead = new BllLead();
+            if (blllead.GetByPK(id) == null)
+            {
+                Lead dblead = new Lead();
+                ViewBag.data = dblead;
+                ViewBag.title = "Add Lead";
+            }
+            else
+            {
+                ViewBag.data = blllead.GetByPK(id);
+                ViewBag.title = "Edit Lead";
+            }
             return View("Views/CRM/Admin/Leads/AddEditLead.cshtml");
         }
 
@@ -53,10 +65,12 @@ namespace FlightoUs.Web.Controllers
             {
                 User dbuser = new User();
                 ViewBag.data = dbuser;
+                ViewBag.title = "Add User";
             }
             else
             {
                 ViewBag.data = blluser.GetByPK(id);
+                ViewBag.title = "Edit User";
             }
             return View("Views/CRM/Admin/Users/AddEditUser.cshtml");
         }

@@ -1,9 +1,13 @@
 ﻿
-
+@using FlightoUs.Model.Data 
 @section Scripts
 {
     <script src="~/js/CRM/Admin/User/AddEditLead.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
+@{
+    var data = (Lead)ViewBag.data;
+    var Title = ViewBag.title;
+ }
 <input type="hidden" id="hfLeadId" value="@Model.LeadModel.Id" />
 <div class="row">
 
@@ -11,7 +15,7 @@
     <div class="col-lg-6">
         <div id="BasicInfo" class="card">
             <div class="card-header">
-                <strong>@ViewData["Title"]</strong>
+                <strong>@Title</strong>
             </div>
 
             <div class="card-body card-block">
