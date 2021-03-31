@@ -1,5 +1,6 @@
 ﻿using FlightoUs.Bll;
 using FlightoUs.Model.Data;
+using FlightoUs.Model.Filter;
 using FlightoUs.Model.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +16,25 @@ namespace FlightoUs.Web.APIController
     {
         BllLead bllLead = new BllLead();
         ServiceResponse result = new ServiceResponse();
+        [HttpPost]
+        public ServiceResponse GetUsersWithCount(LeadSearchFilter filter)
+        {
+            try
+            {
+                result.Message = bllLead.GetSearchCount(filter);
+                result.IsSucceeded = true;
+            }
+            catch (Exception ex)
+            {
+                result.IsSucceeded = false;
+                result.Message = ex.Message + "<br>" +ex.StackTrace;
+            }
+            return result;
+
+        }
+
+
+
         [HttpPost]
         public ServiceResponse SaveLeads(Lead lead)
         {

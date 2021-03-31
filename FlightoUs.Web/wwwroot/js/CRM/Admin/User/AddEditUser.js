@@ -54,7 +54,6 @@ function SaveUser() {
         return;
     }
 
-    $("#loader").show();
     $("#div_message").hide();
 
     var User =
@@ -63,10 +62,14 @@ function SaveUser() {
         Id: $("#hfUserId").val(),
         FirstName: $.trim($("#txtFirstName").val()),
         LastName: $.trim($("#txtLastName").val()),
+        UserName: $.trim($("#txtUserName").val()),
+        CNIC: $.trim($("#txtCNIC").val()),
+        UserType: $.trim($("#txtUserType").val()),
+        GenderType: $.trim($("#txtGenderType").val()),
+        CreatedDate: $.trim($("#txtCreatedDate").val()),
         Email: $.trim($("#txtEmail").val()),
         Address: $.trim($("#txtAddress").val()),
         Password: $.trim($("#txtPassword").val()),
-        IsEmailVerified: $.trim($("#chkEmailVerified").is(":checked"))
     };
 
     $.post("/api/UserApi/SaveUser", User, SaveUserCallback);
