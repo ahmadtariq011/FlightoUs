@@ -75,7 +75,7 @@ function SaveUser() {
         AssignDate: $.trim($("#txtAssignDate").val())
     };
 
-    $.post("/api/UserApi/SaveUser", User, SaveUserCallback);
+    $.post("/api/LeadsApi/SaveLeads", User, SaveUserCallback);
 }
 
 function SaveUserCallback(data) {
@@ -85,7 +85,7 @@ function SaveUserCallback(data) {
         return;
     }
 
-    window.location.href = "/Admin/Users/index?message=" + data.IsSucceeded + "&count=" + data.TotalCount;
+    window.location.href = "/Home/LeadsIndex";
 }
 
 

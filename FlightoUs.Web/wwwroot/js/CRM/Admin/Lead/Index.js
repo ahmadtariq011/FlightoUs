@@ -177,7 +177,7 @@ function LoadCustomersCallBack(data) {
     $("#tbl tbody").html($("#ListTemplateCustomers").render(data.Message));
 }
 
-function DeleteUsers(CustomerId) {
+function DeleteLeads(CustomerId) {
     var r = confirm('Are you sure you want to delete?');
     if (!r)
         return;
@@ -189,11 +189,11 @@ function DeleteUsers(CustomerId) {
         Id: CustomerId
     };
 
-    $.post("/api/UserApi/DeleteUser", Customer, DeleteUsersCallBack);
+    $.post("/api/LeadsApi/DeleteLeads", Customer, DeleteUsersCallBack);
 }
-function DeleteUsersCallBack(data) {
+function DeleteLeadsCallBack(data) {
     $("#loader").hide();
-    if (data.IsSucceeded) {
+    if (data.isSucceeded) {
         $("#div_message").show();
         $("#div_message").removeClass("failure");
         $("#div_message").addClass("success");

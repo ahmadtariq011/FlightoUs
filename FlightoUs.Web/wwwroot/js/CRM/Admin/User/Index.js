@@ -197,7 +197,7 @@ function DeleteUsers(CustomerId) {
 }
 function DeleteUsersCallBack(data) {
     $("#loader").hide();
-    if (data.IsSucceeded) {
+    if (data.isSucceeded) {
         $("#div_message").show();
         $("#div_message").removeClass("failure");
         $("#div_message").addClass("success");

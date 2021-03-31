@@ -49,7 +49,7 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="Id"></param>
         /// <returns>True/False</returns>
-        public Boolean Delete(int Id)
+        public Boolean DeleteLeads(int Id)
         {
             return dalLead.Delete(Id);
         }

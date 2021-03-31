@@ -82,7 +82,7 @@ function SaveUserCallback(data) {
         return;
     }
 
-    window.location.href = "/Admin/Users/index?message=" + data.IsSucceeded + "&count=" + data.TotalCount;
+    window.location.href = "/Home/UserIndex";
 }
 
 

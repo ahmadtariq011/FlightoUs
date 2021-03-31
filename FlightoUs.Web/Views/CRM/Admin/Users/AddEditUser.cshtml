@@ -51,43 +51,13 @@
 
 
                 <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCNIC" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CNIC" required maxlength="20">
-                    </div>
-                </div>
-
-
-                @*<div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtUserType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.UserType" required maxlength="20">
-                    </div>
-
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Gender Type</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtGenderType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.Status.GenderType" required maxlength="20">
-                    </div>
-
-                </div>*@
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.CreatedDate" required maxlength="20">
-                    </div>
-                </div>
-
-                <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Email</label></div>
                     <div class="col-12 col-md-9">
                         <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
                     </div>
                 </div>
 
+                
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Password</label></div>
                     <div class="col-12 col-md-9">
@@ -96,6 +66,47 @@
                         <label for="chkShowHidePassword" style="margin-bottom:0px;"> Show Password</label>
                     </div>
                 </div>
+
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtCNIC" type="text" value="@data.CNIC" required maxlength="20">
+                    </div>
+                </div>
+
+
+                @*<div class="row form-group">
+            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
+            <div class="col-12 col-md-9">
+                <input class="form-control" id="txtUserType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.UserType" required maxlength="20">
+            </div>
+
+        </div>
+
+        <div class="row form-group">
+            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Gender Type</label></div>
+            <div class="col-12 col-md-9">
+                <input class="form-control" id="txtGenderType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.Status.GenderType" required maxlength="20">
+            </div>
+
+        </div>
+
+            <div class="row form-group">
+            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
+            <div class="col-12 col-md-9">
+                <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[0-9]/i.test(event.key)" value="@data.CreatedDate" required maxlength="20">
+            </div>
+        </div>
+
+
+
+                *@
+
+
+
+
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
                     <div class="col-12 col-md-9">

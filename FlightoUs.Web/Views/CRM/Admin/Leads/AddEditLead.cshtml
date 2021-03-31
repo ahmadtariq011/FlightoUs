@@ -7,8 +7,8 @@
 @{
     var data = (Lead)ViewBag.data;
     var Title = ViewBag.title;
-    BllUser bllUser = new BllUser();
-    var userdata =bllUser.GetAllUsers();
+    BllLead bllLead = new BllLead();
+    var userdata =bllLead.GetAllLeads();
 }
 
 <input type="hidden" id="hfLeadId" value="@data.Id" />
