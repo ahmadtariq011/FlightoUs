@@ -49,11 +49,14 @@ namespace FlightoUs.Web.Controllers
                 Lead dblead = new Lead();
                 ViewBag.data = dblead;
                 ViewBag.title = "Add Lead";
+                ViewBag.IsAdd = true;
+
             }
             else
             {
                 ViewBag.data = blllead.GetByPK(id);
                 ViewBag.title = "Edit Lead";
+                ViewBag.IsAdd = false;
             }
 
             BllUser bllUser = new BllUser();
