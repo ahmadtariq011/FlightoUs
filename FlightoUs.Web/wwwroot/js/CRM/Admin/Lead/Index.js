@@ -146,7 +146,7 @@ function LoadCustomerPaged() {
         sessionStorage["CustomerFilters"] = JSON.stringify(filters);
     }
     $("#loader").show();
-    $.post("/api/LeadsApi/GetUsers", filters, LoadCustomerPagedCallBack);
+    $.post("/api/LeadsApi/GetLeads", filters, LoadCustomerPagedCallBack);
 }
 
 function ChangePageCustomerResults(pIndex, pSize) {

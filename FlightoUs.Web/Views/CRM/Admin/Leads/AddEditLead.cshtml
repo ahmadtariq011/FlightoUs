@@ -7,8 +7,8 @@
 @{
     var data = (Lead)ViewBag.data;
     var Title = ViewBag.title;
-    BllLead bllLead = new BllLead();
-    var userdata =bllLead.GetAllLeads();
+    BllUser bllUser = new BllUser();
+    var userdata = bllUser.GetAllUsers();
 }
 
 <input type="hidden" id="hfLeadId" value="@data.Id" />
@@ -54,13 +54,13 @@
 
 
                 <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label"> User</label></div>
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
                     <div class="col-12 col-md-9">
-                        <select class="form-control" id="ddlUser" name="ddlUser" required @(Model.IsAdd ? "" : "disabled")>
+                        <select class="form-control" id="ddlUser" name="ddlUser" required @*@(ViewBag.IsAdd ? "" : "disabled")*@>
                             <option value="">Please Select</option>
                             @foreach (var user in userdata)
                             {
-                                if (user == user.Id)
+                                if (user.Id == data.CreatedBy)
                                 {
                                     <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
                                 }
@@ -69,6 +69,19 @@
                                     <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
                                 }
 
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Assign To</label></div>
+                    <div class="col-12 col-md-9">
+                        <select class="form-control" id="ddlUser" name="ddlUser" required @*@(ViewBag.IsAdd ? "" : "disabled")*@>
+                            <option value="">Please Select</option>
+                            @foreach (var user in userdata)
+                            {
+                                <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
                             }
                         </select>
                     </div>
