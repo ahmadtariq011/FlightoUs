@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightoUs.Web", "FlightoUs.Web\FlightoUs.Web.csproj", "{2B72BA73-FBC1-4550-86B2-E3F56664C60D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightoUs.Web", "FlightoUs.Web\FlightoUs.Web.csproj", "{2B72BA73-FBC1-4550-86B2-E3F56664C60D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightoUs.Model", "FlightoUs.Model\FlightoUs.Model.csproj", "{D3133258-0A38-4808-8CE2-E3DEC4AE62BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightoUs.Model", "FlightoUs.Model\FlightoUs.Model.csproj", "{D3133258-0A38-4808-8CE2-E3DEC4AE62BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightoUs.Dal", "FlightoUs.Dal\FlightoUs.Dal.csproj", "{CF738045-75C9-4454-AF0B-4C9834B01A79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightoUs.Dal", "FlightoUs.Dal\FlightoUs.Dal.csproj", "{CF738045-75C9-4454-AF0B-4C9834B01A79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightoUs.Bll", "FlightoUs.Bll\FlightoUs.Bll.csproj", "{4DF05F99-E717-4804-ABE0-A7BE987D87DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightoUs.Bll", "FlightoUs.Bll\FlightoUs.Bll.csproj", "{4DF05F99-E717-4804-ABE0-A7BE987D87DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

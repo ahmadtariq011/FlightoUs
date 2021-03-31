@@ -69,25 +69,3 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
-
-.thumbnailBox {
-    margin-right: 10px;
-    border: 1px solid #eee;
-    padding: 10px;
-}
-.thumbnail {
-    min-height: 120px;
-}
-.links {
-    margin-top: 10px;
-    text-align: center;
-}
-    .links a {
-        color: grey !important;
-        cursor:pointer;
-    }
-
-
-.f-small {
-    font-size: 13px !important;
-}

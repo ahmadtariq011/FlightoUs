@@ -38,6 +38,16 @@ namespace FlightoUs.Web.Controllers
         {
             return View("Views/CRM/Admin/Leads/Index.cshtml");
         }
+
+        public IActionResult AddEditLead()
+        {
+            return View("Views/CRM/Admin/Leads/AddEditLead.cshtml");
+        }
+
+        public IActionResult AddEditUser()
+        {
+            return View("Views/CRM/Admin/Leads/AddEditUser.cshtml");
+        }
         public IActionResult Privacy()
         {
             return View();

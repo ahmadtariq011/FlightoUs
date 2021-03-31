@@ -15,7 +15,6 @@ $(document).ready(function () {
     //        $(this).addClass("pageloadnavbar");
     //    });
     //});
-    $("#aUsers").addClass("navbar_selected");
     $("#txtSearch").keyup(handler_enter_search);
     AddSortingHeaders("#tbl");
 
@@ -56,7 +55,7 @@ $(document).ready(function () {
 
         }
         filters.Sort = sortOption;
-        LoadUsersWithCount();
+        LoadLeadsWithCount();
     });
 
     //if (IsHTML5 && sessionStorage["CustomerFilters"] != null) {
@@ -66,7 +65,7 @@ $(document).ready(function () {
     //    return;
     //}
 
-    SearchUsers();
+    Searchleads();
 });
 
 function handler_enter_search(e) {
@@ -79,23 +78,23 @@ function handler_enter_search(e) {
         charCode = e.keyCode;
     }
     if (charCode == 13)
-        SearchUsers();
+        Searchleads();
 }
-function SearchUsers() {
-    UpdateUsersFilters();
-    LoadUsersWithCount();
+function Searchleads() {
+    UpdateLeadsFilters();
+    LoadLeadsWithCount();
 }
 
 function ResetUsers() {
     $("#txtSearch").val("");
-    SearchUsers();
+    Searchleads();
 }
 
-function UpdateUsersFilters() {
+function UpdateLeadsFilters() {
     filters =
     {
         Keyword: $("#txtSearch").val(),
-        UserType: 2,
+        //UserType: 2,
         PageIndex: 1,
         PageSize: 10,
         Sort: sortOption
@@ -103,19 +102,15 @@ function UpdateUsersFilters() {
 
 
 }
-function LoadUsersWithCount() {
-    var uri = window.location.toString();
-    if (uri.indexOf("?") > 0) {
-        var clean_uri = uri.substring(0, uri.indexOf("?"));
-        window.history.replaceState({}, document.title, clean_uri);
-    }
+function LoadLeadsWithCount() {
     if (IsHTML5) {
         sessionStorage["CustomerFilters"] = JSON.stringify(filters);
     }
+    debugger;
     $("#loader").show();
-    $.post("/api/UserApi/GetUsersWithCount", filters, LoadUsersWithCountCallBack);
+    $.post("/api/LeadsApi/GetUsersWithCount", filters, LoadLeadsWithCountCallBack);
 }
-function LoadUsersWithCountCallBack(data) {
+function LoadLeadsWithCountCallBack(data) {
     $("#loader").hide(); $("#divCustomerList").show();
     $("#tbl").show(); $("#div_no_found").hide(); $("#divPagerUsers").show();
     $("#spanTotalRecords").text("(" + data.TotalCount + " records)");
@@ -156,7 +151,7 @@ function LoadCustomerPaged() {
 function ChangePageCustomerResults(pIndex, pSize) {
     filters.PageIndex = pIndex;
     filters.PageSize = pSize;
-    LoadUsersWithCount();
+    LoadLeadsWithCount();
 }
 
 function CustomersPageNavigation(pIndex) {
@@ -202,7 +197,7 @@ function DeleteUsersCallBack(data) {
         $("#div_message").removeClass("failure");
         $("#div_message").addClass("success");
         $("#span_message").html("User has been successfully deleted.");
-        LoadUsersWithCount();
+        LoadLeadsWithCount();
     } else {
         $("#div_message").show();
         $("#div_message").removeClass("success");
@@ -213,5 +208,5 @@ function DeleteUsersCallBack(data) {
 
 function ResetUsers() {
     $("#txtSearch").val("");
-    SearchUsers();
+    Searchleads();
 }
