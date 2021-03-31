@@ -19,8 +19,4 @@
     <ProjectReference Include="..\FlightoUs.Model\FlightoUs.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\CRM\User\" />
-  </ItemGroup>
-
 </Project>

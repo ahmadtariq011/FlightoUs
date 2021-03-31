@@ -1,4 +1,5 @@
 ﻿using FlightoUs.Bll;
+using FlightoUs.Model.Data;
 using FlightoUs.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -48,9 +49,18 @@ namespace FlightoUs.Web.Controllers
         public IActionResult AddEditUser(int id)
         {
             BllUser blluser = new BllUser();
-            var Status= blluser.GetByPK(id);
-            return View("Views/CRM/Admin/Users/AddEditUser.cshtml", Status);
+            if(blluser.GetByPK(id)==null)
+            {
+                User dbuser = new User();
+                ViewBag.data = dbuser;
+            }
+            else
+            {
+                ViewBag.data = blluser.GetByPK(id);
+            }
+            return View("Views/CRM/Admin/Users/AddEditUser.cshtml");
         }
+
         public IActionResult Privacy()
         {
             return View();
