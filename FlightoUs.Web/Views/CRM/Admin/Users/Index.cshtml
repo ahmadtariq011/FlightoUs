@@ -1,4 +1,11 @@
 ﻿
+
+
+
+@section Scripts
+{
+    <script src="~/js/CRM/Admin/User/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
+}
 <div class="right mT10">
     <a class="btn btn-success btn-sm" asp-action="AddEditUser" asp-controller="Home" asp-route-id="0"> Add User</a>
 </div>
@@ -11,13 +18,13 @@
             </div>
             <div class="card-body">
                 @*@if (ViewData["Message"] != null)
-                {
-                    <div id="div_message_upload_file" class="note success" style="display:block !important;">
-                        <p>
-                            <span id="span_message_upload_file">@ViewData["Message"].ToString()</span>
-                        </p>
-                    </div>
-                }*@
+                    {
+                        <div id="div_message_upload_file" class="note success" style="display:block !important;">
+                            <p>
+                                <span id="span_message_upload_file">@ViewData["Message"].ToString()</span>
+                            </p>
+                        </div>
+                    }*@
                 <div id="div_message" class="note failure">
                     <p>
                         <span id="span_message"></span>
@@ -63,17 +70,17 @@
 
 
 
-@*<script id="ListTemplateCustomers" type="text/x-jsrender">
-    <tr>
-        <td>{{:FirstName}}</td>
-        <td>{{:LastName}}</td>
-        <td>{{:Email}}</td>
-        <td>{{:Telephone}}</td>
-        <td>
-            <a href="/Admin/Users/AddEditUser?UserId={{:Id}}" class="text-primary mr-3" style="cursor:pointer;"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Clear">edit</i></a>
-            <a onclick="DeleteUsers({{:Id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
-        </td>
-    </tr>
+<script id="ListTemplateCustomers" type="text/x-jsrender">
+        <tr>
+            <td>{{:FirstName}}</td>
+            <td>{{:LastName}}</td>
+            <td>{{:Email}}</td>
+            <td>{{:Telephone}}</td>
+            <td>
+                <a href="/Admin/Users/AddEditUser?UserId={{:Id}}" class="text-primary mr-3" style="cursor:pointer;"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Clear">edit</i></a>
+                <a onclick="DeleteUsers({{:Id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+            </td>
+        </tr>
 
 
-</script>*@
+    </script>

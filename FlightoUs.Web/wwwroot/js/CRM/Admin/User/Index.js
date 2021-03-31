@@ -118,15 +118,15 @@ function LoadUsersWithCount() {
 function LoadUsersWithCountCallBack(data) {
     $("#loader").hide(); $("#divCustomerList").show();
     $("#tbl").show(); $("#div_no_found").hide(); $("#divPagerUsers").show();
-    $("#spanTotalRecords").text("(" + data.TotalCount + " records)");
+    $("#spanTotalRecords").text("(" + data.totalCount + " records)");
 
-    if (data.TotalCount < 1) {
+    if (data.totalCount < 1) {
         $("#tbl").hide();
         $("#divPagerUsers").hide();
         $("#div_no_found").show();
         return;
     }
-    $("#tbl tbody").html($("#ListTemplateCustomers").render(data.Message));
+    $("#tbl tbody").html($("#ListTemplateCustomers").render(data.message));
 
     if (CustomersGridPager == null) {
         CustomersGridPager = $("#divPagerUsers").GridPager({
