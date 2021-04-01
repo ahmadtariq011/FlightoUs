@@ -27,7 +27,7 @@ namespace FlightoUs.Web.APIController
         {
             try
             {
-                User dbUser = bllUser.AdminLogin(model.Email, model.Password);
+                User dbUser = bllUser.AdminLogin(model.UserName, model.Password);
                 if (dbUser == null)
                 {
                     result.IsSucceeded = false;

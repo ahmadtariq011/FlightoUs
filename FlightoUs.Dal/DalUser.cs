@@ -34,12 +34,12 @@ namespace FlightoUs.Dal
         }
 
 
-        public User AdminLogin(string email, string password)
+        public User AdminLogin(string username, string password)
         {
             using (var entities = new ApplicationDbContext())
             {
                 int adminUserType = Convert.ToByte(UserRoleType.Admin);
-                return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == adminUserType);
+                return entities.Users.FirstOrDefault(p => p.UserName == username && p.Password == password && p.UserType == adminUserType);
             }
         }
         //public User Login(string email, string password)
