@@ -41,7 +41,10 @@ namespace FlightoUs.Web.Controllers
             return View("Views/CRM/Admin/Leads/Index.cshtml");
         }
 
-       
+        public IActionResult RemarksIndex()
+        {
+            return View("Views/CRM/Admin/Remarks/AddEditRemarks.cshtml");
+        }
         public IActionResult AddEditLead(int id)
         {
             BllLead blllead = new BllLead();
@@ -88,7 +91,8 @@ namespace FlightoUs.Web.Controllers
         {
             Remarks remarks = new Remarks();
             ViewBag.remarks = remarks;
-            return View("Views/CRM/Admin/Remarks/AddRemarks.cshtml");
+
+            return View("Views/CRM/Admin/Remarks/AddEditRemarks.cshtml");
         }
         public IActionResult Privacy()
         {
