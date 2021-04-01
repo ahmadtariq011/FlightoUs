@@ -1,4 +1,9 @@
-﻿
+﻿@using FlightoUs.Model.Enums;
+@{ 
+    bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+    bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+    bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+}
 <!-- Left Panel -->
 <aside id="left-panel" class="left-panel">
     <nav class="navbar navbar-expand-sm navbar-default">
@@ -13,80 +18,67 @@
         </div>
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav" id="navbarlist">
-                <li>
-                    <a id="aDashboard" asp-action="Dashboard" asp-controller="Home" >
-                        <span class="material-icons mr-1">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-               
-                <li>
-                    <a id="aUsers" asp-action="UserIndex" asp-controller="Home">
-                        <span class="material-icons mr-1">supervised_user_circle</span>
-                        <span>Users</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aBlogCategories" asp-action="LeadsIndex" asp-controller="Home">
-                        <span class="material-icons mr-1">supervised_user_circle</span>
-                        <span>Leads</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aBlogArticles" href="~/Admin/Blog/Article">
-                        <span class="material-icons mr-1">article</span>
-                        <span>Blog Articles</span>
-                    </a>
-                </li>
 
-                <li>
-                    <a id="aCategories" href="~/Admin/Category">
-                        <span class="material-icons mr-1">category</span>
-                        <span>Categories</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aProducts" href="~/Admin/Products">
-                        <span class="material-icons mr-1">forward_to_inbox</span>
-                        <span>Products</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aNewsletterSubscriptions" href="~/Admin/SubscribedEmails">
-                        <span class="material-icons mr-1">contact_mail</span>
-                        <span>Newsletter Subscriptions</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aStaticPages" href="~/Admin/StaticPages">
-                        <span class="material-icons mr-1">pages</span>
-                        <span>Static Pages</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aOrders" href="~/Admin/Order/Index">
-                        <span class="material-icons mr-1">attach_money</span>
-                        <span>Orders</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aEmailTemplate" href="~/Admin/EmailTemplate">
-                        <span class="material-icons mr-1">email</span>
-                        <span>Email Template</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aContactUs" href="~/Admin/ContactUs">
-                        <span class="material-icons mr-1">contact_page</span>
-                        <span>Contact Us</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="aSetting" href="~/Admin/Setting">
-                        <span class="material-icons mr-1">settings</span>
-                        <span>Setting</span>
-                    </a>
-                </li>
+                @if (IsAdmin)
+                {
+                    <li>
+                        <a id="aDashboard" asp-action="Dashboard" asp-controller="Admin">
+                            <span class="material-icons mr-1">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aUsers" asp-action="UserIndex" asp-controller="Admin">
+                            <span class="material-icons mr-1">supervised_user_circle</span>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="LeadsIndex" asp-controller="Admin">
+                            <span class="material-icons mr-1">supervised_user_circle</span>
+                            <span>Leads</span>
+                        </a>
+                    </li>
+
+                }
+
+
+                @if (IsManager)
+                {
+                    <li>
+                        <a id="aDashboard" asp-action="Dashboard" asp-controller="Manager">
+                            <span class="material-icons mr-1">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aUsers" asp-action="UserIndex" asp-controller="Manager">
+                            <span class="material-icons mr-1">supervised_user_circle</span>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="LeadsIndex" asp-controller="Manager">
+                            <span class="material-icons mr-1">supervised_user_circle</span>
+                            <span>Leads</span>
+                        </a>
+                    </li>
+                }
+                @if (IsUser)
+                {
+                    <li>
+                        <a id="aDashboard" asp-action="Dashboard" asp-controller="User">
+                            <span class="material-icons mr-1">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="LeadsIndex" asp-controller="User">
+                            <span class="material-icons mr-1">supervised_user_circle</span>
+                            <span>Leads</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

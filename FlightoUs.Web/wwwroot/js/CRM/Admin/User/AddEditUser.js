@@ -63,13 +63,11 @@ function SaveUser() {
         FirstName: $.trim($("#txtFirstName").val()),
         LastName: $.trim($("#txtLastName").val()),
         UserName: $.trim($("#txtUserName").val()),
-        CNIC: $.trim($("#txtCNIC").val()),
-        UserType: $.trim($("#txtUserType").val()),
-        GenderType: $.trim($("#txtGenderType").val()),
-        CreatedDate: $.trim($("#txtCreatedDate").val()),
         Email: $.trim($("#txtEmail").val()),
-        Address: $.trim($("#txtAddress").val()),
         Password: $.trim($("#txtPassword").val()),
+        CNIC: $.trim($("#txtCNIC").val()),
+        UserTypeName: $.trim($("#txtUserType").val()),
+        GenderTypename: $.trim($("#txtGender").val())
     };
 
     $.post("/api/UserAPI/SaveUser", User, SaveUserCallback);
@@ -77,12 +75,12 @@ function SaveUser() {
 
 function SaveUserCallback(data) {
     $("#loader").hide();
-    if (!data.IsSucceeded) {
-        ShowCallbackMessage(false, data.Message);
+    if (!data.isSucceeded) {
+        ShowCallbackMessage(false, data.message);
         return;
     }
 
-    window.location.href = "/Home/UserIndex";
+    window.location.href = data.message;
 }
 
 

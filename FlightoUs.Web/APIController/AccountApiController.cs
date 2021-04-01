@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FlightoUs.Web.APIController
@@ -22,32 +23,38 @@ namespace FlightoUs.Web.APIController
 
 
         [HttpPost]
-        [Route("AdminLogin")]
-        public async Task<ServiceResponse> AdminLogin([FromForm] LoginModel model)
+        [Route("Login")]
+        public async Task<ServiceResponse> Login([FromForm] LoginModel model)
         {
+            string role = string.Empty; Int64 id = 0;
             try
             {
-                User dbUser = bllUser.AdminLogin(model.UserName, model.Password);
+                User dbUser = bllUser.Login(model.UserName, model.Password);
                 if (dbUser == null)
                 {
                     result.IsSucceeded = false;
                     result.Message = "Invalid Login Information";
                     return result;
                 }
+                string message = "";
+                id = dbUser.Id;
 
-                result.Message = "/Home/Dashboard";
+                if (dbUser.UserType == Convert.ToByte(UserRoleType.Admin)) { message = "/Admin/Dashboard"; role = "Admin"; }
+                else if (dbUser.UserType == Convert.ToByte(UserRoleType.Manager)) { message = "/Manager/Dashboard"; role = "Manager"; }
+                else if (dbUser.UserType == Convert.ToByte(UserRoleType.User)) { message = "/User/Dashboard"; role = "User"; }
 
                 var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.GivenName, dbUser.FirstName),
                         new Claim(ClaimTypes.Name, dbUser.Id.ToString()),
-                        new Claim(ClaimTypes.Role, UserRoleType.User.ToString()),
+                        new Claim(ClaimTypes.Role, role),
                     };
-
                 ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "login");
-                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-                await HttpContext.SignInAsync("AdminAuth", principal);
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                Thread.CurrentPrincipal = principal;
+                await HttpContext.SignInAsync(role, principal);
+                result.Message = message;
+                result.IsSucceeded = true;
             }
             catch (Exception ex)
             {

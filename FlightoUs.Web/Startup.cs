@@ -30,24 +30,24 @@ namespace FlightoUs.Web
             services.AddControllersWithViews();
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = "UserAuth";
+                options.DefaultScheme = "Admin";
             })
-           .AddCookie("UserAuth", options =>
-           {
-               options.LoginPath = "/Account/Login/";
-               options.AccessDeniedPath = "/Account/AccessDenied/";
+            .AddCookie("Admin", options =>
+            {
+                options.LoginPath = "/Home/Login/";
+                options.AccessDeniedPath = "/Account/AccessDenied/";
 
-           })
-           .AddCookie("AdminAuth", options =>
-           {
-               options.LoginPath = "/Home/Login/";
-               options.AccessDeniedPath = "/Admin/Account/AccessDenied/";
-           })
-           .AddCookie("ManagerAuth", options=>
-           {
-               options.LoginPath = "/Home/Login/";
-               options.AccessDeniedPath = "/Admin/Account/AccessDenied/";
-           });
+            })
+            .AddCookie("User", options =>
+            {
+                options.LoginPath = "/Home/Login/";
+                options.AccessDeniedPath = "/Account/AccessDenied/";
+            })
+            .AddCookie("Manager", options=>
+            {
+                options.LoginPath = "/Home/Login/";
+                options.AccessDeniedPath = "/Account/AccessDenied/";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +67,7 @@ namespace FlightoUs.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseAuthorization();
 
@@ -74,7 +75,7 @@ namespace FlightoUs.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+                    pattern: "{controller=Home}/{action=Login}/{id?}");
             });
         }
     }

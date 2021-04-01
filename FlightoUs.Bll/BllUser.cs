@@ -27,15 +27,6 @@ namespace FlightoUs.Bll
         {
             return dalUser.GetByEmail(email);
         }
-        //public int GetTotalUsers()
-        //{
-        //    return dalUser.GetTotalUsers();
-        //}
-
-        public User AdminLogin(string email, string password)
-        {
-            return dalUser.AdminLogin(email, password);
-        }
         public User Login(string email, string password)
         {
             return dalUser.Login(email, password);
@@ -72,10 +63,6 @@ namespace FlightoUs.Bll
         {
             return dalUser.GetAllUsers();
         }
-        //public List<User> GetUsers()
-        //{
-        //    return dalUser.GetUsers();
-        //}
         /// <summary>
         /// This function deletes User by its Primary Key 
         /// and returns True in case of Success

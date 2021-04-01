@@ -49,6 +49,19 @@ function handler_enter(e) {
     }
 }
 
+function AddEditTicket(type) {
+    if (type === 1) {
+
+    }
+    $("#TicketPanel").toggle();
+}
+function AddEditHotel(type) {
+    if (type === 1) {
+
+    }
+    $("#HotelPanel").toggle();
+}
+
 function SaveLeads() {
     if (!Validate("#BasicInfo")) {
         return;
@@ -65,15 +78,13 @@ function SaveLeads() {
         UserName: $.trim($("#txtUserName").val()),
         Email: $.trim($("#txtEmail").val()),
         Address: $.trim($("#txtAddress").val()),
-       // Remarks: $.trim($("#txtRemarks").val()),
         Telephone: $.trim($("#txtTelephone").val()),
         CNIC: $.trim($("#txtCNIC").val()),
-      //  LeadType: $.trim($("#txtLeadType").val()),
-       // LeadTypeDemand: $.trim($("#txtLeadTypeDemand").val()),
-      //  LeadStatus: $.trim($("#txtLeadStatus").val()),
         CreatedBy: $.trim($("#txtCreatedBy").val()),
-        //CreatedDate: $.trim($("#txtCreatedDate").val()),
-        AssignToUser: $.trim($("#txtAssignTo").val())
+        AssignToUser: $.trim($("#txtAssignTo").val()),
+        LeadStatusName: $.trim($("#txtLeadStatus").val()),
+        LeadTypeDemandName: $.trim($("#txtLeadTypeDemand").val()),
+        LeadTypeName: $.trim($("#txtLeadType").val())
     };
 
     $.post("/api/LeadsApi/SaveLeads", User, SaveUserCallback);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace LillyLifestyle.Models
+namespace FlightoUs.Model
 {
     public static class AppConfiguration
     {

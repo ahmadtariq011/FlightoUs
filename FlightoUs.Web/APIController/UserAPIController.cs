@@ -1,11 +1,14 @@
 ﻿using FlightoUs.Bll;
 using FlightoUs.Model.Data;
+using FlightoUs.Model.Enums;
 using FlightoUs.Model.Services;
 using FlightoUs.Models.Filters;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FlightoUs.Web.APIController
@@ -20,10 +23,26 @@ namespace FlightoUs.Web.APIController
         ServiceResponse result = new ServiceResponse();
 
         [HttpPost]
-        public ServiceResponse SaveUser(User user)
+        public ServiceResponse SaveUser(UserModel user)
         {
             try
             {
+                bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+                bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+                bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+                string typeofUserLogin = "";
+                if (IsAdmin)
+                {
+                    typeofUserLogin = "Admin";
+                }
+                if (IsManager)
+                {
+                    typeofUserLogin = "Manager";
+                }
+                if (IsUser)
+                {
+                    typeofUserLogin = "User";
+                }
                 if (bllUser.GetByPK(user.Id) == null)
                 {
                     User dbUser = new User();
@@ -35,13 +54,18 @@ namespace FlightoUs.Web.APIController
                     dbUser.Telephone = user.Telephone;
                     dbUser.CNIC = user.CNIC;
                     dbUser.CreatedDate= DateTime.Now;
-                    dbUser.UserType = user.UserType;
-                    dbUser.GenderType = user.GenderType;
+                    GenderType gender = (GenderType)Enum.Parse(typeof(GenderType), user.GenderTypename);
+                    UserRoleType usertyp = (UserRoleType)Enum.Parse(typeof(UserRoleType), user.UserTypeName);
+                    dbUser.UserType = Convert.ToInt32(usertyp);
+                    dbUser.GenderType = Convert.ToInt32(gender);
+
 
 
                     int UserId = bllUser.Insert(dbUser);
                     result.IsSucceeded = true;
                     result.TotalCount = UserId;
+                    result.Message = "/" + typeofUserLogin + "/UserIndex";
+
                 }
                 else
                 {
@@ -49,15 +73,21 @@ namespace FlightoUs.Web.APIController
 
                     dbUser.FirstName = user.FirstName;
                     dbUser.LastName = user.LastName;
+                    dbUser.UserName = user.UserName;
+                    dbUser.Email = user.Email;
                     dbUser.Password = user.Password;
                     dbUser.Telephone = user.Telephone;
                     dbUser.CNIC = user.CNIC;
-                    dbUser.UserType = user.UserType;
-                    dbUser.GenderType = user.GenderType;
+                    dbUser.CreatedDate = DateTime.Now;
+                    GenderType gender= (GenderType)Enum.Parse(typeof(GenderType), user.GenderTypename);
+                    UserRoleType usertyp = (UserRoleType)Enum.Parse(typeof(UserRoleType), user.UserTypeName);
+                    dbUser.UserType = Convert.ToInt32(usertyp);
+                    dbUser.GenderType = Convert.ToInt32(gender);
 
 
                     bllUser.Update(dbUser);
                     result.IsSucceeded = true;
+                    result.Message = "/"+ typeofUserLogin + "/UserIndex";
                 }
             }
             catch (Exception ex)
@@ -151,7 +181,19 @@ namespace FlightoUs.Web.APIController
             }
             return result;
         }
-
+        [HttpPost]
+        public ServiceResponse Logout(UserSearchFilter type)
+        {
+            HttpContext.SignOutAsync(type.Keyword);
+            result.Message = "/Home/Login";
+            var user = User as ClaimsPrincipal;
+            var identity = user.Identity as ClaimsIdentity;
+            var claim = (from c in user.Claims
+                         where c.Value == type.Keyword
+                         select c).Single();
+            identity.RemoveClaim(claim);
+            return result;
+        }
     }
 }
 

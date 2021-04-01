@@ -1,4 +1,7 @@
 ﻿@using FlightoUs.Model.Data
+@using FlightoUs.Model.Enums
+@using FlightoUs.Bll.Helpers
+@using System
 @section Scripts
 {
     <script src="~/js/CRM/Admin/User/AddEditUser.js?v=@DateTime.Now.Ticks.ToString()"></script>
@@ -6,9 +9,27 @@
 @{ 
     var data = (User)ViewBag.data;
     var Title = ViewBag.title;
+
+    var gen = Enum.GetValues(typeof(GenderType)).Cast<GenderType>().ToList();
+    var use = Enum.GetValues(typeof(UserRoleType)).Cast<UserRoleType>().ToList();
+    string usergender = EnumHelper.GetEnumByValue<GenderType>(data.GenderType.ToString()).ToString();
+    string typeofuser = EnumHelper.GetEnumByValue<UserRoleType>(data.UserType.ToString()).ToString();
+
+    var genders = new List<string>();
+    foreach(var g in gen)
+    {
+        genders.Add(String.Join(Environment.NewLine, g));
+    }
+
+    var usertypes = new List<string>();
+    foreach (var g in use)
+    {
+        usertypes.Add(String.Join(Environment.NewLine, g));
+    }
+
 }
 
-<input type="hidden" id="hfLeadId" value="@data.Id" />
+<input type="hidden" id="hfUserId" value="@data.Id" />
 <div class="row">
 
     <div class="col-lg-3"></div>
@@ -28,24 +49,21 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtFirstName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.FirstName" required maxlength="20">
+                        <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" required maxlength="20">
                     </div>
                 </div>
-
-
-
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Last Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.LastName" required maxlength="20">
+                        <input class="form-control" id="txtLastName" type="text" value="@data.LastName" required maxlength="20">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtUserName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.UserName" required maxlength="20">
+                        <input class="form-control" id="txtUserName" type="text" value="@data.UserName" required maxlength="20">
                     </div>
                 </div>
 
@@ -57,7 +75,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Password</label></div>
                     <div class="col-12 col-md-9">
@@ -76,47 +94,52 @@
                     </div>
                 </div>
 
-
-                @*<div class="row form-group">
-            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
-            <div class="col-12 col-md-9">
-                <input class="form-control" id="txtUserType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.UserType" required maxlength="20">
-            </div>
-
-        </div>
-
-        <div class="row form-group">
-            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Gender Type</label></div>
-            <div class="col-12 col-md-9">
-                <input class="form-control" id="txtGenderType" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@Model.Status.GenderType" required maxlength="20">
-            </div>
-
-        </div>
-
-            <div class="row form-group">
-            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created Date</label></div>
-            <div class="col-12 col-md-9">
-                <input class="form-control" id="txtCreatedDate" type="text" onkeypress="return /[0-9]/i.test(event.key)" value="@data.CreatedDate" required maxlength="20">
-            </div>
-        </div>
-
-
-
-                *@
-
-
-
-
                 <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
+                        <select class="form-control" id="txtUserType" name="txtUserType" required>
+                            @foreach (var usertype in usertypes)
+                            {
+                                if (usertype == typeofuser)
+                                {
+                                    <option id="usertype" selected>@usertype</option>
+                                }
+                                else
+                                {
+                                    <option id="usertype">@usertype</option>
+                                }
+
+                            }
+                        </select>
                     </div>
                 </div>
 
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Gender</label></div>
+                    <div class="col-12 col-md-9">
+                        <select class="form-control" id="txtGender" name="txtGender" required>
+                            @foreach (var gender in genders)
+                            {
+                                if (gender == usergender)
+                                {
+                                    <option id="genders" selected>@gender</option>
+                                }
+                                else
+                                {
+                                    <option id="genders">@gender</option>
+                                }
 
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtTelephone" type="text" required value="@data.Telephone" maxlength="20">
+                    </div>
+                </div>
             </div>
-
         </div>
 
 
@@ -131,7 +154,3 @@
     </div>
 </div>
 <div class="col-lg-3"></div>
-
-
-
-}

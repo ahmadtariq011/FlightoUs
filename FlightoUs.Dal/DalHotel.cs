@@ -9,19 +9,18 @@ using System.Threading.Tasks;
 
 namespace FlightoUs.Dal
 {
-    public class DalTickets
+    public class DalHotel
     {
-
         /// <summary>
         /// This function get User object by Primary Key
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Ticket GetByPK(int Id)
+        public Hotel GetByPK(int Id)
         {
             using (var entities = new ApplicationDbContext())
             {
-                return entities.Tickets.FirstOrDefault(p => p.Id == Id);
+                return entities.Hotels.FirstOrDefault(p => p.Id == Id);
             }
         }
 
@@ -30,28 +29,27 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="user"></param>
         /// <returns>returns Primary Key of new record</returns>
-        public int Insert(Ticket ticket)
+        public int Insert(Hotel hotel)
         {
             using (var entities = new ApplicationDbContext())
             {
-                entities.Tickets.Add(ticket);
+                entities.Hotels.Add(hotel);
                 entities.SaveChanges();
-                return ticket.Id;
+                return hotel.Id;
             }
         }
-        public Ticket GetTicketByLead(int leadid)
+        public Hotel GetHotelByLead(int leadid)
         {
             using (var entities = new ApplicationDbContext())
             {
-                return entities.Tickets.FirstOrDefault(p => p.Lead_Id == leadid);
+                return entities.Hotels.FirstOrDefault(p => p.Lead_Id == leadid);
             }
         }
-
         /// <summary>
         /// This function updates User
         /// </summary>
         /// <param name="user"></param>
-        public void Update(Ticket ticket)
+        public void Update(Hotel hotel)
         {
             using (var entities = new ApplicationDbContext())
             {
@@ -66,13 +64,13 @@ namespace FlightoUs.Dal
         /// This function returns all records of User
         /// </summary>
         /// <returns>List of User</returns>
-        public List<Ticket> GetAllTickets()
+        public List<Hotel> GetAllHotels()
         {
             using (var entities = new ApplicationDbContext())
             {
                 try
                 {
-                    return entities.Tickets.ToList();
+                    return entities.Hotels.ToList();
                 }
                 catch (Exception ex)
                 {
@@ -92,12 +90,12 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
-                Ticket dbTicket = entities.Tickets.SingleOrDefault(p => p.Id == Id);
+                Hotel dbHotel = entities.Hotels.SingleOrDefault(p => p.Id == Id);
 
-                if (dbTicket == null)
+                if (dbHotel == null)
                     return false;
 
-                entities.Tickets.Remove(dbTicket);
+                entities.Hotels.Remove(dbHotel);
 
                 entities.SaveChanges();
             }
@@ -110,24 +108,16 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<Ticket> Search(TicketSearchFilter filters)
+        public List<Hotel> Search(HotelSearchFilter filters)
         {
             int skip = (filters.PageIndex - 1) * filters.PageSize;
 
             using (var entities = new ApplicationDbContext())
             {
-                var query = from ticket in entities.Tickets
-                            select ticket;
+                var query = from hotel in entities.Hotels
+                            select hotel;
 
-                if (!string.IsNullOrEmpty(filters.From))
-                {
-                    query = query.Where(p => p.From.Contains(filters.From));
-                }
-
-                if (!string.IsNullOrEmpty(filters.To))
-                {
-                    query = query.Where(p => p.To.Contains(filters.To));
-                }
+               
 
 
 
@@ -145,25 +135,13 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>Count of searched recored as integer value</returns>
-        public int GetSearchCount(TicketSearchFilter filters)
+        public int GetSearchCount(HotelSearchFilter filters)
         {
             using (var entities = new ApplicationDbContext())
             {
-                var query = from ticket in entities.Tickets
+                var query = from hotel in entities.Hotels
                                 //where user.UserType == filters.UserType
-                            select ticket;
-
-
-                if (!string.IsNullOrEmpty(filters.From))
-                {
-                    query = query.Where(p => p.From.Contains(filters.From));
-                }
-
-                if (!string.IsNullOrEmpty(filters.To))
-                {
-                    query = query.Where(p => p.To.Contains(filters.To));
-                }
-
+                            select hotel;
 
 
 

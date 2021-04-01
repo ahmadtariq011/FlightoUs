@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace FlightoUs.Model.Filter
 {
-    public class LeadSearchFilter: BaseFilter
+     public class HotelSearchFilter :BaseFilter
     {
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public Nullable<int> User_Id { get; set; }
 
     }
 }

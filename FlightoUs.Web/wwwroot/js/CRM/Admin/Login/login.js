@@ -26,7 +26,7 @@ function Login() {
         Password: $("#txtPassword").val(),
     };
 
-    $.post("/api/AccountApi/AdminLogin", login, LoginCallBack);
+    $.post("/api/AccountApi/Login", login, LoginCallBack);
 }
 function LoginCallBack(data) {
     $("#login-button").attr("disabled", false);
@@ -84,4 +84,11 @@ function ResetPassword() {
     };
 
     $.post("/api/AccountApi/ResetPassword", login, SendForgotPasswordRequestCallBack);
+}
+
+function Logout(type) {
+    $.post("api/AccountApi/Logout", type, logoutcallback);
+}
+function logoutcallback(data) {
+    window.location.href = data.message;
 }

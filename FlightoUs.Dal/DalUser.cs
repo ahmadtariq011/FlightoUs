@@ -24,32 +24,14 @@ namespace FlightoUs.Dal
             }
         }
 
-        public User Login(string email, string password)
+        public User Login(string username, string password)
         {
             using (var entities = new ApplicationDbContext())
             {
-                int userType = Convert.ToByte(UserRoleType.User);
-                return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == userType);
+                return entities.Users.FirstOrDefault(p => p.UserName == username && p.Password == password);
             }
         }
-
-
-        public User AdminLogin(string username, string password)
-        {
-            using (var entities = new ApplicationDbContext())
-            {
-                int adminUserType = Convert.ToByte(UserRoleType.Admin);
-                return entities.Users.FirstOrDefault(p => p.UserName == username && p.Password == password && p.UserType == adminUserType);
-            }
-        }
-        //public User Login(string email, string password)
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        int userType = Convert.ToByte(UserRoleType.User);
-        //        return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == userType);
-        //    }
-        //}
+  
         public User GetByEmail(string email)
         {
             using (var entities = new ApplicationDbContext())
@@ -68,13 +50,7 @@ namespace FlightoUs.Dal
         //}
 
 
-        public User GetByUserNamePassword(string UserName, string Password)
-        {
-            using (var entities = new ApplicationDbContext())
-            {
-                return entities.Users.FirstOrDefault(p => p.Email == UserName && p.Password == Password);
-            }
-        }
+       
 
         /// <summary>
         /// This function inserts a new record of User
@@ -99,29 +75,19 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
-                entities.Users.Attach(user);
-                entities.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                User dbUser = entities.Users.SingleOrDefault(p => p.Id == user.Id);
+                dbUser.FirstName = user.FirstName;
+                dbUser.LastName = user.LastName;
+                dbUser.Email = user.Email;
+                dbUser.Password = user.Password;
+                dbUser.Telephone = user.Telephone;
+                dbUser.CNIC = user.CNIC;
+                dbUser.UserType = user.UserType;
+                dbUser.GenderType = user.GenderType;
                 entities.SaveChanges();
             }
         }
 
-
-        //public List<User> GetUsers()
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        try
-        //        {
-        //            int type = Convert.ToInt32(UserRoleType.User);
-        //            return entities.Users.Where(p => p.UserType == type).ToList();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Log Exception
-        //            throw ex;
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// This function returns all records of User

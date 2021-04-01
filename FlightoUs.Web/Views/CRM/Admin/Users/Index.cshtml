@@ -1,4 +1,22 @@
-﻿
+﻿@using FlightoUs.Model.Enums
+@{
+    bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+    bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+    bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+    string typeofUserLogin = "";
+    if (IsAdmin)
+    {
+        typeofUserLogin = "Admin";
+    }
+    if (IsManager)
+    {
+        typeofUserLogin = "Manager";
+    }
+    if (IsUser)
+    {
+        typeofUserLogin = "User";
+    }
+}
 
 
 
@@ -7,7 +25,7 @@
     <script src="~/js/CRM/Admin/User/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
 <div class="right mT10">
-    <a class="btn btn-success btn-sm" asp-action="AddEditUser" asp-controller="Home" asp-route-id="0"> Add User</a>
+    <a class="btn btn-success btn-sm" asp-action="AddEditUser" asp-controller="@typeofUserLogin" asp-route-id="0"> Add User</a>
 </div>
 <div class="clearfix"></div>
 <div class="row">
@@ -36,15 +54,15 @@
                     <thead>
                         <tr>
                             <th class="gridSortingMenu" scope="col" sortable datafield="firstName" caption="First Name"></th>
-                            
+
                             <th class="gridSortingMenu" scope="col" sortable datafield="lastName" caption="Last Name"></th>
 
                             <th class="gridSortingMenu" scope="col" sortable datafield="userName" caption="User Name"></th>
-                           
+
                             <th class="gridSortingMenu" scope="col" sortable datafield="email" caption="Email"></th>
-                            
+
                             <th class="gridSortingMenu" scope="col" sortable datafield="telephone" caption="Telephone"></th>
-                            
+
                             <th scope="col" style="width:180px;">Actions</th>
                         </tr>
                     </thead>
@@ -77,7 +95,7 @@
         <td>{{:email}}</td>
         <td>{{:telephone}}</td>
         <td>
-            <a href="/Home/AddEditUser/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">
+            <a href="/@typeofUserLogin/AddEditUser/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">
                 Edit
             </a>
             <a onclick="DeleteUsers({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
@@ -85,4 +103,4 @@
     </tr>
 
 
-    </script>
+</script>

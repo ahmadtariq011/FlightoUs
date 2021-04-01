@@ -26,22 +26,6 @@ namespace FlightoUs.Dal
             }
         }
 
-        //public User AdminLogin(string userId, string password)
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        int adminUserType = Convert.ToByte(UserRoleType.Admin);
-        //        return entities.Users.FirstOrDefault(p => p.UserId == userId && p.Password == password && p.UserType == adminUserType);
-        //    }
-        //}
-        //public User Login(string email, string password)
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        int userType = Convert.ToByte(UserRoleType.User);
-        //        return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == userType);
-        //    }
-        //}
         public Lead GetByEmailLeads(string email)
         {
             using (var entities = new ApplicationDbContext())
@@ -56,15 +40,6 @@ namespace FlightoUs.Dal
                 return entities.Leads.FirstOrDefault(p => p.UserName == username);
             }
         }
-
-        //public int GetTotalUsers()
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        int type = Convert.ToInt32(UserRoleType.User);
-        //        return entities.Users.Count(p => p.UserType == type);
-        //    }
-        //}
 
 
         /// <summary>
@@ -90,29 +65,24 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
-        
+                Lead dbLead = entities.Leads.SingleOrDefault(p => p.Id == lead.Id);
+                dbLead.FirstName = lead.FirstName;
+                dbLead.LastName = lead.LastName;
+                dbLead.Email = lead.Email;
+                dbLead.Telephone = lead.Telephone;
+                dbLead.CNIC = lead.CNIC;
+                dbLead.Address = lead.Address;
+                dbLead.AssignToUser = lead.AssignToUser;
+                dbLead.AssignDate = lead.AssignDate;
+                dbLead.LeadType = lead.LeadType;
+                dbLead.LeadTypeDemand = lead.LeadTypeDemand;
+                dbLead.LeadStatus = lead.LeadStatus;
                 entities.SaveChanges();
             }
         }
 
 
-        //public List<User> GetUsers()
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        try
-        //        {
-        //            int type = Convert.ToInt32(UserRoleType.User);
-        //            return entities.Users.Where(p => p.UserType == type).ToList();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Log Exception
-        //            throw ex;
-        //        }
-        //    }
-        //}
-
+        
         /// <summary>
         /// This function returns all records of User
         /// </summary>
@@ -179,7 +149,10 @@ namespace FlightoUs.Dal
                 {
                     query = query.Where(p => p.Email.Contains(filters.Email));
                 }
-
+                //if (filters.User_Id.HasValue && filters.User_Id != -1)
+                //{
+                //    query = query.Where(p => p.AssignToUser == filters.User_Id);
+                //}
 
 
                 if (string.IsNullOrEmpty(filters.Sort))

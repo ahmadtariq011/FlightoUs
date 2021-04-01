@@ -1,4 +1,13 @@
-﻿<!-- Header-->
+﻿@section Scripts
+{
+}
+@using FlightoUs.Model.Enums;
+@{
+    bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+    bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+    bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+}
+<!-- Header-->
 <header id="header" class="header">
     <div class="header-menu">
         <div class="col-sm-7">
@@ -14,17 +23,34 @@
                     <i class="material-icons" style="margin-top:8px;">account_circle</i>
                 </a>
                 <div class="user-menu dropdown-menu">
-                    <a class="nav-link" href="~/Admin/MyProfile">
+                    @*<a class="nav-link" href="~/Admin/MyProfile">
                         <span class="material-icons mr-1">account_circle</span>
                         <span>My Profile</span>
-                    </a>
-                    <a class="nav-link" href="~/Admin/Logout">
-                        <span class="material-icons mr-1">login</span>
-                        <span>Logout</span>
-                    </a>
+                    </a>*@
+                    @if (IsAdmin)
+                    {
+                        <a class="nav-link">
+                            <span class="material-icons mr-1">login</span>
+                            <span style="cursor:pointer" onclick="Logout('Admin');">Logout</span>
+                        </a>
+                    }
+                    @if (IsManager)
+                    {
+                        <a class="nav-link">
+                            <span class="material-icons mr-1">login</span>
+                            <span style="cursor:pointer" onclick="Logout('Manager');">Logout</span>
+                        </a>
+                    }
+                    @if (IsUser)
+                    {
+                        <a class="nav-link">
+                            <span class="material-icons mr-1">login</span>
+                            <span style="cursor:pointer" onclick="Logout('User');">Logout</span>
+                        </a>
+                    }
+
                 </div>
             </div>
         </div>
     </div>
 </header>
-<!-- Header-->
