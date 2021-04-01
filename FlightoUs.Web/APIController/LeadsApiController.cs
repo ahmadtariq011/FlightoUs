@@ -73,6 +73,8 @@ namespace FlightoUs.Web.APIController
                     dbLead.LeadTypeDemand = lead.LeadTypeDemand;
                     dbLead.LeadStatus = lead.LeadStatus;
 
+                    dbLead.AssignToUser = lead.AssignToUser;
+
 
 
                     int LeadId = bllLead.Insert(dbLead);

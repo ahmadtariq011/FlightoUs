@@ -45,11 +45,11 @@ function handler_enter(e) {
         charCode = e.keyCode;
     }
     if (charCode == 13) {
-        SaveUser();
+        SaveLeads();
     }
 }
 
-function SaveUser() {
+function SaveLeads() {
     if (!Validate("#BasicInfo")) {
         return;
     }
@@ -65,15 +65,15 @@ function SaveUser() {
         UserName: $.trim($("#txtUserName").val()),
         Email: $.trim($("#txtEmail").val()),
         Address: $.trim($("#txtAddress").val()),
-        Remarks: $.trim($("#txtRemarks").val()),
+       // Remarks: $.trim($("#txtRemarks").val()),
         Telephone: $.trim($("#txtTelephone").val()),
         CNIC: $.trim($("#txtCNIC").val()),
-        LeadType: $.trim($("#txtLeadType").val()),
-        LeadTypeDemand: $.trim($("#txtLeadTypeDemand").val()),
-        LeadStatus: $.trim($("#txtLeadStatus").val()),
+      //  LeadType: $.trim($("#txtLeadType").val()),
+       // LeadTypeDemand: $.trim($("#txtLeadTypeDemand").val()),
+      //  LeadStatus: $.trim($("#txtLeadStatus").val()),
         CreatedBy: $.trim($("#txtCreatedBy").val()),
-        CreatedDate: $.trim($("#txtCreatedDate").val()),
-        AssignDate: $.trim($("#txtAssignDate").val())
+        //CreatedDate: $.trim($("#txtCreatedDate").val()),
+        AssignToUser: $.trim($("#txtAssignTo").val())
     };
 
     $.post("/api/LeadsApi/SaveLeads", User, SaveUserCallback);

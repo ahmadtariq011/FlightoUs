@@ -12,7 +12,6 @@
     var remarksData = (Remarks)ViewBag.remarks;
 
 }
-
 <input type="hidden" id="hfLeadId" value="@data.Id" />
 <div class="row">
 
@@ -29,6 +28,16 @@
                         <span id="span_message"></span>
                     </p>
                 </div>
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                       <label for="hf-email" class=" form-control-label">Details</label> </div>
+                    <div class="col-12 col-md-9">
+                        <textarea class="form-control" id="txtDetails" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@remarksData.Details" required maxlength="20"></textarea>
+                      </div>
+                    </div>
+
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
@@ -139,7 +148,7 @@
 
 
 <!--
-Remarks    
+Remarks
 -->
 <div style="display:@(ViewBag.IsAdd ? "inline" : "none")">
     <div class="right mT10">

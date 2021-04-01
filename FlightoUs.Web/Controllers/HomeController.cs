@@ -88,7 +88,7 @@ namespace FlightoUs.Web.Controllers
         {
             Remarks remarks = new Remarks();
             ViewBag.remarks = remarks;
-            return View("Views/CRM/Admin/Leads/AddEditRemarks.cshtml");
+            return View("Views/CRM/Admin/Remarks/AddRemarks.cshtml");
         }
         public IActionResult Privacy()
         {

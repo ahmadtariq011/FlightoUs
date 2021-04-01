@@ -113,7 +113,7 @@ function LoadUsersWithCount() {
         sessionStorage["CustomerFilters"] = JSON.stringify(filters);
     }
     $("#loader").show();
-    $.post("/api/UserApi/GetUsersWithCount", filters, LoadUsersWithCountCallBack);
+    $.post("/api/LeadsApi/GetLeadsWithCount", filters, LoadUsersWithCountCallBack);
 }
 function LoadUsersWithCountCallBack(data) {
     $("#loader").hide(); $("#divCustomerList").show();
@@ -174,7 +174,7 @@ function LoadUsers() {
         PageSize: pageSize
     };
 
-    $.post("/api/UserApi/GetUsers", filters, LoadCustomersCallBack);
+    $.post("/api/LeadsApi/GetLeads", filters, LoadCustomersCallBack);
 }
 function LoadCustomersCallBack(data) {
     $("#loader").hide();
