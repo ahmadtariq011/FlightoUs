@@ -1,16 +1,14 @@
 ﻿using FlightoUs.Model.Data;
-using FlightoUs.Model.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FlightoUs.Dal
 {
-    public class DalRemarks
+    public class DalTickets
     {
 
         /// <summary>
@@ -18,11 +16,11 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Remarks GetByPK(int Id)
+        public Ticket GetByPK(int Id)
         {
             using (var entities = new ApplicationDbContext())
             {
-                return entities.Remarks.FirstOrDefault(p => p.Id == Id);
+                return entities.Tickets.FirstOrDefault(p => p.Id == Id);
             }
         }
 
@@ -42,20 +40,20 @@ namespace FlightoUs.Dal
         //        return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == userType);
         //    }
         //}
-        // public Remarks GetByEmailLeads(string email)
-        //{
-        //  using (var entities = new ApplicationDbContext())
-        //{
-        //        return entities.Remarks.FirstOrDefault(p => p.Email == email);
-        // }
-        // }
-        //  public Lead GetByUsernameLeads(string username)
-        // {
-        //   using (var entities = new ApplicationDbContext())
-        //     {
-        //        return entities.Leads.FirstOrDefault(p => p.UserName == username);
-        //    }
-        // }
+        public Ticket GetByToTickets(string to)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                return entities.Tickets.FirstOrDefault(p => p.To == to);
+            }
+        }
+        public Ticket GetByFromTickets(string from)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                return entities.Tickets.FirstOrDefault(p => p.From == from);
+            }
+        }
 
         //public int GetTotalUsers()
         //{
@@ -72,13 +70,13 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="user"></param>
         /// <returns>returns Primary Key of new record</returns>
-        public int Insert(Remarks remarks)
+        public int Insert(Ticket ticket)
         {
             using (var entities = new ApplicationDbContext())
             {
-                entities.Remarks.Add(remarks);
+                entities.Tickets.Add(ticket);
                 entities.SaveChanges();
-                return remarks.Id;
+                return ticket.Id;
             }
         }
 
@@ -86,7 +84,7 @@ namespace FlightoUs.Dal
         /// This function updates User
         /// </summary>
         /// <param name="user"></param>
-        public void Update(Remarks remarks)
+        public void Update(Ticket ticket)
         {
             using (var entities = new ApplicationDbContext())
             {
@@ -117,13 +115,13 @@ namespace FlightoUs.Dal
         /// This function returns all records of User
         /// </summary>
         /// <returns>List of User</returns>
-        public List<Remarks> GetAllRemarks()
+        public List<Ticket> GetAllTickets()
         {
             using (var entities = new ApplicationDbContext())
             {
                 try
                 {
-                    return entities.Remarks.ToList();
+                    return entities.Tickets.ToList();
                 }
                 catch (Exception ex)
                 {
@@ -143,12 +141,12 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
-                Remarks dbRemarks = entities.Remarks.SingleOrDefault(p => p.Id == Id);
+                Ticket dbTicket = entities.Tickets.SingleOrDefault(p => p.Id == Id);
 
-                if (dbRemarks == null)
+                if (dbTicket == null)
                     return false;
 
-                entities.Remarks.Remove(dbRemarks);
+                entities.Tickets.Remove(dbTicket);
 
                 entities.SaveChanges();
             }
@@ -161,34 +159,65 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
+        //public List<Ticket> Search(TicketSearchFilter filters)
+        //{
+        //    int skip = (filters.PageIndex - 1) * filters.PageSize;
 
-        public List<Remarks> Search(RemarksSearchFilter filters)
-                  {
-                       int skip = (filters.PageIndex - 1) * filters.PageSize;
-        
-            using (var entities = new ApplicationDbContext())
-          {
-        var query = from remarks in entities.Remarks
-                        select remarks;
-        
-                  if (!string.IsNullOrEmpty(filters.Details))
-                 {
-                        query = query.Where(p => p.Details.Contains(filters.Details));
-                 }
+        //    using (var entities = new ApplicationDbContext())
+        //    {
+        //        var query = from ticket in entities.Tickets
+        //                    select ticket;
 
-                            if (string.IsNullOrEmpty(filters.Sort))
-                              {
-                                    filters.Sort = "Id Desc";
-                              }
-             return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
-         }
-      }
+        //        if (!string.IsNullOrEmpty(filters.From))
+        //        {
+        //            query = query.Where(p => p.From.Contains(filters.From));
+        //        }
 
-        /// <summary>
-        /// This function executes count query after applying different filters
-        /// </summary>
-        /// <param name="filters"></param>
-        /// <returns>Count of searched recored as integer value</returns>
-        
+        //        if (!string.IsNullOrEmpty(filters.To))
+        //        {
+        //            query = query.Where(p => p.To.Contains(filters.To));
+        //        }
+
+
+
+        //        if (string.IsNullOrEmpty(filters.Sort))
+        //        {
+        //            filters.Sort = "Id Desc";
+        //        }
+
+        //        return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+        //    }
+        //}
+
+        ///// <summary>
+        ///// This function executes count query after applying different filters
+        ///// </summary>
+        ///// <param name="filters"></param>
+        ///// <returns>Count of searched recored as integer value</returns>
+        //public int GetSearchCount(TicketsSearchFilter filters)
+        //{
+        //    using (var entities = new ApplicationDbContext())
+        //    {
+        //        var query = from ticket in entities.Tickets
+        //                        //where user.UserType == filters.UserType
+        //                    select ticket;
+
+
+        //        if (!string.IsNullOrEmpty(filters.From))
+        //        {
+        //            query = query.Where(p => p.From.Contains(filters.From));
+        //        }
+
+        //        if (!string.IsNullOrEmpty(filters.To))
+        //        {
+        //            query = query.Where(p => p.To.Contains(filters.To));
+        //        }
+
+
+
+
+        //        return query.Count();
+        //    }
+        //}
     }
 }

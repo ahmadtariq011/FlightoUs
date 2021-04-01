@@ -1,8 +1,8 @@
 ﻿using FlightoUs.Model.Data;
 using FlightoUs.Model.Filter;
 using System;
-using System.Collections.Generic;
 using FlightoUs.Dal;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,10 +31,10 @@ namespace FlightoUs.Bll
         {
             dalRemarks.Update(remarks);
         }
-        //public List<Remarks> GetAllLeads()
-        //{
-        //    return dalRemarks.GetAllLeads();
-        //}
+        public List<Remarks> GetAllRemarks()
+        {
+            return dalRemarks.GetAllRemarks();
+        }
 
         /// <summary>
         /// This function deletes User by its Primary Key 
@@ -53,19 +53,19 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        //public List<Remarks> Search(LeadSearchFilter filters)
-        //{
-        //    return dalRemarks.Search(filters);
-        //}
+        public List<Remarks> Search(RemarksSearchFilter filters)
+        {
+            return dalRemarks.Search(filters);
+        }
 
         /// <summary>
         /// This function executes count query after applying different filters
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>Count of searched recored as integer value</returns>
-        public int GetSearchCount(LeadSearchFilter filters)
-        {
-            return dalRemarks.GetSearchCount(filters);
-        }
+     ///   public int GetSearchCount(LeadSearchFilter filters)
+     ///   {
+     ///       return dalRemarks.GetSearchCount(filters);
+     ///   }
     }
 }
