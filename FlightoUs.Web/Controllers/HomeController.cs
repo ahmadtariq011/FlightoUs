@@ -26,7 +26,7 @@ namespace FlightoUs.Web.Controllers
         }
         public IActionResult Login()
         {
-            return View("Views/CRM/Admin/Login.cshtml");
+            return View("Views/CRM/Login.cshtml");
         }
         public IActionResult Dashboard()
         {
