@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlightoUs.Model.Filter
 {
-    class TicketSearchFilter :BaseFilter
+     public class TicketSearchFilter :BaseFilter
     {
         public string From { get; set; }
 

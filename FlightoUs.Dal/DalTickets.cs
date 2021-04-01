@@ -1,4 +1,5 @@
 ﻿using FlightoUs.Model.Data;
+using FlightoUs.Model.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -159,65 +160,65 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        //public List<Ticket> Search(TicketSearchFilter filters)
-        //{
-        //    int skip = (filters.PageIndex - 1) * filters.PageSize;
+        public List<Ticket> Search(TicketSearchFilter filters)
+        {
+            int skip = (filters.PageIndex - 1) * filters.PageSize;
 
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        var query = from ticket in entities.Tickets
-        //                    select ticket;
+            using (var entities = new ApplicationDbContext())
+            {
+                var query = from ticket in entities.Tickets
+                            select ticket;
 
-        //        if (!string.IsNullOrEmpty(filters.From))
-        //        {
-        //            query = query.Where(p => p.From.Contains(filters.From));
-        //        }
+                if (!string.IsNullOrEmpty(filters.From))
+                {
+                    query = query.Where(p => p.From.Contains(filters.From));
+                }
 
-        //        if (!string.IsNullOrEmpty(filters.To))
-        //        {
-        //            query = query.Where(p => p.To.Contains(filters.To));
-        //        }
-
-
-
-        //        if (string.IsNullOrEmpty(filters.Sort))
-        //        {
-        //            filters.Sort = "Id Desc";
-        //        }
-
-        //        return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This function executes count query after applying different filters
-        ///// </summary>
-        ///// <param name="filters"></param>
-        ///// <returns>Count of searched recored as integer value</returns>
-        //public int GetSearchCount(TicketsSearchFilter filters)
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        var query = from ticket in entities.Tickets
-        //                        //where user.UserType == filters.UserType
-        //                    select ticket;
-
-
-        //        if (!string.IsNullOrEmpty(filters.From))
-        //        {
-        //            query = query.Where(p => p.From.Contains(filters.From));
-        //        }
-
-        //        if (!string.IsNullOrEmpty(filters.To))
-        //        {
-        //            query = query.Where(p => p.To.Contains(filters.To));
-        //        }
+                if (!string.IsNullOrEmpty(filters.To))
+                {
+                    query = query.Where(p => p.To.Contains(filters.To));
+                }
 
 
 
+                if (string.IsNullOrEmpty(filters.Sort))
+                {
+                    filters.Sort = "Id Desc";
+                }
 
-        //        return query.Count();
-        //    }
-        //}
+                return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+            }
+        }
+
+        /// <summary>
+        /// This function executes count query after applying different filters
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <returns>Count of searched recored as integer value</returns>
+        public int GetSearchCount(TicketSearchFilter filters)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                var query = from ticket in entities.Tickets
+                                //where user.UserType == filters.UserType
+                            select ticket;
+
+
+                if (!string.IsNullOrEmpty(filters.From))
+                {
+                    query = query.Where(p => p.From.Contains(filters.From));
+                }
+
+                if (!string.IsNullOrEmpty(filters.To))
+                {
+                    query = query.Where(p => p.To.Contains(filters.To));
+                }
+
+
+
+
+                return query.Count();
+            }
+        }
     }
 }
