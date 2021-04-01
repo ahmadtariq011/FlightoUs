@@ -63,7 +63,7 @@ function SaveRemarks() {
         
     };
 
-    $.post("/api/RemarksApi/SaveRemarks", User, SaveUserCallback);
+    $.post("/api/RemarksApi/SaveRemarks", User, SaveRemarksCallback);
 }
 
 function SaveRemarksCallback(data) {
