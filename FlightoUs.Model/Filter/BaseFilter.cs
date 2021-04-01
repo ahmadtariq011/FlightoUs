@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LillyLifestyle.Models.Filters
+namespace FlightoUs.Models.Filters
 {
     public class BaseFilter
     {

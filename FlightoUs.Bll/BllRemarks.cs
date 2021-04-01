@@ -1,8 +1,8 @@
 ﻿using FlightoUs.Model.Data;
 using FlightoUs.Model.Filter;
 using System;
-using System.Collections.Generic;
 using FlightoUs.Dal;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,9 +31,9 @@ namespace FlightoUs.Bll
         {
             dalRemarks.Update(remarks);
         }
-        public List<Remarks> GetAllLeads()
+        public List<Remarks> GetAllRemarks()
         {
-            return dalRemarks.GetAllLeads();
+            return dalRemarks.GetAllRemarks();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<Remarks> Search(LeadSearchFilter filters)
+        public List<Remarks> Search(RemarksSearchFilter filters)
         {
             return dalRemarks.Search(filters);
         }
@@ -63,9 +63,9 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>Count of searched recored as integer value</returns>
-        public int GetSearchCount(LeadSearchFilter filters)
-        {
-            return dalRemarks.GetSearchCount(filters);
-        }
+     ///   public int GetSearchCount(LeadSearchFilter filters)
+     ///   {
+     ///       return dalRemarks.GetSearchCount(filters);
+     ///   }
     }
 }

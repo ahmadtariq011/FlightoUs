@@ -9,6 +9,7 @@
     var Title = ViewBag.title;
     BllUser bllUser = new BllUser();
     var userdata = bllUser.GetAllUsers();
+    var remarksData = (Remarks)ViewBag.remarks;
 }
 
 <input type="hidden" id="hfLeadId" value="@data.Id" />
@@ -131,7 +132,7 @@
 
 
 <div class="right mT10">
-    <a class="btn btn-success btn-sm" asp-action="AddEditLead" asp-controller="Home" asp-route-Id="0"> Add Lead</a>
+    <a class="btn btn-success btn-sm" asp-action="AddEditLead" asp-controller="Home" asp-route-Id="0"> Add Remarks </a>
 </div>
 
 
@@ -157,7 +158,20 @@
                     </div>
                 </div>
 
-                
+                <table id="tbl" class="table">
+                    <thead>
+                        <tr>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="firstName" caption="First Name"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="lastName" caption="Last Name"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="userName" caption="User Name"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="Details"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="telephone" caption="Telephone"></th>
+
+                            <th scope="col" style="width:180px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
                 @*Show Pager*@
 
                 <div id="div_no_found" class="alert alert-info hide" role="alert">
@@ -176,3 +190,20 @@
 </div>
 
 
+
+<script id="ListTemplateCustomers" type="text/x-jsrender">
+    <tr>
+        <td>{{:firstName}}</td>
+        <td>{{:lastName}}</td>
+        <td>{{:userName}}</td>
+        <td>{{:details}}</td>
+        <td>{{:telephone}}</td>
+
+        <td>
+            <a href="/Admin/Users/AddEditLead?LeadId={{:id}}" class="text-primary mr-3" style="cursor:pointer;"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Clear">edit</i></a>
+            <a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+        </td>
+    </tr>
+
+
+</script>
