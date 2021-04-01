@@ -22,7 +22,7 @@ function Login() {
     $("#login-button").attr("disabled", true);
 
     var login = {
-        Email: $("#txtEmail").val(),
+        UserName: $("#txtEmail").val(),
         Password: $("#txtPassword").val(),
     };
 
@@ -32,12 +32,6 @@ function LoginCallBack(data) {
     $("#login-button").attr("disabled", false);
     
     if (data.isSucceeded) {
-        $("#login-button").click(function (event) {
-            event.preventDefault();
-
-            $('form').fadeOut(500);
-            $('.wrapper').addClass('form-success');
-        });
         window.location.href = data.message;
     } else {
         $("#div_message").show();

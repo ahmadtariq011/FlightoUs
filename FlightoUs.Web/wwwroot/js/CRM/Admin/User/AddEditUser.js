@@ -72,7 +72,7 @@ function SaveUser() {
         Password: $.trim($("#txtPassword").val()),
     };
 
-    $.post("/api/UserApi/SaveUser", User, SaveUserCallback);
+    $.post("/api/UserAPI/SaveUser", User, SaveUserCallback);
 }
 
 function SaveUserCallback(data) {

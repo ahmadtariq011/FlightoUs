@@ -108,7 +108,7 @@ function LoadLeadsWithCount() {
     }
     debugger;
     $("#loader").show();
-    $.post("/api/LeadsApi/GetUsersWithCount", filters, LoadLeadsWithCountCallBack);
+    $.post("/api/LeadsApi/GetLeadsWithCount", filters, LoadLeadsWithCountCallBack);
 }
 function LoadLeadsWithCountCallBack(data) {
     debugger;

@@ -113,7 +113,7 @@ function LoadUsersWithCount() {
         sessionStorage["CustomerFilters"] = JSON.stringify(filters);
     }
     $("#loader").show();
-    $.post("/api/LeadsApi/GetLeadsWithCount", filters, LoadUsersWithCountCallBack);
+    $.post("/api/UserAPI/GetUsersWithCount", filters, LoadUsersWithCountCallBack);
 }
 function LoadUsersWithCountCallBack(data) {
     $("#loader").hide(); $("#divCustomerList").show();

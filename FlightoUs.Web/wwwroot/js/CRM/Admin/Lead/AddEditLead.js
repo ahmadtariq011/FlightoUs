@@ -81,8 +81,8 @@ function SaveLeads() {
 
 function SaveUserCallback(data) {
     $("#loader").hide();
-    if (!data.IsSucceeded) {
-        ShowCallbackMessage(false, data.Message);
+    if (!data.isSucceeded) {
+        ShowCallbackMessage(false, data.message);
         return;
     }
 
