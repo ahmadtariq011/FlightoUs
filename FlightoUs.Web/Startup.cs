@@ -26,9 +26,28 @@ namespace FlightoUs.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlightoUsDatabase")));
+            services.AddControllersWithViews();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "UserAuth";
+            })
+           .AddCookie("UserAuth", options =>
+           {
+               options.LoginPath = "/Account/Login/";
+               options.AccessDeniedPath = "/Account/AccessDenied/";
 
+           })
+           .AddCookie("AdminAuth", options =>
+           {
+               options.LoginPath = "/Home/Login/";
+               options.AccessDeniedPath = "/Admin/Account/AccessDenied/";
+           })
+           .AddCookie("ManagerAuth", options=>
+           {
+               options.LoginPath = "/Home/Login/";
+               options.AccessDeniedPath = "/Admin/Account/AccessDenied/";
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

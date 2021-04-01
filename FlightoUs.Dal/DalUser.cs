@@ -24,14 +24,24 @@ namespace FlightoUs.Dal
             }
         }
 
-        //public User AdminLogin(string userId, string password)
-        //{
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        int adminUserType = Convert.ToByte(UserRoleType.Admin);
-        //        return entities.Users.FirstOrDefault(p => p.UserId == userId && p.Password == password && p.UserType == adminUserType);
-        //    }
-        //}
+        public User Login(string email, string password)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                int userType = Convert.ToByte(UserRoleType.User);
+                return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == userType);
+            }
+        }
+
+
+        public User AdminLogin(string email, string password)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                int adminUserType = Convert.ToByte(UserRoleType.Admin);
+                return entities.Users.FirstOrDefault(p => p.Email == email && p.Password == password && p.UserType == adminUserType);
+            }
+        }
         //public User Login(string email, string password)
         //{
         //    using (var entities = new ApplicationDbContext())

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FlightoUs.Model.Enums
 {
-    public enum UserType
+    public enum UserRoleType
     {
         Admin = 1,
         Manager=2,

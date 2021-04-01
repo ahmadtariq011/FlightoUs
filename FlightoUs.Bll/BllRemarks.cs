@@ -31,10 +31,10 @@ namespace FlightoUs.Bll
         {
             dalRemarks.Update(remarks);
         }
-        public List<Remarks> GetAllLeads()
-        {
-            return dalRemarks.GetAllLeads();
-        }
+        //public List<Remarks> GetAllLeads()
+        //{
+        //    return dalRemarks.GetAllLeads();
+        //}
 
         /// <summary>
         /// This function deletes User by its Primary Key 
@@ -53,10 +53,10 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<Remarks> Search(LeadSearchFilter filters)
-        {
-            return dalRemarks.Search(filters);
-        }
+        //public List<Remarks> Search(LeadSearchFilter filters)
+        //{
+        //    return dalRemarks.Search(filters);
+        //}
 
         /// <summary>
         /// This function executes count query after applying different filters

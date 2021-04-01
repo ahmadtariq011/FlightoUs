@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlightoUs.Dal
 {
-    class DalRemarks
+    public class DalRemarks
     {
 
         /// <summary>

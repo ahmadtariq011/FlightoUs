@@ -32,14 +32,14 @@ namespace FlightoUs.Bll
         //    return dalUser.GetTotalUsers();
         //}
 
-        //public User AdminLogin(string userId, string password)
-        //{
-        //    return dalUser.AdminLogin(userId, password);
-        //}
-        //public User Login(string email, string password)
-        //{
-        //    return dalUser.Login(email, password);
-        //}
+        public User AdminLogin(string email, string password)
+        {
+            return dalUser.AdminLogin(email, password);
+        }
+        public User Login(string email, string password)
+        {
+            return dalUser.Login(email, password);
+        }
         /// <summary>
         /// This function calls insert function of dal class  
         /// to insert a new record of User

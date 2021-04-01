@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FlightoUs</title>
+
+    <link rel="stylesheet" href="~/css/CRM/Admin/Home/login.css" />
+    <script src="~/js/CRM/Admin/Home/login.js"></script>
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Welcome</h1>
+            <div id="div_message" class="note failure">
+                <p>
+                    <span id="span_message"></span>
+                </p>
+            </div>
+            <form class="form" id="divLogin">
+                <input type="text" id="txtEmail" placeholder="Username">
+                <input type="password" id="txtPassword" placeholder="Password">
+                <button type="button" onclick="Login();" id="login-button">Login</button>
+            </form>
+        </div>
+
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</body>
+</html>
