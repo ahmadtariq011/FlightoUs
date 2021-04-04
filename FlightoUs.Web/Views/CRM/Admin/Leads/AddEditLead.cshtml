@@ -55,7 +55,8 @@
     }
     Ticket TicketData = new Ticket();
     Hotel HotelData = new Hotel();
-
+    var TripTypes = new List<string>();
+    string TripType = "";
     if (data.Id != 0)
     {
         BllTicket bllTicket = new BllTicket();
@@ -64,6 +65,13 @@
         if (bllTicket.GetTicketByLead(data.Id) != null)
         {
             TicketData = bllTicket.GetTicketByLead(data.Id);
+            TripType = EnumHelper.GetEnumByValue<TripType>(TicketData.TripType.ToString()).ToString();
+            var trip = Enum.GetValues(typeof(TripType)).Cast<TripType>().ToList();
+            foreach (var g in trip)
+            {
+                TripTypes.Add(String.Join(Environment.NewLine, g));
+            }
+
         }
         if (bllHotel.GetHotelByLead(data.Id) != null)
         {
@@ -308,7 +316,7 @@
             Ticket
             -->
             <input type="hidden" id="hfTicketId" value="@TicketData.Id" style="display:none;" />
-            <div class="col-lg-6" id="TicketPanel" style="display:none;" >
+            <div class="col-lg-6" id="TicketPanel" style="display:none;">
                 <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
                     <div class="card-header">
                         <strong>Ticket Detail </strong>
@@ -387,6 +395,26 @@
                         </div>
 
                         <div class="row form-group">
+                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Trip Type</label></div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control" id="txtTripType" name="txtTripType" required>
+                                    @foreach (var trip in TripTypes)
+                                    {
+                                        if (trip == TripType)
+                                        {
+                                            <option id="genders" selected>@trip</option>
+                                        }
+                                        else
+                                        {
+                                            <option id="genders">@trip</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
                             <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Total Value</label></div>
                             <div class="col-12 col-md-9">
                                 <input class="form-control" id="txtTotalValue" type="text" value="@TicketData.TotalValue" required maxlength="500">
@@ -434,7 +462,7 @@
             <div class="col-lg-6" id="HotelPanel" style="display:none;">
                 <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
                     <div class="card-header">
-                        <strong>HOotel Detail </strong>
+                        <strong>Hotel Detail </strong>
                     </div>
 
                     <div class="card-body card-block">
@@ -447,7 +475,7 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Hotel Name</label></div>
                             <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtHotel Name" type="text" value="@HotelData.Name" required maxlength="20">
+                                <input class="form-control" id="txtHotelName" type="text" value="@HotelData.Name" required maxlength="20">
                             </div>
                         </div>
 
@@ -468,7 +496,7 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Ticket Issued By</label></div>
                             <div class="col-12 col-md-9">
-                                <select class="form-control" id="txtTicketIssuedBy" name="txtTicketIssuedBy" @(HotelData.Id == 0 ? "" : "disabled") required>
+                                <select class="form-control" id="txtHotelIssuedBy" name="txtTicketIssuedBy" @(HotelData.Id == 0 ? "" : "disabled") required>
                                     <option value="">Please Select</option>
                                     @foreach (var user in userdata)
                                     {
@@ -488,13 +516,13 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Total Value</label></div>
                             <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtTotalValue" type="text" value="@HotelData.TotalValue" required maxlength="500">
+                                <input class="form-control" id="txtTotalValueH" type="text" value="@HotelData.TotalValue" required maxlength="500">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label for="hf-email" class=" form-control-label">NET Value</label></div>
                             <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtNetValue" type="text" value="@HotelData.NetValue" required maxlength="500">
+                                <input class="form-control" id="txtNetValueH" type="text" value="@HotelData.NetValue" required maxlength="500">
                             </div>
                         </div>
 
@@ -502,7 +530,7 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label for="hf-email" class=" form-control-label">PSF</label></div>
                             <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtPSF" type="text" required value="@HotelData.PSF" maxlength="20">
+                                <input class="form-control" id="txtPSFH" type="text" required value="@HotelData.PSF" maxlength="20">
                             </div>
                         </div>
 
@@ -534,9 +562,42 @@ Remarks
 -->
 <br />
 <br />
+<!--
+Make Recipt
+-->
+
+@if (TicketData.Id != 0 || HotelData.Id != 0)
+{
+    <div class="clearfix>"></div>
+<div class="col-lg-10">
+    <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+        <div class="card-header">
+            <strong>Add Recipt</strong>
+        </div>
+        <div class="card-body card-block">
+            <div class="row form-group">
+                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Make Recipt</label></div>
+                <div class="col-12 col-md-9">
+                    <input class="form-control" id="txtMakeRecipt" type="text" required value="" placeholder="Enter Recipt No" maxlength="20">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+
+        <button type="button" class="btn btn-primary btn-sm" onclick="MakeRecipt();">
+            <i class="material-icons " id="iconcss" style="">save</i>Save
+        </button>
+
+    </div>
+</div>
+<div class="clearfix"></div>
+}
+<br />
+<br />
 <div style="display:@(ViewBag.IsAdd ? "inline" : "none")">
     <div class="right mT10">
-        <a class="btn btn-success btn-sm" asp-action="AddEditRemarks" asp-controller="@typeofUserLogin" asp-route-Id="0"> Add Remarks </a>
+        <a class="btn btn-success btn-sm" asp-action="AddEditRemarks" asp-controller="@typeofUserLogin" asp-route-LeadId="@data.Id"> Add Remarks </a>
     </div>
 
 
@@ -565,9 +626,8 @@ Remarks
                     <table id="tbl" class="table">
                         <thead>
                             <tr>
-                                <th class="gridSortingMenu" scope="col" sortable datafield="createdDate" caption="CreatedDate"></th>
+                                <th class="gridSortingMenu" scope="col" sortable datafield="createdDate" caption="Created Date"></th>
                                 <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="Details"></th>
-                                <th class="gridSortingMenu" scope="col" sortable datafield="leadName" caption="Lead name"></th>
 
                                 <th scope="col" style="width:180px;">Actions</th>
                             </tr>
@@ -597,7 +657,6 @@ Remarks
     <tr>
         <td>{{:createdDate}}</td>
         <td>{{:details}}</td>
-        <td>{{:leadName}}</td>
 
         <td>
             <a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>

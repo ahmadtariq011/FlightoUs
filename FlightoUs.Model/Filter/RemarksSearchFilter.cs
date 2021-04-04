@@ -10,6 +10,7 @@ namespace FlightoUs.Model.Filter
     public class RemarksSearchFilter : BaseFilter
     {
         public string Details { get; set; }
+        public int LeadId { get; set; }
 
     }
 }

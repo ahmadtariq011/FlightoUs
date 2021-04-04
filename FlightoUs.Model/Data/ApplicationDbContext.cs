@@ -19,6 +19,8 @@ namespace FlightoUs.Model.Data
         }
 
         public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<Recipt> Recipts { get; set; }
+
         public virtual DbSet<Lead> Leads { get; set; }
         public virtual DbSet<Remarks> Remarks { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
@@ -57,6 +59,10 @@ namespace FlightoUs.Model.Data
             builder.Entity<User>()
                 .Property(p => p.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<Recipt>()
+               .Property(p => p.Id)
+               .ValueGeneratedOnAdd();
 
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

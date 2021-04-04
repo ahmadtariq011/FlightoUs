@@ -17,8 +17,11 @@ namespace FlightoUs.Bll
             return dalRemarks.GetByPK(Id);
         }
 
-   
-        public int Insert(Remarks remarks)
+        public Remarks GetRemarkByLead(int leadid)
+        {
+            return dalRemarks.GetRemarkByLead(leadid);
+        }
+            public int Insert(Remarks remarks)
         {
             return dalRemarks.Insert(remarks);
         }
@@ -63,9 +66,9 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>Count of searched recored as integer value</returns>
-     ///   public int GetSearchCount(LeadSearchFilter filters)
-     ///   {
-     ///       return dalRemarks.GetSearchCount(filters);
-     ///   }
-    }
+       public int GetSearchCount(int filters)
+        {
+            return dalRemarks.GetSearchCount(filters);
+        }
+}
 }

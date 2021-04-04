@@ -37,4 +37,11 @@ namespace FlightoUs.Model.Enums
         Ticket=1,
         Hotel=2
     }
+
+    public enum ReciptStatus
+    {
+        Pending=1,
+        Approved=2,
+        Rejected=3
+    }
 }

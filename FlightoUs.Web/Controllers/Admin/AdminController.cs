@@ -64,11 +64,12 @@ namespace FlightoUs.Web.Controllers.Admin
             return View("Views/CRM/Admin/Users/AddEditUser.cshtml");
         }
 
-        public IActionResult AddEditRemarks()
+        public IActionResult AddEditRemarks(int LeadId)
         {
+            ViewBag.Leadid = LeadId;
             Remarks remarks = new Remarks();
             ViewBag.remarks = remarks;
-            return View("Views/CRM/Admin/Remarks/AddRemarks.cshtml");
+            return View("Views/CRM/Admin/Remarks/AddEditRemarks.cshtml");
         }
     }
 }

@@ -8,23 +8,26 @@ using System.Threading.Tasks;
 
 namespace FlightoUs.Model.Data
 {
-    [Table("Remarks")]
-
-    public partial class Remarks
+    [Table("Recipt")]
+    public class Recipt
     {
         [Key]
         public int Id { get; set; }
-
         [Required]
-        public string Details { get; set; }
+        [StringLength(100)]
+        public string ReciptNo { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
+        public int ReciptStatus { get; set; }
+
         [ForeignKey("Lead")]
         public int Lead_Id { get; set; }
-        public int User_Id { get; set; }
-        public virtual Lead Lead { get; set; }
+
+        [ForeignKey("User")]
+        public int CreatedBy { get; set; }
         public virtual User User { get; set; }
 
+        public virtual Lead Lead { get; set; }
     }
 }

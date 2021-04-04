@@ -4,14 +4,16 @@ using FlightoUs.Model.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlightoUs.Model.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210404230735_updateremarkstable")]
+    partial class updateremarkstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,39 +137,6 @@ namespace FlightoUs.Model.Migrations
                     b.ToTable("Lead");
                 });
 
-            modelBuilder.Entity("FlightoUs.Model.Data.Recipt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Lead_Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReciptNo")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("ReciptStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("Lead_Id");
-
-                    b.ToTable("Recipt");
-                });
-
             modelBuilder.Entity("FlightoUs.Model.Data.Remarks", b =>
                 {
                     b.Property<int>("Id")
@@ -207,14 +176,8 @@ namespace FlightoUs.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Adults")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Children")
-                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -348,25 +311,6 @@ namespace FlightoUs.Model.Migrations
                         .HasForeignKey("AssignToUser")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("FlightoUs.Model.Data.Recipt", b =>
-                {
-                    b.HasOne("FlightoUs.Model.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FlightoUs.Model.Data.Lead", "Lead")
-                        .WithMany()
-                        .HasForeignKey("Lead_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Lead");
 
                     b.Navigation("User");
                 });

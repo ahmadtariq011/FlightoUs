@@ -1,5 +1,6 @@
 ﻿using FlightoUs.Bll;
 using FlightoUs.Model.Data;
+using FlightoUs.Model.Filter;
 using FlightoUs.Model.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,6 +30,8 @@ namespace FlightoUs.Web.APIController
                     Remarks dbRemarks = new Remarks();
                     dbRemarks.Details = remarks.Details;
                     dbRemarks.CreatedDate = DateTime.Now;
+                    dbRemarks.Lead_Id = remarks.Lead_Id;
+                    dbRemarks.User_Id = remarks.User_Id;
 
 
                     int RemarkId = bllRemarks.Insert(dbRemarks);
@@ -71,11 +74,13 @@ namespace FlightoUs.Web.APIController
         }
 
         [HttpPost]
-        public ServiceResponse GetAllRemarks()
+        public ServiceResponse GetAllRemarks(int leadid)
         {
             try
             {
-                result.Message = bllRemarks.GetAllRemarks();
+                result.Message = bllRemarks.GetRemarkByLead(leadid);
+                result.TotalCount = bllRemarks.GetSearchCount(leadid);
+
             }
             catch (Exception ex)
             {

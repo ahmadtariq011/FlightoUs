@@ -112,6 +112,13 @@ namespace FlightoUs.Dal
         //        }
         //    }
         //}
+        public Remarks GetRemarkByLead(int leadid)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                return entities.Remarks.FirstOrDefault(p => p.Lead_Id == leadid);
+            }
+        }
 
         /// <summary>
         /// This function returns all records of User
@@ -163,32 +170,49 @@ namespace FlightoUs.Dal
         /// <returns>IEnumerable<dynamic></returns>
 
         public List<Remarks> Search(RemarksSearchFilter filters)
-                  {
-                       int skip = (filters.PageIndex - 1) * filters.PageSize;
+        {
+            int skip = (filters.PageIndex - 1) * filters.PageSize;
         
             using (var entities = new ApplicationDbContext())
-          {
-        var query = from remarks in entities.Remarks
+            {
+                var query = from remarks in entities.Remarks
                         select remarks;
         
-                  if (!string.IsNullOrEmpty(filters.Details))
-                 {
-                        query = query.Where(p => p.Details.Contains(filters.Details));
-                 }
+                if (!string.IsNullOrEmpty(filters.Details))
+                {
+                    query = query.Where(p => p.Details.Contains(filters.Details));
+                }
 
-                            if (string.IsNullOrEmpty(filters.Sort))
-                              {
-                                    filters.Sort = "Id Desc";
-                              }
-             return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
-         }
-      }
+                if (string.IsNullOrEmpty(filters.Sort))
+                {
+                    filters.Sort = "Id Desc";
+                }
+                return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+            }
+        }
+        public int GetSearchCount(int leadid)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                var query = from Remarks in entities.Remarks
+                            where Remarks.Lead_Id==leadid
+                                //where user.UserType == filters.UserType
+                            select Remarks;
+
+
+              
+
+
+
+                return query.Count();
+            }
+        }
 
         /// <summary>
         /// This function executes count query after applying different filters
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>Count of searched recored as integer value</returns>
-        
+
     }
 }

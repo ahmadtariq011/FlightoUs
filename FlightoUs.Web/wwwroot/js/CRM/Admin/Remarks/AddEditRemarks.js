@@ -9,7 +9,6 @@ $(document).ready(function () {
     $("#txtYear").keypress(DigitsOnly);
     $("#txtCVV").keypress(DigitsOnly);
     $("#txtNumberOfAgents").keypress(DigitsOnly);
-    LoadRemarksWithCount();
 
     //$(document).tooltip({
     //    content: function () {
@@ -46,24 +45,11 @@ function handler_enter(e) {
         charCode = e.keyCode;
     }
     if (charCode == 13) {
-        SaveLeads();
+        SaveRemarks();
     }
 }
 
-function AddEditTicket(type) {
-    if (type === 1) {
-
-    }
-    $("#TicketPanel").toggle();
-}
-function AddEditHotel(type) {
-    if (type === 1) {
-
-    }
-    $("#HotelPanel").toggle();
-}
-
-function SaveLeads() {
+function SaveRemarks() {
     if (!Validate("#BasicInfo")) {
         return;
     }
@@ -72,142 +58,24 @@ function SaveLeads() {
 
     var User =
     {
-        
-        Id: $("#hfLeadId").val(),
-        FirstName: $.trim($("#txtFirstName").val()),
-        LastName: $.trim($("#txtLastName").val()),
-        UserName: $.trim($("#txtUserName").val()),
-        Email: $.trim($("#txtEmail").val()),
-        Address: $.trim($("#txtAddress").val()),
-        Telephone: $.trim($("#txtTelephone").val()),
-        CNIC: $.trim($("#txtCNIC").val()),
-        CreatedBy: $.trim($("#txtCreatedBy").val()),
-        AssignToUser: $.trim($("#txtAssignTo").val()),
-        LeadStatusName: $.trim($("#txtLeadStatus").val()),
-        LeadTypeDemandName: $.trim($("#txtLeadTypeDemand").val()),
-        LeadTypeName: $.trim($("#txtLeadType").val())
-    };
-
-    $.post("/api/LeadsApi/SaveLeads", User, SaveLeadCallback);
-}
-
-function SaveLeadCallback(data) {
-    $("#loader").hide();
-    if (!data.isSucceeded) {
-        ShowCallbackMessage(false, data.message);
-        return;
-    }
-
-    window.location.href = "/Home/LeadsIndex";
-}
-function SaveTicket() {
-    if (!Validate("#BasicInfo")) {
-        return;
-    }
-
-    $("#div_message").hide();
-
-    var ticket =
-    {
-
-        Id: $("#hfTicketId").val(),
-        From: $.trim($("#txtFrom").val()),
-        To: $.trim($("#txtTo").val()),
-        DepartureDate: $.trim($("#txtDepartureDate").val()),
-        NetValue: $.trim($("#txtNetValue").val()),
-        TotalValue: $.trim($("#txtTotalValue").val()),
-        PSF: $.trim($("#txtPSF").val()),
-        TripType: $.trim($("#txtTripType").val()),
-        ArrivalDate: $.trim($("#txtArrivalDate").val()),
-        City: $.trim($("#txtCity").val()),
-        Country: $.trim($("#txtCountry").val()),
+        Id: $("#hfRemarksId").val(),
+        Details: $.trim($("#txtDetails").val()),
         Lead_Id: $.trim($("#hfLeadId").val()),
-        User_Id: $.trim($("#txtTicketIssuedBy").val())
+        User_Id: $.trim($("#txtCreatedBy").val())
     };
 
-    $.post("/api/TicketApi/SaveTicket", ticket, SaveTicketCallback);
+    $.post("/api/RemarksApi/SaveRemarks", User, SaveRemarksCallback);
 }
 
-function SaveTicketCallback(data) {
+function SaveRemarksCallback(data) {
     $("#loader").hide();
     if (!data.isSucceeded) {
         ShowCallbackMessage(false, data.message);
         return;
     }
-    ShowCallbackMessage(data.message);
+
+    window.location.href = "/Home/RemarksIndex";
 }
-function SaveHotel() {
-    if (!Validate("#BasicInfo")) {
-        return;
-    }
-
-    $("#div_message").hide();
-
-    var hotel =
-    {
-
-        Id: $("#hfHotelId").val(),
-        Name: $.trim($("#txtHotelName").val()),
-        NetValue: $.trim($("#txtNetValueH").val()),
-        TotalValue: $.trim($("#txtTotalValueH").val()),
-        PSF: $.trim($("#txtPSFH").val()),
-        City: $.trim($("#txtCity").val()),
-        Country: $.trim($("#txtCountry").val()),
-        Lead_Id: $.trim($("#hfLeadId").val()),
-        User_Id: $.trim($("#txtHotelIssuedBy").val())
-    };
-
-    $.post("/api/HotelApi/SaveHotel", hotel, SaveHotelCallback);
-}
-
-function SaveHotelCallback(data) {
-    $("#loader").hide();
-    if (!data.isSucceeded) {
-        ShowCallbackMessage(false, data.message);
-        return;
-    }
-    ShowCallbackMessage(data.message);
-}
-
-function LoadRemarksWithCount() {
-
-    filters =
-    {
-        LeadId: $("#hfLeadId").val()
-    };
-    if (IsHTML5) {
-        sessionStorage["CustomerFilters"] = JSON.stringify(filters);
-    }
-    debugger;
-    $("#loader").show();
-    $.post("/api/RemarksApi/GetAllRemarks", filters, LoadRemarksWithCountCallBack);
-}
-function LoadRemarksWithCountCallBack(data) {
-    debugger;
-    $("#loader").hide(); $("#divCustomerList").show();
-    $("#tbl").show(); $("#div_no_found").hide(); $("#divPagerUsers").show();
-    $("#spanTotalRecords").text("(" + data.totalCount + " records)");
-
-    if (data.totalCount < 1) {
-        $("#tbl").hide();
-        $("#divPagerUsers").hide();
-        $("#div_no_found").show();
-        return;
-    }
-    $("#tbl tbody").html($("#ListTemplateCustomers").render(data.message));
-
-    if (CustomersGridPager == null) {
-        CustomersGridPager = $("#divPagerUsers").GridPager({
-            TotalRecords: data.totalCount,
-            ChangePageSize: ChangePageCustomerResults,
-            NavigateToPage: CustomersPageNavigation
-        });
-    }
-
-    CustomersGridPager.GridPager("SetPageIndexAndSize", filters.PageIndex, filters.PageSize);
-    CustomersGridPager.GridPager("SetPager", data.TotalCount);
-}
-
 
 
 
