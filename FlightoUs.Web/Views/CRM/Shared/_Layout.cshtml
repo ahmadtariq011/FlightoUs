@@ -31,7 +31,11 @@
         @await Html.PartialAsync("/Views/CRM/Shared/_Header.cshtml")
         <div class="content mt-3">
             <div class="animated fadeIn">
-
+                <div id="loader" class="loader">
+                    <p class="position">
+                        <img id="imgLoader" src="~/images/loaderNew.gif">
+                    </p>
+                </div>
                 @RenderBody()
 
                 <div id="popupBackground" class="divOverlay"></div>

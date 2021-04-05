@@ -35,14 +35,11 @@ namespace FlightoUs.Model.Data
 
         public DateTime ArrivalDate { get; set; }
 
-        [Required]
         public string City { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }
 
-
-        [Required]
         public string Country { get; set; }
 
         [ForeignKey("Lead")]

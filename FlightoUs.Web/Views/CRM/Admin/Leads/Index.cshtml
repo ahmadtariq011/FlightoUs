@@ -24,7 +24,12 @@
     <script src="~/js/CRM/Admin/Lead/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
 <div class="right mT10">
-    <a class="btn btn-success btn-sm" asp-action="AddEditLead" asp-controller="@typeofUserLogin" asp-route-Id="0"> Add Lead</a>
+    <a class="btn btn-success btn-sm" asp-action="AddEditLead" asp-controller="@typeofUserLogin" asp-route-Id="0">
+        <span style="position: relative; top: -5px;"> Create Lead</span>
+        <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
+            add_circle
+        </span>
+    </a>
 </div>
 
 
@@ -92,9 +97,11 @@
 
         <td>
             <a href="/@typeofUserLogin/AddEditLead/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">
-                edit
+                <span class="material-icons">
+                    view_list
+                </span>
             </a>
-            <a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+            @*<a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>*@
         </td>
     </tr>
 

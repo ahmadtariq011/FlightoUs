@@ -5,6 +5,39 @@
 @section Scripts
 {
     <script src="~/js/CRM/Admin/Lead/AddEditLead.js?v=@DateTime.Now.Ticks.ToString()"></script>
+
+}
+@section Styles
+{
+    <style>
+        * {
+            box-sizing: border-box
+        }
+
+        /* Style tab links */
+        .tablink {
+            background-color: #555;
+            color: white;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            font-size: 17px;
+            width: 25%;
+        }
+
+            .tablink:hover {
+                background-color: #777;
+            }
+
+        /* Style the tab content (and add height:100% for full page content) */
+        .tabcontent {
+            display: none;
+            padding: 100px 20px;
+            height: 100%;
+        }
+    </style>
 }
 @{
     bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
@@ -32,6 +65,10 @@
     string LeadType = EnumHelper.GetEnumByValue<LeadType>(data.LeadType.ToString()).ToString();
     string LeadTypeDemand = EnumHelper.GetEnumByValue<LeadTypeDemand>(data.LeadTypeDemand.ToString()).ToString();
     string LeadStatus = EnumHelper.GetEnumByValue<LeadStatus>(data.LeadStatus.ToString()).ToString();
+    string customerType= EnumHelper.GetEnumByValue<CustomerType>(data.CustomerType.ToString()).ToString();
+    string Classoftravel = EnumHelper.GetEnumByValue<ClassOfTravel>(data.ClassOfTravel.ToString()).ToString();
+    string LeadTripType = EnumHelper.GetEnumByValue<TripType>(data.TripTyepLead.ToString()).ToString();
+
 
     var typ = Enum.GetValues(typeof(LeadType)).Cast<LeadType>().ToList();
     var LeadTypes = new List<string>();
@@ -53,9 +90,29 @@
     {
         LeadStatuses.Add(String.Join(Environment.NewLine, g));
     }
+
+    var Cus = Enum.GetValues(typeof(CustomerType)).Cast<CustomerType>().ToList();
+    var CustomerTypes = new List<string>();
+    foreach (var g in Cus)
+    {
+        CustomerTypes.Add(String.Join(Environment.NewLine, g));
+    }
+    var clas = Enum.GetValues(typeof(ClassOfTravel)).Cast<ClassOfTravel>().ToList();
+    var Classoftravels = new List<string>();
+    foreach (var g in clas)
+    {
+        Classoftravels.Add(String.Join(Environment.NewLine, g));
+    }
+
     Ticket TicketData = new Ticket();
     Hotel HotelData = new Hotel();
     var TripTypes = new List<string>();
+    var trip = Enum.GetValues(typeof(TripType)).Cast<TripType>().ToList();
+
+    foreach (var g in trip)
+    {
+        TripTypes.Add(String.Join(Environment.NewLine, g));
+    }
     string TripType = "";
     if (data.Id != 0)
     {
@@ -66,11 +123,7 @@
         {
             TicketData = bllTicket.GetTicketByLead(data.Id);
             TripType = EnumHelper.GetEnumByValue<TripType>(TicketData.TripType.ToString()).ToString();
-            var trip = Enum.GetValues(typeof(TripType)).Cast<TripType>().ToList();
-            foreach (var g in trip)
-            {
-                TripTypes.Add(String.Join(Environment.NewLine, g));
-            }
+
 
         }
         if (bllHotel.GetHotelByLead(data.Id) != null)
@@ -81,587 +134,611 @@
 
 
 }
-
-<input type="hidden" id="hfLeadId" value="@data.Id" />
-@if (data != null)
-{
-    @if (LeadTypeDemand == "Ticket")
-    {
-        @if (TicketData.Id != 0)
-        {
-            <div class="right mT10">
-                <a class="btn btn-success btn-sm" onclick="AddEditTicket(1);"> Edit Ticket</a>
-            </div>
-        }
-        else
-        {
-            <div class="right mT10">
-                <a class="btn btn-success btn-sm" onclick="AddEditTicket(0);"> Add Ticket</a>
-            </div>
-        }
-
-    }
-    @if (LeadTypeDemand == "Hotel")
-    {
-        @if (HotelData.Id != 0)
-        {
-            <div class="right mT10">
-                <a class="btn btn-success btn-sm" onclick="AddEditHotel(1);"> Edit Hotel</a>
-            </div>
-        }
-        else
-        {
-            <div class="right mT10">
-                <a class="btn btn-success btn-sm" onclick="AddEditHotel(0);"> Add Hotel</a>
-            </div>
-        }
-    }
-
-}
-<br />
-<div class="row">
-
-    <!--
-    start Lead
-    -->
-    <div class="col-lg-6">
-        <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
-            <div class="card-header">
-                <strong>@Title</strong>
-            </div>
-
-            <div class="card-body card-block">
-                <div id="div_message" class="note failure">
-                    <p>
-                        <span id="span_message"></span>
-                    </p>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" required maxlength="20">
-                    </div>
-                </div>
-
-
-
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Last Name</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtLastName" type="text" onkeypress="return /[a-z]/i.test(event.key)" value="@data.LastName" required maxlength="20">
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtUserName" type="text" value="@data.UserName" required maxlength="20">
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtCreatedBy" name="txtCreatedBy" required @(ViewBag.IsAdd ? "disabled" : "")>
-                            <option value="">Please Select</option>
-                            @foreach (var user in userdata)
-                            {
-                                if (user.Id == data.CreatedBy)
-                                {
-                                    <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                }
-                                else
-                                {
-                                    <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                }
-
-                            }
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Assign To</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtAssignTo" name="txtAssignTo" required>
-                            <option value="">Please Select</option>
-                            @foreach (var user in userdata)
-                            {
-                                if (user.Id == data.AssignToUser)
-                                {
-                                    <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                }
-                                else
-                                {
-                                    <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCNIC" type="text" value="@data.CNIC" required maxlength="20">
-                    </div>
-                </div>
-
-
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Email</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Address</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtAddress" type="text" value="@data.Address" required maxlength="500">
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
-                    <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtLeadType" name="txtLeadType" required>
-                            @foreach (var lead in LeadTypes)
-                            {
-                                if (lead == LeadType)
-                                {
-                                    <option id="genders" selected>@lead</option>
-                                }
-                                else
-                                {
-                                    <option id="genders">@lead</option>
-                                }
-
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Type Demand</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtLeadTypeDemand" name="txtLeadTypeDemand" required>
-                            @foreach (var demand in LeadTypeDemands)
-                            {
-                                if (demand == LeadTypeDemand)
-                                {
-                                    <option id="genders" selected>@demand</option>
-                                }
-                                else
-                                {
-                                    <option id="genders">@demand</option>
-                                }
-
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Lead Status</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtLeadStatus" name="txtLeadStatus" required>
-                            @foreach (var stat in LeadStatuses)
-                            {
-                                if (stat == LeadStatus)
-                                {
-                                    <option id="genders" selected>@stat</option>
-                                }
-                                else
-                                {
-                                    <option id="genders">@stat</option>
-                                }
-
-                            }
-                        </select>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="card-footer">
-            <button type="button" class="btn btn-primary btn-sm" onclick="SaveLeads();">
-                <i class="material-icons " id="iconcss" style="">save</i>Save
-            </button>
-            <button type="reset" class="btn btn-danger btn-sm" onclick="Cancel();">
-                <i class="material-icons" id="iconcss">cancel</i>Cancel
-            </button>
-        </div>
-    </div>
-    <!--
-    End of Lead
-    -->
-
-    @if (data.Id != 0)
-    {
-        @if (LeadTypeDemand == "Ticket")
-        {
-            <!--
-            Ticket
-            -->
-            <input type="hidden" id="hfTicketId" value="@TicketData.Id" style="display:none;" />
-            <div class="col-lg-6" id="TicketPanel" style="display:none;">
-                <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
-                    <div class="card-header">
-                        <strong>Ticket Detail </strong>
-                    </div>
-
-                    <div class="card-body card-block">
-                        <div id="div_message_Ticket" class="note failure">
-                            <p>
-                                <span id="span_message_Ticket"></span>
-                            </p>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">From</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtFrom" type="text" value="@TicketData.From" required maxlength="20">
-                            </div>
-                        </div>
-
-
-
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">To</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtTo" type="text" value="@TicketData.To" required maxlength="20">
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Departure Date</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtDepartureDate" type="datetime" value="@TicketData.DepartureDate" required maxlength="20">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Arrival Date</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtArrivalDate" type="datetime" value="@TicketData.ArrivalDate" required maxlength="20">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">City</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtCity" type="text" value="@TicketData.City" required maxlength="20">
-                            </div>
-                        </div>
-
-
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Country</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtCountry" type="text" value="@TicketData.Country" required maxlength="500">
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Ticket Issued By</label></div>
-                            <div class="col-12 col-md-9">
-                                <select class="form-control" id="txtTicketIssuedBy" name="txtTicketIssuedBy" @(TicketData.Id == 0 ? "" : "disabled") required>
-                                    <option value="">Please Select</option>
-                                    @foreach (var user in userdata)
-                                    {
-                                        if (user.Id == TicketData.User_Id)
-                                        {
-                                            <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Trip Type</label></div>
-                            <div class="col-12 col-md-9">
-                                <select class="form-control" id="txtTripType" name="txtTripType" required>
-                                    @foreach (var trip in TripTypes)
-                                    {
-                                        if (trip == TripType)
-                                        {
-                                            <option id="genders" selected>@trip</option>
-                                        }
-                                        else
-                                        {
-                                            <option id="genders">@trip</option>
-                                        }
-
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Total Value</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtTotalValue" type="text" value="@TicketData.TotalValue" required maxlength="500">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">NET Value</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtNetValue" type="text" value="@TicketData.NetValue" required maxlength="500">
-                            </div>
-                        </div>
-
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">PSF</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtPSF" type="text" required value="@TicketData.PSF" maxlength="20">
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                </div>
-
-
-                <div class="card-footer">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="SaveTicket();">
-                        <i class="material-icons " id="iconcss" style="">save</i>Save
-                    </button>
-                </div>
-            </div>
-            <!--
-            End Ticket
-            -->
-        }
-        @if (LeadTypeDemand == "Hotel")
-        {
-            <!--
-            Hotel
-            -->
-
-            <input type="hidden" id="hfHotelId" value="@HotelData.Id" style="display:none;" />
-            <div class="col-lg-6" id="HotelPanel" style="display:none;">
-                <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
-                    <div class="card-header">
-                        <strong>Hotel Detail </strong>
-                    </div>
-
-                    <div class="card-body card-block">
-                        <div id="div_message_Ticket" class="note failure">
-                            <p>
-                                <span id="span_message_Ticket"></span>
-                            </p>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Hotel Name</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtHotelName" type="text" value="@HotelData.Name" required maxlength="20">
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">City</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtCity" type="text" value="@HotelData.City" required maxlength="20">
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Country</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtCountry" type="text" value="@HotelData.Country" required maxlength="500">
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Ticket Issued By</label></div>
-                            <div class="col-12 col-md-9">
-                                <select class="form-control" id="txtHotelIssuedBy" name="txtTicketIssuedBy" @(HotelData.Id == 0 ? "" : "disabled") required>
-                                    <option value="">Please Select</option>
-                                    @foreach (var user in userdata)
-                                    {
-                                        if (user.Id == HotelData.User_Id)
-                                        {
-                                            <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Total Value</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtTotalValueH" type="text" value="@HotelData.TotalValue" required maxlength="500">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">NET Value</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtNetValueH" type="text" value="@HotelData.NetValue" required maxlength="500">
-                            </div>
-                        </div>
-
-
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label for="hf-email" class=" form-control-label">PSF</label></div>
-                            <div class="col-12 col-md-9">
-                                <input class="form-control" id="txtPSFH" type="text" required value="@HotelData.PSF" maxlength="20">
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                </div>
-
-
-                <div class="card-footer">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="SaveHotel();">
-                        <i class="material-icons " id="iconcss" style="">save</i>Save
-                    </button>
-                </div>
-            </div>
-
-            <!--
-            End Hotel
-            -->
-        }
-
-    }
-
-
-</div>
-<!--
-Remarks
--->
-<br />
-<br />
-<!--
-Make Recipt
--->
-
-@if (TicketData.Id != 0 || HotelData.Id != 0)
-{
-    <div class="clearfix>"></div>
-<div class="col-lg-10">
-    <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
-        <div class="card-header">
-            <strong>Add Recipt</strong>
-        </div>
-        <div class="card-body card-block">
-            <div class="row form-group">
-                <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Make Recipt</label></div>
-                <div class="col-12 col-md-9">
-                    <input class="form-control" id="txtMakeRecipt" type="text" required value="" placeholder="Enter Recipt No" maxlength="20">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card-footer">
-
-        <button type="button" class="btn btn-primary btn-sm" onclick="MakeRecipt();">
-            <i class="material-icons " id="iconcss" style="">save</i>Save
+@*<div class="row">
+        <button type="button" class="btn btn-primary">
+            Sale post <span class="badge badge-light">
+                <span class="material-icons">
+                    arrow_forward
+                </span>
+            </span>
         </button>
+    </div>*@
+@if (data.Id != 0)
+{
+    @if (TicketData.Id != 0 || HotelData.Id != 0)
+    {
+        <div>
+            <div class="right mt10">
+                <a class="btn btn-success btn-dark" onclick="MakeRecipt();">
+                    <span style="position: relative; top: -5px;"> Make Recipt</span>
+                    <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
+                        add_circle
+                    </span>
+                </a>
+            </div>
+        </div>
+    }
 
-    </div>
-</div>
-<div class="clearfix"></div>
 }
-<br />
-<br />
-<div style="display:@(ViewBag.IsAdd ? "inline" : "none")">
-    <div class="right mT10">
-        <a class="btn btn-success btn-sm" asp-action="AddEditRemarks" asp-controller="@typeofUserLogin" asp-route-LeadId="@data.Id"> Add Remarks </a>
-    </div>
+<button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">Home</button>
+<button class="tablink" onclick="openPage('Ticket', this, 'red')">
+    <span class="material-icons">
+        airplane_ticket
+    </span>
+</button>
+<button class="tablink" onclick="openPage('Hotel', this, 'red')">Hotel</button>
+<button class="tablink" onclick="openPage('Umrah', this, 'red')">Umrah</button>
+<!--
+-->
+<div id="Home" class="tabcontent">
+    <input type="hidden" id="hfLeadId" value="@data.Id" />
 
-
-    <div class="clearfix"></div>
     <div class="row">
+
+        <!--
+        start Lead
+        -->
         <div class="col-lg-12">
-            <div class="card">
+            <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
                 <div class="card-header">
-                    <strong class="card-title">Remarks</strong>&nbsp; <span id="spanTotalRecords"></span>
+                    <strong>Lead Detail</strong>
                 </div>
-                <div class="card-body">
+
+                <div class="card-body card-block">
                     <div id="div_message" class="note failure">
                         <p>
                             <span id="span_message"></span>
                         </p>
                     </div>
-                    <div class="c1 filter">
-
-                        <div class="right">
-                            Search: <input id="txtSearch" style="" type="text" class="form-control search">
-                            <a title="Search" style="cursor:pointer; margin-left:5px; " onclick="SearchUsers();"><i class="material-icons " style="position:relative; top:5px;">search</i></a>
-                            <a title="Reset" style="cursor:pointer;" onclick="ResetUsers();"><i class="material-icons" style="position:relative; top:5px;">clear</i></a>
+                    <br />
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Lead ID</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtUserName" type="text" value="@data.UserName" required maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Contact Person</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" required maxlength="20">
                         </div>
                     </div>
 
-                    <table id="tbl" class="table">
-                        <thead>
-                            <tr>
-                                <th class="gridSortingMenu" scope="col" sortable datafield="createdDate" caption="Created Date"></th>
-                                <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="Details"></th>
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Primary Phone</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Email</label></div>
+                        <div class="col-12  col-md-3">
+                            <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
+                        </div>
+                    </div>
 
-                                <th scope="col" style="width:180px;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    @*Show Pager*@
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Care of</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="txtCreatedBy" name="txtCreatedBy" required @(ViewBag.IsAdd ? "disabled" : "")>
+                                <option value="">Please Select</option>
+                                @foreach (var user in userdata)
+                                {
+                                    if (user.Id == data.CreatedBy)
+                                    {
+                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
 
-                    <div id="div_no_found" class="alert alert-info hide" role="alert">
-                        No Remarks Found. Please click on Add Remarks button to add a Remark.
-                        @*This is a info alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.*@
+                                }
+                            </select>
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Customer Type</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="txtCustomerType" name="txtCustomerType" required>
+                                @foreach (var c in CustomerTypes)
+                                {
+                                    if (c == customerType)
+                                    {
+                                        <option id="genders" selected>@c</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="genders">@c</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
                     </div>
 
 
+                    <div class="row form-group">
+                        <div class="col  col-md-2"><label for="hf-email" class=" form-control-label">Location</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtAddress" type="text" value="@data.Address" required maxlength="500">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">In Contact With Customer</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-check-input" style="margin-left:20px; margin-top:12px;" id="txtRadio1" type="radio">
+                            <label id="form-check-label" style="margin-left:40px; margin-top:5px;" for="male">Male</label><br>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Service Type</label></div>
+                        <div class="col-12 col-md-3">
+                            <span class="material-icons">
+                                airplane_ticket
+                            </span>
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Departure Date</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtDepartureDateL" type="datetime" value="@data.DepartureDate" required maxlength="20">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Return Date</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtArrivalDateL" type="datetime" value="@data.ReturnDate" required maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Lead Title</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtLeadTitle" type="text" value="@data.LeadTitle" required maxlength="20">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Created By</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="" name="" required @(ViewBag.IsAdd ? "disabled" : "")>
+                                <option value="">Please Select</option>
+                                @foreach (var user in userdata)
+                                {
+                                    if (user.Id == data.CreatedBy)
+                                    {
+                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Taken Over By</label></div>
+                        <div class="col-12  col-md-3">
+                            <select class="form-control" id="txtAssignTo" name="txtAssignTo" required>
+                                <option value="">Please Select</option>
+                                @foreach (var user in userdata)
+                                {
+                                    if (user.Id == data.AssignToUser)
+                                    {
+                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Status</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="txtLeadStatus" name="txtLeadStatus" required>
+                                @foreach (var stat in LeadStatuses)
+                                {
+                                    if (stat == LeadStatus)
+                                    {
+                                        <option id="genders" selected>@stat</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="genders">@stat</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Class of Travel</label></div>
+                        <div class="col-12  col-md-3">
+                            <select class="form-control" id="txtClassofTravel" name="txtClassofTravel" required>
+                                <option value="">Please Select</option>
+                                @foreach (var cl in Classoftravels)
+                                {
+                                    if (cl == Classoftravel)
+                                    {
+                                        <option id="genders" selected>@cl</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="genders">@cl</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Trip Type</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="txttripType" name="txtTripType" required>
+                                @foreach (var stat in TripTypes)
+                                {
+                                    if (stat == LeadTripType)
+                                    {
+                                        <option id="genders" selected>@stat</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="genders">@stat</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+
+
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Lead Type</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="txtLeadTypeN" name="txtLeadTypeN" required>
+                                @foreach (var lead in LeadTypes)
+                                {
+                                    if (lead == LeadType)
+                                    {
+                                        <option id="genders" selected>@lead</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="genders">@lead</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <br />
 
 
                 </div>
+
+            </div>
+
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-sm" onclick="SaveLeads();">
+                    <i class="material-icons " id="iconcss" style="">save</i>Save
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm" onclick="Cancel();">
+                    <i class="material-icons" id="iconcss">cancel</i>Cancel
+                </button>
             </div>
         </div>
 
 
     </div>
+
+
+
+    <br />
+    <br />
+    <div style="display:@(ViewBag.IsAdd ? "inline" : "none")">
+        <div class="right mT10">
+            <a class="btn btn-success btn-sm" asp-action="AddEditRemarks" asp-controller="@typeofUserLogin" asp-route-LeadId="@data.Id">
+                <span style="position: relative; top: -5px;">Add Remarks</span>
+                <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
+                    add_circle
+                </span>
+            </a>
+        </div>
+
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Remarks</strong>&nbsp; <span id="spanTotalRecords"></span>
+                    </div>
+                    <div class="card-body">
+                        <div id="div_message" class="note failure">
+                            <p>
+                                <span id="span_message"></span>
+                            </p>
+                        </div>
+                        <div class="c1 filter">
+
+                            <div class="right">
+                                Search: <input id="txtSearch" style="" type="text" class="form-control search">
+                                <a title="Search" style="cursor:pointer; margin-left:5px; " onclick="SearchUsers();"><i class="material-icons " style="position:relative; top:5px;">search</i></a>
+                                <a title="Reset" style="cursor:pointer;" onclick="ResetUsers();"><i class="material-icons" style="position:relative; top:5px;">clear</i></a>
+                            </div>
+                        </div>
+
+                        <table id="tbl" class="table">
+                            <thead>
+                                <tr>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="createdDate" caption="Created Date"></th>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="Details"></th>
+
+                                    <th scope="col" style="width:180px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        Show Pager
+
+                        <div id="div_no_found" class="alert alert-info hide" role="alert">
+                            No Remarks Found. Please click on Add Remarks button to add a Remark.
+                            This is a info alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <script id="ListTemplateCustomers" type="text/x-jsrender">
+        <tr>
+            <td>{{:createdDate}}</td>
+            <td>{{:details}}</td>
+
+            <td>
+                <a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+            </td>
+        </tr>
+
+
+    </script>
+
+</div>
+<div id="Ticket" class="tabcontent">
+    @if (data.Id != 0)
+    {
+        <input type="hidden" id="hfTicketId" value="@TicketData.Id" style="display:none;" />
+        <div class="col-lg-10" id="TicketPanel">
+            <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+                <div class="card-header">
+                    <strong>Ticket Detail </strong>
+                </div>
+
+                <div class="card-body card-block">
+                    <div id="div_message_Ticket" class="note failure">
+                        <p>
+                            <span id="span_message_Ticket"></span>
+                        </p>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">From</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtFrom" type="text" value="@TicketData.From" required maxlength="20">
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">To</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtTo" type="text" value="@TicketData.To" required maxlength="20">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Departure Date</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtDepartureDate" type="date" value="@TicketData.DepartureDate" required maxlength="20">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Arrival Date</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtArrivalDate" type="date" value="@TicketData.ArrivalDate" required maxlength="20">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Ticket Issued By</label></div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="txtTicketIssuedBy" name="txtTicketIssuedBy" required>
+                                <option value="">Please Select</option>
+                                @foreach (var user in userdata)
+                                {
+                                    if (user.Id == TicketData.User_Id)
+                                    {
+                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Trip Type</label></div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="txtTripType" name="txtTripType" required>
+                                @foreach (var tript in TripTypes)
+                                {
+                                    if (tript == TripType)
+                                    {
+                                        <option id="genders" selected>@tript</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="genders">@tript</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Total Value</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtTotalValue" type="text" value="@TicketData.TotalValue" required maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">NET Value</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtNetValue" type="text" value="@TicketData.NetValue" required maxlength="500">
+                        </div>
+                    </div>
+
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">PSF</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtPSF" type="text" required value="@TicketData.PSF" maxlength="20">
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-sm" onclick="SaveTicket();">
+                    <i class="material-icons " id="iconcss" style="">save</i>Save
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Please Create lead in Order to Sale Post About Ticket
+        </div>
+    }
 </div>
 
+<div id="Hotel" class="tabcontent">
+    @if (data.Id != 0)
+    {
+        <input type="hidden" id="hfHotelId" value="@HotelData.Id" style="display:none;" />
+        <div class="col-lg-10" id="HotelPanel">
+            <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+                <div class="card-header">
+                    <strong>Hotel Detail </strong>
+                </div>
 
-<script id="ListTemplateCustomers" type="text/x-jsrender">
-    <tr>
-        <td>{{:createdDate}}</td>
-        <td>{{:details}}</td>
+                <div class="card-body card-block">
+                    <div id="div_message_Hotel" class="note failure">
+                        <p>
+                            <span id="span_message_Hotel"></span>
+                        </p>
+                    </div>
 
-        <td>
-            <a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
-        </td>
-    </tr>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Hotel Name</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtHotelName" type="text" value="@HotelData.Name" required maxlength="20">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">City</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtCityH" type="text" value="@HotelData.City" required maxlength="20">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Country</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtCountryH" type="text" value="@HotelData.Country" required maxlength="500">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Ticket Issued By</label></div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="txtHotelIssuedBy" name="txtTicketIssuedBy" required>
+                                <option value="">Please Select</option>
+                                @foreach (var user in userdata)
+                                {
+                                    if (user.Id == HotelData.User_Id)
+                                    {
+                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Total Value</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtTotalValueH" type="text" value="@HotelData.TotalValue" required maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">NET Value</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtNetValueH" type="text" value="@HotelData.NetValue" required maxlength="500">
+                        </div>
+                    </div>
 
 
-</script>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">PSF</label></div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" id="txtPSFH" type="text" required value="@HotelData.PSF" maxlength="20">
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-sm" onclick="SaveHotel();">
+                    <i class="material-icons " id="iconcss" style="">save</i>Save
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Please Create lead in Order to Sale Post About Hotel
+        </div>
+    }
+
+</div>
+
+<div id="Umrah" class="tabcontent">
+    <p>Coming Soon</p>
+</div>
+

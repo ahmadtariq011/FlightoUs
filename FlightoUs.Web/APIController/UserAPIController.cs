@@ -186,12 +186,6 @@ namespace FlightoUs.Web.APIController
         {
             HttpContext.SignOutAsync(type.Keyword);
             result.Message = "/Home/Login";
-            var user = User as ClaimsPrincipal;
-            var identity = user.Identity as ClaimsIdentity;
-            var claim = (from c in user.Claims
-                         where c.Value == type.Keyword
-                         select c).Single();
-            identity.RemoveClaim(claim);
             return result;
         }
     }

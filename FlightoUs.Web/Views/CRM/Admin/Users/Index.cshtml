@@ -25,7 +25,12 @@
     <script src="~/js/CRM/Admin/User/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
 <div class="right mT10">
-    <a class="btn btn-success btn-sm" asp-action="AddEditUser" asp-controller="@typeofUserLogin" asp-route-id="0"> Add User</a>
+    <a class="btn btn-success btn-sm" asp-action="AddEditUser" asp-controller="@typeofUserLogin" asp-route-id="0">
+        <span style="position: relative; top: -5px;"> Create User</span>
+        <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
+            add_circle
+        </span>
+    </a>
 </div>
 <div class="clearfix"></div>
 <div class="row">

@@ -29,8 +29,6 @@ namespace FlightoUs.Web.APIController
                     dbTicket.From = ticket.From;
                     dbTicket.To = ticket.To;
                     dbTicket.ArrivalDate = ticket.ArrivalDate;
-                    dbTicket.City = ticket.City;
-                    dbTicket.Country = ticket.Country;
                     dbTicket.CreatedDate = DateTime.Now;
                     dbTicket.DepartureDate = ticket.DepartureDate;
                     dbTicket.Lead_Id = ticket.Lead_Id;
@@ -53,8 +51,6 @@ namespace FlightoUs.Web.APIController
                     dbTicket.From = ticket.From;
                     dbTicket.To = ticket.To;
                     dbTicket.ArrivalDate = ticket.ArrivalDate;
-                    dbTicket.City = ticket.City;
-                    dbTicket.Country = ticket.Country;
                     dbTicket.DepartureDate = ticket.DepartureDate;
                     dbTicket.NetValue = ticket.NetValue;
                     dbTicket.PSF = ticket.PSF;

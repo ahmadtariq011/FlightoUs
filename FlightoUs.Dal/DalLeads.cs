@@ -149,9 +149,12 @@ namespace FlightoUs.Dal
                 {
                     query = query.Where(p => p.Email.Contains(filters.Email));
                 }
-                //if (filters.User_Id.HasValue && filters.User_Id != -1)
+                //if(filters.UserType!=1)
                 //{
-                //    query = query.Where(p => p.AssignToUser == filters.User_Id);
+                //    if (filters.User_Id.HasValue && filters.User_Id != -1)
+                //    {
+                //        query = query.Where(p => p.AssignToUser == filters.User_Id || p.CreatedBy == filters.User_Id);
+                //    }
                 //}
 
 

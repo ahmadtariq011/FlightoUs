@@ -53,7 +53,14 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
+                Hotel dbHotel = entities.Hotels.SingleOrDefault(p => p.Id == hotel.Id);
 
+                dbHotel.City = hotel.City;
+                dbHotel.Country = hotel.Country;
+                dbHotel.Name = hotel.Name;
+                dbHotel.NetValue = hotel.NetValue;
+                dbHotel.PSF = hotel.PSF;
+                dbHotel.TotalValue = hotel.TotalValue;
                 entities.SaveChanges();
             }
         }

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace FlightoUs.Web.APIController
 {
@@ -18,18 +20,16 @@ namespace FlightoUs.Web.APIController
     public class LeadsApiController : Controller
     {
         BllLead bllLead = new BllLead();
+        BllUser bllUser = new BllUser();
         ServiceResponse result = new ServiceResponse();
         [HttpPost]
         public ServiceResponse GetLeadsWithCount(LeadSearchFilter filter)
         {
-            bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
-            bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
-            bool IsUser = User.IsInRole(UserRoleType.User.ToString());
-
             try
             {
-
-                filter.User_Id = Convert.ToInt32(User.Identity.Name);
+                //filter.User_Id = Convert.ToInt32(HttpContext.User.Identity.Name);
+                //FlightoUs.Model.Data.User dbUser =bllUser.GetByPK(Convert.ToInt32(User.Identity.Name));
+                //filter.UserType = dbUser.UserType;
                 result.Message = bllLead.Search(filter);
                 result.IsSucceeded = true;
                 result.TotalCount = bllLead.GetSearchCount(filter);
@@ -66,11 +66,10 @@ namespace FlightoUs.Web.APIController
             {
                 if (lead.Id == 0)
                 {
+                    //int useridid=Convert.ToInt32(User.Identity.Name); 
                     Lead dbLead = new Lead();
                     dbLead.FirstName = lead.FirstName;
-                    dbLead.LastName = lead.LastName;
                     dbLead.UserName = lead.UserName;
-                    dbLead.CNIC = lead.CNIC;
                     dbLead.Email = lead.Email;
                     dbLead.Address = lead.Address;
                     dbLead.Telephone = lead.Telephone;
@@ -79,15 +78,18 @@ namespace FlightoUs.Web.APIController
                     dbLead.CreatedBy = lead.CreatedBy;
                     dbLead.AssignToUser = lead.AssignToUser;
 
+                    ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.LeadTypeName);
+                    TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.LeadTypeName);
+                    CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.LeadTypeName);
+
                     LeadType type = (LeadType)Enum.Parse(typeof(LeadType), lead.LeadTypeName);
-                    LeadTypeDemand demand = (LeadTypeDemand)Enum.Parse(typeof(LeadTypeDemand), lead.LeadTypeDemandName);
                     LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), lead.LeadStatusName);
 
+                    dbLead.ClassOfTravel = Convert.ToInt32(classt);
+                    dbLead.TripTyepLead = Convert.ToInt32(triptype);
+                    dbLead.CustomerType = Convert.ToInt32(customer);
                     dbLead.LeadType = Convert.ToInt32(type);
-                    dbLead.LeadTypeDemand = Convert.ToInt32(demand);
                     dbLead.LeadStatus = Convert.ToInt32(status);
-
-
 
                     int LeadId = bllLead.Insert(dbLead);
                     result.IsSucceeded = true;
@@ -106,17 +108,21 @@ namespace FlightoUs.Web.APIController
                     dbLead.FirstName = lead.FirstName;
                     dbLead.LastName = lead.LastName;
 
-                    dbLead.CNIC = lead.CNIC;
                     dbLead.Email = lead.Email;
                     dbLead.Address = lead.Address;
                     dbLead.Telephone = lead.Telephone;
 
+                    ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.LeadTypeName);
+                    TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.LeadTypeName);
+                    CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.LeadTypeName);
+
                     LeadType type = (LeadType)Enum.Parse(typeof(LeadType), lead.LeadTypeName);
-                    LeadTypeDemand demand = (LeadTypeDemand)Enum.Parse(typeof(LeadTypeDemand), lead.LeadTypeDemandName);
                     LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), lead.LeadStatusName);
 
+                    dbLead.ClassOfTravel = Convert.ToInt32(classt);
+                    dbLead.TripTyepLead = Convert.ToInt32(triptype);
+                    dbLead.CustomerType = Convert.ToInt32(customer);
                     dbLead.LeadType = Convert.ToInt32(type);
-                    dbLead.LeadTypeDemand = Convert.ToInt32(demand);
                     dbLead.LeadStatus = Convert.ToInt32(status);
 
 

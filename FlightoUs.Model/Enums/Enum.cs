@@ -10,7 +10,15 @@ namespace FlightoUs.Model.Enums
         Manager=2,
         User = 3
     }
-
+    public enum CustomerType
+    {
+        New=1,
+        Old=2
+    }public enum ClassOfTravel
+    {
+        Economy=1,
+        Bussiness=2
+    }
     public enum GenderType
     {
         Male=1,

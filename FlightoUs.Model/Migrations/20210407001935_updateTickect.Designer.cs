@@ -4,14 +4,16 @@ using FlightoUs.Model.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlightoUs.Model.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210407001935_updateTickect")]
+    partial class updateTickect
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,22 +87,14 @@ namespace FlightoUs.Model.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CNIC")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("ClassOfTravel")
-                        .HasColumnType("int");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CustomerType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -113,18 +107,13 @@ namespace FlightoUs.Model.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("FreeText")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("LeadStatus")
                         .HasColumnType("int");
-
-                    b.Property<string>("LeadTitle")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LeadType")
                         .HasColumnType("int");
@@ -132,16 +121,10 @@ namespace FlightoUs.Model.Migrations
                     b.Property<int>("LeadTypeDemand")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Telephone")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("TripTyepLead")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(20)

@@ -16,7 +16,6 @@ namespace FlightoUs.Model.Data
         [StringLength(100)]
         public string FirstName { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string LastName { get; set; }
 
@@ -41,7 +40,7 @@ namespace FlightoUs.Model.Data
 
         [ForeignKey("User")]
         public int AssignToUser { get; set; }
-        [Required]
+
         [StringLength(100)]
         public string CNIC { get; set; }
 
@@ -49,8 +48,14 @@ namespace FlightoUs.Model.Data
         public int LeadTypeDemand { get; set; }
         public int LeadStatus { get; set; }
 
+        public DateTime ReturnDate { get; set; }
+        public int CustomerType { get; set; }
+        public DateTime DepartureDate { get; set; }
+        public int ClassOfTravel { get; set; }
+        public int TripTyepLead { get; set; }
 
-
+        public string FreeText { get; set; }
+        public string LeadTitle { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<Remarks> Remarks { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }

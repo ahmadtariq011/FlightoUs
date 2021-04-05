@@ -1,4 +1,20 @@
 ﻿
+function openPage(pageName, elmnt, color) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+    }
+    document.getElementById(pageName).style.display = "block";
+    elmnt.style.backgroundColor = color;
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
 $(document).ready(function () {
     $("#aUsers").addClass("navbar_selected");
     $("#div_AddEdit input").keyup(handler_enter);
@@ -74,18 +90,21 @@ function SaveLeads() {
     {
         
         Id: $("#hfLeadId").val(),
-        FirstName: $.trim($("#txtFirstName").val()),
-        LastName: $.trim($("#txtLastName").val()),
         UserName: $.trim($("#txtUserName").val()),
-        Email: $.trim($("#txtEmail").val()),
-        Address: $.trim($("#txtAddress").val()),
+        FirstName: $.trim($("#txtFirstName").val()),
         Telephone: $.trim($("#txtTelephone").val()),
-        CNIC: $.trim($("#txtCNIC").val()),
+        Email: $.trim($("#txtEmail").val()),
         CreatedBy: $.trim($("#txtCreatedBy").val()),
+        Address: $.trim($("#txtAddress").val()),
+        DepartureDate: $.trim($("#txtDepartureDateL").val()),
+        ReturnDate: $.trim($("#txtArrivalDateL").val()),
+        LeadTitle: $.trim($("#txtLeadTitle").val()),
         AssignToUser: $.trim($("#txtAssignTo").val()),
+        ClassOfTravelName: $.trim($("#txtClassofTravel").val()),
+        TripTypeName: $.trim($("#txttripType").val()),
         LeadStatusName: $.trim($("#txtLeadStatus").val()),
-        LeadTypeDemandName: $.trim($("#txtLeadTypeDemand").val()),
-        LeadTypeName: $.trim($("#txtLeadType").val())
+        LeadTypeName: $.trim($("#txtLeadTypeN").val()),
+        CustomeTypeName: $.trim($("#txtCustomerType").val()),
     };
 
     $.post("/api/LeadsApi/SaveLeads", User, SaveLeadCallback);
@@ -94,11 +113,17 @@ function SaveLeads() {
 function SaveLeadCallback(data) {
     $("#loader").hide();
     if (!data.isSucceeded) {
-        ShowCallbackMessage(false, data.message);
+        $("#div_message").removeClass("success");
+        $("#div_message").addClass("failure");
+        $("#div_message").show();
+        $("#span_message").html("Lead is Not Added ! Error Occur. Please Try Again !");
         return;
     }
 
-    window.location.href = "/Home/LeadsIndex";
+    $("#div_message").removeClass("failure");
+    $("#div_message").addClass("success");
+    $("#div_message").show();
+    $("#span_message").html("Lead is Successfully Addeed ");
 }
 function SaveTicket() {
     if (!Validate("#BasicInfo")) {
@@ -117,10 +142,8 @@ function SaveTicket() {
         NetValue: $.trim($("#txtNetValue").val()),
         TotalValue: $.trim($("#txtTotalValue").val()),
         PSF: $.trim($("#txtPSF").val()),
-        TripType: $.trim($("#txtTripType").val()),
+        TripTypeName: $.trim($("#txtTripType").val()),
         ArrivalDate: $.trim($("#txtArrivalDate").val()),
-        City: $.trim($("#txtCity").val()),
-        Country: $.trim($("#txtCountry").val()),
         Lead_Id: $.trim($("#hfLeadId").val()),
         User_Id: $.trim($("#txtTicketIssuedBy").val())
     };
@@ -131,10 +154,17 @@ function SaveTicket() {
 function SaveTicketCallback(data) {
     $("#loader").hide();
     if (!data.isSucceeded) {
-        ShowCallbackMessage(false, data.message);
+        $("#div_message_Ticket").removeClass("success");
+        $("#div_message_Ticket").addClass("failure");
+        $("#div_message_Ticket").show();
+        $("#span_message").html("Ticket Sale is Not Added ! Error Occur. Please Try Again !");
         return;
     }
-    ShowCallbackMessage(data.message);
+
+    $("#div_message_Ticket").removeClass("failure");
+    $("#div_message_Ticket").addClass("success");
+    $("#div_message_Ticket").show();
+    $("#span_message_Ticket").html("Ticket Sale is Successfully Added !");
 }
 function SaveHotel() {
     if (!Validate("#BasicInfo")) {
@@ -151,8 +181,8 @@ function SaveHotel() {
         NetValue: $.trim($("#txtNetValueH").val()),
         TotalValue: $.trim($("#txtTotalValueH").val()),
         PSF: $.trim($("#txtPSFH").val()),
-        City: $.trim($("#txtCity").val()),
-        Country: $.trim($("#txtCountry").val()),
+        City: $.trim($("#txtCityH").val()),
+        Country: $.trim($("#txtCountryH").val()),
         Lead_Id: $.trim($("#hfLeadId").val()),
         User_Id: $.trim($("#txtHotelIssuedBy").val())
     };
@@ -163,10 +193,17 @@ function SaveHotel() {
 function SaveHotelCallback(data) {
     $("#loader").hide();
     if (!data.isSucceeded) {
-        ShowCallbackMessage(false, data.message);
+        $("#div_message_Hotel").removeClass("success");
+        $("#div_message_Hotel").addClass("failure");
+        $("#div_message_Hotel").show();
+        $("#span_message").html("Hotel Sale is Not Added ! Error Occur. Please Try Again !");
         return;
     }
-    ShowCallbackMessage(data.message);
+
+    $("#div_message_Hotel").removeClass("failure");
+    $("#div_message_Hotel").addClass("success");
+    $("#div_message_Hotel").show();
+    $("#span_message_Hotel").html("Hotel Sale is Successfully Added !");
 }
 
 function LoadRemarksWithCount() {

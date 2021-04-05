@@ -19,37 +19,32 @@
         </div>
         <div class="col-sm-5">
             <div class="user-area dropdown float-right">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons" style="margin-top:8px;">account_circle</i>
-                </a>
-                <div class="user-menu dropdown-menu">
-                    @*<a class="nav-link" href="~/Admin/MyProfile">
-                        <span class="material-icons mr-1">account_circle</span>
-                        <span>My Profile</span>
-                    </a>*@
-                    @if (IsAdmin)
-                    {
-                        <a class="nav-link">
-                            <span class="material-icons mr-1">login</span>
-                            <span style="cursor:pointer" onclick="Logout('Admin');">Logout</span>
-                        </a>
-                    }
-                    @if (IsManager)
-                    {
-                        <a class="nav-link">
-                            <span class="material-icons mr-1">login</span>
-                            <span style="cursor:pointer" onclick="Logout('Manager');">Logout</span>
-                        </a>
-                    }
-                    @if (IsUser)
-                    {
-                        <a class="nav-link">
-                            <span class="material-icons mr-1">login</span>
-                            <span style="cursor:pointer" onclick="Logout('User');">Logout</span>
-                        </a>
-                    }
+                @if (IsAdmin)
+                {
+                    <a href="#" onclick="Logout('Admin');" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="material-icons">
+                            logout
+                        </span>
+                    </a>
+                }
+                @if (IsManager)
+                {
+                    <a href="#" onclick="Logout('Manager');" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="material-icons">
+                            logout
+                        </span>
+                    </a>
+                }
+                @if (IsUser)
+                {
+                    <a href="#" onclick="Logout('User');" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="material-icons">
+                            logout
+                        </span>
+                    </a>
+                }
 
-                </div>
+                
             </div>
         </div>
     </div>

@@ -55,7 +55,16 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
+                Ticket dbTicket = entities.Tickets.SingleOrDefault(p => p.Id == ticket.Id);
 
+                dbTicket.From = ticket.From;
+                dbTicket.To = ticket.To;
+                dbTicket.ArrivalDate = ticket.ArrivalDate;
+                dbTicket.DepartureDate = ticket.DepartureDate;
+                dbTicket.NetValue = ticket.NetValue;
+                dbTicket.PSF = ticket.PSF;
+                dbTicket.TotalValue = ticket.TotalValue;
+                dbTicket.TripType = ticket.TripType;
                 entities.SaveChanges();
             }
         }

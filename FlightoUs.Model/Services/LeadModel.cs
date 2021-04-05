@@ -11,6 +11,9 @@ namespace FlightoUs.Model.Services
     {
         public string LeadStatusName { get; set; }
         public string LeadTypeName { get; set; }
-        public string LeadTypeDemandName { get; set; }
+        public string TripTypeName { get; set; }
+        public string ClassOfTravelName { get; set; }
+        public string CustomeTypeName { get; set; }
+        //public string LeadTypeDemandName { get; set; }
     }
 }

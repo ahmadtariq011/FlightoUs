@@ -11,6 +11,7 @@ using System.Linq;
 using FlightoUs.Model.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.AspNetCore.Http;
 
 namespace FlightoUs.Web
 {
@@ -26,8 +27,8 @@ namespace FlightoUs.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlightoUsDatabase")));
-            services.AddControllersWithViews();
+            services.AddCors();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Admin";
@@ -48,6 +49,8 @@ namespace FlightoUs.Web
                 options.LoginPath = "/Home/Login/";
                 options.AccessDeniedPath = "/Account/AccessDenied/";
             });
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlightoUsDatabase")));
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,10 +70,14 @@ namespace FlightoUs.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthorization();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
