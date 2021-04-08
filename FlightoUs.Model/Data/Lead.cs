@@ -12,24 +12,20 @@ namespace FlightoUs.Model.Data
         [Key]
         public int Id { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string FirstName { get; set; }
-
+        public string ContactCustomer { get; set; }
         [StringLength(100)]
         public string LastName { get; set; }
 
         [StringLength(20)]
         public string UserName { get; set; }
 
-        [Required]
         public string Address { get; set; }
 
-        [Required]
         [StringLength(500)]
         public string Email { get; set; }
 
-        [Required]
         [StringLength(20)]
         public string Telephone { get; set; }
 

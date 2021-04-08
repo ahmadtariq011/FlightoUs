@@ -1,20 +1,20 @@
 ﻿
-function openPage(pageName, elmnt, color) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].style.backgroundColor = "";
-    }
-    document.getElementById(pageName).style.display = "block";
-    elmnt.style.backgroundColor = color;
-}
+//function openPage(pageName, elmnt, color) {
+//    var i, tabcontent, tablinks;
+//    tabcontent = document.getElementsByClassName("tabcontent");
+//    for (i = 0; i < tabcontent.length; i++) {
+//        tabcontent[i].style.display = "none";
+//    }
+//    tablinks = document.getElementsByClassName("tablink");
+//    for (i = 0; i < tablinks.length; i++) {
+//        tablinks[i].style.backgroundColor = "";
+//    }
+//    document.getElementById(pageName).style.display = "block";
+//    elmnt.style.backgroundColor = color;
+//}
 
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
+//// Get the element with id="defaultOpen" and click on it
+//document.getElementById("defaultOpen").click();
 $(document).ready(function () {
     $("#aUsers").addClass("navbar_selected");
     $("#div_AddEdit input").keyup(handler_enter);
@@ -65,7 +65,10 @@ function handler_enter(e) {
         SaveLeads();
     }
 }
-
+var ContactPersonValue = "no";
+function OnchangePerson(value) {
+    ContactPersonValue = value;
+}
 function AddEditTicket(type) {
     if (type === 1) {
 
@@ -79,10 +82,74 @@ function AddEditHotel(type) {
     $("#HotelPanel").toggle();
 }
 
+
+function ChangeStatus(NewStatus) {
+    $("#loader").show();
+    debugger;
+    $("#div_messagef").hide();
+    var User =
+    {
+        Id: $("#hfLeadId").val(),
+        LeadStatusName: NewStatus
+    };
+    $.post("/api/LeadsApi/ChangeStatus", User, ChangeStatusCallback);
+}
+function ChangeStatusCallback(data) {
+    $("#loader").hide();
+    debugger;
+    if (!data.isSucceeded) {
+        $("#div_message").removeClass("success");
+        $("#div_message").addClass("failure");
+        $("#div_message").show();
+        $("#span_message").html(data.message);
+        return;
+    }
+
+    $("#div_message").removeClass("failure");
+    $("#div_message").addClass("success");
+    $("#div_message").show();
+    $("#span_message").html(data.message);
+}
+
+
+function SaveFreeText() {
+    if (!Validate("#BasicInfo2")) {
+        return;
+    }
+    $("#loader").show();
+
+    $("#div_messagef").hide();
+
+    var User =
+    {
+        Id: $("#hfLeadId").val(),
+        FreeText: $.trim($("#txtFreeText").val())
+    };
+
+    $.post("/api/LeadsApi/SaveFreeText", User, SaveFreeTextCallback);
+}
+
+function SaveFreeTextCallback(data) {
+    $("#loader").hide();
+    if (!data.isSucceeded) {
+        $("#div_messagef").removeClass("success");
+        $("#div_messagef").addClass("failure");
+        $("#div_messagef").show();
+        $("#span_messagef").html(data.message);
+        return;
+    }
+
+    $("#div_messagef").removeClass("failure");
+    $("#div_messagef").addClass("success");
+    $("#div_messagef").show();
+    $("#span_messagef").html(data.message);
+}
+
 function SaveLeads() {
     if (!Validate("#BasicInfo")) {
         return;
     }
+    $("#loader").show();
 
     $("#div_message").hide();
 
@@ -105,6 +172,7 @@ function SaveLeads() {
         LeadStatusName: $.trim($("#txtLeadStatus").val()),
         LeadTypeName: $.trim($("#txtLeadTypeN").val()),
         CustomeTypeName: $.trim($("#txtCustomerType").val()),
+        ContactCustomer: ContactPersonValue
     };
 
     $.post("/api/LeadsApi/SaveLeads", User, SaveLeadCallback);
@@ -129,6 +197,7 @@ function SaveTicket() {
     if (!Validate("#BasicInfo")) {
         return;
     }
+    $("#loader").show();
 
     $("#div_message").hide();
 
@@ -170,6 +239,7 @@ function SaveHotel() {
     if (!Validate("#BasicInfo")) {
         return;
     }
+    $("#loader").show();
 
     $("#div_message").hide();
 
@@ -207,7 +277,7 @@ function SaveHotelCallback(data) {
 }
 
 function LoadRemarksWithCount() {
-
+    debugger;
     filters =
     {
         LeadId: $("#hfLeadId").val()
@@ -215,34 +285,33 @@ function LoadRemarksWithCount() {
     if (IsHTML5) {
         sessionStorage["CustomerFilters"] = JSON.stringify(filters);
     }
-    debugger;
     $("#loader").show();
     $.post("/api/RemarksApi/GetAllRemarks", filters, LoadRemarksWithCountCallBack);
 }
 function LoadRemarksWithCountCallBack(data) {
     debugger;
     $("#loader").hide(); $("#divCustomerList").show();
-    $("#tbl").show(); $("#div_no_found").hide(); $("#divPagerUsers").show();
+    $("#tbl1").show(); $("#div_no_found").hide(); $("#divPagerUsers").show();
     $("#spanTotalRecords").text("(" + data.totalCount + " records)");
 
     if (data.totalCount < 1) {
-        $("#tbl").hide();
+        $("#tbl1").hide();
         $("#divPagerUsers").hide();
         $("#div_no_found").show();
         return;
     }
-    $("#tbl tbody").html($("#ListTemplateCustomers").render(data.message));
+    $("#tbl1 tbody").html($("#ListTemplateCustomers").render(data.message));
 
-    if (CustomersGridPager == null) {
-        CustomersGridPager = $("#divPagerUsers").GridPager({
-            TotalRecords: data.totalCount,
-            ChangePageSize: ChangePageCustomerResults,
-            NavigateToPage: CustomersPageNavigation
-        });
-    }
+    //if (CustomersGridPager == null) {
+    //    CustomersGridPager = $("#divPagerUsers").GridPager({
+    //        TotalRecords: data.totalCount,
+    //        ChangePageSize: ChangePageCustomerResults,
+    //        NavigateToPage: CustomersPageNavigation
+    //    });
+    //}
 
-    CustomersGridPager.GridPager("SetPageIndexAndSize", filters.PageIndex, filters.PageSize);
-    CustomersGridPager.GridPager("SetPager", data.TotalCount);
+    //CustomersGridPager.GridPager("SetPageIndexAndSize", filters.PageIndex, filters.PageSize);
+    //CustomersGridPager.GridPager("SetPager", data.TotalCount);
 }
 
 

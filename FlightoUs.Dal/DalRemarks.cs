@@ -1,5 +1,6 @@
 ﻿using FlightoUs.Model.Data;
 using FlightoUs.Model.Filter;
+using FlightoUs.Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,41 +170,41 @@ namespace FlightoUs.Dal
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
 
-        public List<Remarks> Search(RemarksSearchFilter filters)
+        public List<RemarksModel> Search(RemarksSearchFilter filters)
         {
             int skip = (filters.PageIndex - 1) * filters.PageSize;
-        
+
             using (var entities = new ApplicationDbContext())
             {
                 var query = from remarks in entities.Remarks
-                        select remarks;
-        
-                if (!string.IsNullOrEmpty(filters.Details))
-                {
-                    query = query.Where(p => p.Details.Contains(filters.Details));
-                }
+                                //where user.UserType == filters.UserType
+                            select new RemarksModel { 
+                                Id=remarks.Id,
+                                ContactDate=remarks.ContactDate,
+                                CreatedDate=remarks.CreatedDate,
+                                Details=remarks.Details
+                            };
 
                 if (string.IsNullOrEmpty(filters.Sort))
                 {
                     filters.Sort = "Id Desc";
                 }
-                return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+                var lst= query.ToList();
+                foreach (var remark in lst)
+                {
+                    remark.CreatedDateStr = string.Format("{0:MM/dd/yyyy}", remark.CreatedDate);
+                    remark.ContactDateStr = string.Format("{0:MM/dd/yyyy}", remark.ContactDate);
+                }
+                return lst;
             }
         }
-        public int GetSearchCount(int leadid)
+        public int GetSearchCount(RemarksSearchFilter filter)
         {
             using (var entities = new ApplicationDbContext())
             {
-                var query = from Remarks in entities.Remarks
-                            where Remarks.Lead_Id==leadid
-                                //where user.UserType == filters.UserType
-                            select Remarks;
-
-
-              
-
-
-
+                var query = from remarks in entities.Remarks
+                            where remarks.Lead_Id==filter.LeadId
+                            select remarks;
                 return query.Count();
             }
         }

@@ -13,14 +13,30 @@ namespace FlightoUs.Model.Data
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         [StringLength(100)]
         public string ReciptNo { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
         public int ReciptStatus { get; set; }
+        public int FormOfPayment { get; set; }
+        public string FirstServiceTitle { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal FirstServicePrice { get; set; }
+        public string SecondServiceTitle { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal SecondServicePrice { get; set; }
+        public string ThirdServiceTitle { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal ThirdServicePrice { get; set; }
 
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal TotalAmount { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal AmountPaid { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Balance { get; set; }
+        public int ItemNo { get; set; }
+        public string Remarks { get; set; }
         [ForeignKey("Lead")]
         public int Lead_Id { get; set; }
 

@@ -1,0 +1,256 @@
+﻿
+@using FlightoUs.Bll
+@using FlightoUs.Model.Data
+@using FlightoUs.Model.Enums
+@using FlightoUs.Bll.Helpers
+
+
+@section Scripts
+{
+    <script src="~/js/CRM/Admin/SalePost/AddEditSalePost.js?v=@DateTime.Now.Ticks.ToString()"></script>
+
+}
+@{
+    bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+    bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+    bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+    string typeofUserLogin = "";
+    if (IsAdmin)
+    {
+        typeofUserLogin = "Admin";
+    }
+    if (IsManager)
+    {
+        typeofUserLogin = "Manager";
+    }
+    if (IsUser)
+    {
+        typeofUserLogin = "User";
+    }
+    BllUser bllUser = new BllUser();
+    var userdata = bllUser.GetAllUsers();
+    var salePost = (SalePost)ViewBag.salepost;
+    BllLead bllLead = new BllLead();
+    var leaddata = bllLead.GetByPK(salePost.Lead_Id);
+
+    string SaleTypein = EnumHelper.GetEnumByValue<SalePostType>(salePost.SalePostType.ToString()).ToString();
+    string TripTypein = EnumHelper.GetEnumByValue<TripType>(salePost.TripType.ToString()).ToString();
+
+}
+
+
+<input type="hidden" id="hfLeadId" value="@leaddata.Id" />
+<input type="hidden" id="hfsalePostId" value="@salePost.Id" />
+<div class="row">
+
+    <!--
+    start Lead
+    -->
+    <div class="col-lg-12">
+        <div id="BasicInfo1" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+            <div class="card-header">
+                <strong>SalePost  Detail</strong>
+            </div>
+
+            <div class="card-body card-block">
+                <div id="div_message" class="note failure">
+                    <p>
+                        <span id="span_message"></span>
+                    </p>
+                </div>
+                <br />
+                <div class="row form-group">
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Staff</label></div>
+                    <div class="col-12 col-md-3">
+                        <select class="form-control" id="txtCreatedBy" name="txtCreatedBy" required disabled>
+                            <option value="">Please Select</option>
+                            @foreach (var user in userdata)
+                            {
+                                if (user.Id == salePost.User_Id)
+                                {
+                                    <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Sale Type</label></div>
+                    <div class="col-12 col-md-3">
+                        <input class="form-control" id="txtCity" type="text" disabled value="@SaleTypein" maxlength="20">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">City</label></div>
+                    <div class="col-12 col-md-3">
+                        <input class="form-control" id="txtCity" type="text" disabled value="@salePost.City" maxlength="20">
+                    </div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Country</label></div>
+                    <div class="col-12  col-md-3">
+                        <input class="form-control" id="txtCountry" type="text" disabled value="@salePost.Country" required maxlength="500">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">PSF</label></div>
+                    <div class="col-12 col-md-3">
+                        <input class="form-control" id="txtPSF" type="text" disabled value="@salePost.PSF" maxlength="20">
+                    </div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">NetValue</label></div>
+                    <div class="col-12  col-md-3">
+                        <input class="form-control" id="txtNetValue" type="text" disabled value="@salePost.NetValue" required maxlength="500">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">TotalValue</label></div>
+                    <div class="col-12 col-md-3">
+                        <input class="form-control" id="txtTotalValue" type="text" disabled value="@salePost.TotalValue" maxlength="20">
+                    </div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Lead Name</label></div>
+                    <div class="col-12  col-md-3">
+                        <input class="form-control" id="txtTotalValue" type="text" value="@leaddata.FirstName" disabled maxlength="500">
+                    </div>
+                </div>
+                <br />
+
+
+            </div>
+        </div>
+
+        @if (SaleTypein == "Ticket")
+        {
+            <div id="BasicInfo2" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px; margin-top: 50px;">
+
+                <div class="card-header">
+                    <strong>Ticket Sale Detail</strong>
+                </div>
+
+                <div class="card-body card-block">
+                    <br />
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Sector</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtSector" type="text" disabled value="@salePost.Sector" maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Flight</label></div>
+                        <div class="col-12  col-md-3">
+                            <input class="form-control" id="txtFlightNo" type="text" value="@salePost.Name" disabled maxlength="500">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Departure Date</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtDepartureDate" type="date" disabled value="@salePost.DepartureDate" maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Flight Type</label></div>
+                        <div class="col-12  col-md-3">
+                            <input class="form-control" id="txtPNR" type="text" disabled value="@TripTypein" maxlength="20">
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">PNR</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtPNR" type="text" disabled value="@salePost.PNR" maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Arrival Date</label></div>
+                        <div class="col-12  col-md-3">
+                            <input class="form-control" id="txtArrivalDate" type="date" value="@salePost.ArrivalDate" disabled maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">From</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtFrom" type="text" disabled value="@salePost.From" maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">To</label></div>
+                        <div class="col-12  col-md-3">
+                            <input class="form-control" id="txtTo" type="text" value="@salePost.To" disabled maxlength="500">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Adults</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtAdults" type="number" disabled value="@salePost.Adults" maxlength="20">
+                        </div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Children</label></div>
+                        <div class="col-12  col-md-3">
+                            <input class="form-control" id="txtChildren" type="number" value="@salePost.Children" disabled maxlength="500">
+                        </div>
+                    </div>
+                    <br />
+
+
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+
+        }
+
+        @if (SaleTypein == "Hotel")
+        {
+            <div id="BasicInfo3" class="card" style="padding-bottom: 0px !important; display:none; margin-bottom: 0px; margin-top: 50px;">
+
+                <div class="card-header">
+                    <strong>Hotel Sale Detail</strong>
+                </div>
+
+                <div class="card-body card-block">
+                    <br />
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Hotel Name</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtHotelName" type="text" disabled value="@salePost.Name" maxlength="20">
+                        </div>
+                    </div>
+
+                    <br />
+
+
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+        }
+
+
+        @if (SaleTypein == "Other")
+        {
+            <div id="BasicInfo4" class="card" style="padding-bottom: 0px !important;  display:none; margin-bottom: 0px; margin-top: 50px;">
+
+                <div class="card-header">
+                    <strong>Other Sale Detail</strong>
+                </div>
+
+                <div class="card-body card-block">
+                    <br />
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Other Sale Name</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control" id="txtOtherName" type="text" disabled value="@salePost.Name" maxlength="20">
+                        </div>
+                    </div>
+
+
+                    <br />
+
+
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+        }
+
+    </div>
+
+
+</div>

@@ -23,6 +23,7 @@
 {
     <script src="~/js/CRM/Admin/Lead/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
+<input type="hidden"id="useridlog" value="@User.Identity.Name"/>
 <div class="right mT10">
     <a class="btn btn-success btn-sm" asp-action="AddEditLead" asp-controller="@typeofUserLogin" asp-route-Id="0">
         <span style="position: relative; top: -5px;"> Create Lead</span>
@@ -58,11 +59,12 @@
                 <table id="tbl" class="table">
                     <thead>
                         <tr>
-                            <th class="gridSortingMenu" scope="col" sortable datafield="firstName" caption="First Name"></th>
-                            <th class="gridSortingMenu" scope="col" sortable datafield="lastName" caption="Last Name"></th>
-                            <th class="gridSortingMenu" scope="col" sortable datafield="userName" caption="User Name"></th>
-                            <th class="gridSortingMenu" scope="col" sortable datafield="email" caption="Email"></th>
-                            <th class="gridSortingMenu" scope="col" sortable datafield="telephone" caption="Telephone"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="id" caption="Lead Id"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="firstName" caption="Contact Person"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="telephone" caption="Contact Number"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="Service Date"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="leadTitle" caption="Lead Title"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="takenOnStr" caption="Taken On"></th>
 
                             <th scope="col" style="width:180px;">Actions</th>
                         </tr>
@@ -89,11 +91,13 @@
 
 <script id="ListTemplateCustomers" type="text/x-jsrender">
     <tr>
+        <td>{{:id}}</td>
         <td>{{:firstName}}</td>
-        <td>{{:lastName}}</td>
-        <td>{{:userName}}</td>
-        <td>{{:email}}</td>
         <td>{{:telephone}}</td>
+        <td>{{:createdDateStr}}</td>
+        <td>{{:leadTitle}}</td>
+        <td>{{:takenOnStr}}</td>
+
 
         <td>
             <a href="/@typeofUserLogin/AddEditLead/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">

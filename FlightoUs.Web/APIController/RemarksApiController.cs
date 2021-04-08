@@ -30,6 +30,7 @@ namespace FlightoUs.Web.APIController
                     Remarks dbRemarks = new Remarks();
                     dbRemarks.Details = remarks.Details;
                     dbRemarks.CreatedDate = DateTime.Now;
+                    dbRemarks.ContactDate = remarks.ContactDate;
                     dbRemarks.Lead_Id = remarks.Lead_Id;
                     dbRemarks.User_Id = remarks.User_Id;
 
@@ -74,12 +75,12 @@ namespace FlightoUs.Web.APIController
         }
 
         [HttpPost]
-        public ServiceResponse GetAllRemarks(int leadid)
+        public ServiceResponse GetAllRemarks(RemarksSearchFilter filter)
         {
             try
             {
-                result.Message = bllRemarks.GetRemarkByLead(leadid);
-                result.TotalCount = bllRemarks.GetSearchCount(leadid);
+                result.Message = bllRemarks.Search(filter);
+                result.TotalCount = bllRemarks.GetSearchCount(filter);
 
             }
             catch (Exception ex)

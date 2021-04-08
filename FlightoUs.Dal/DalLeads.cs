@@ -8,6 +8,7 @@ using System.Linq.Dynamic.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlightoUs.Model.Services;
 
 namespace FlightoUs.Dal
 {
@@ -40,7 +41,16 @@ namespace FlightoUs.Dal
                 return entities.Leads.FirstOrDefault(p => p.UserName == username);
             }
         }
+        public void ChangeStatus(Lead lead)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                Lead dbLead = entities.Leads.SingleOrDefault(p => p.Id == lead.Id);
+                dbLead.LeadStatus = lead.LeadStatus;
+                entities.SaveChanges();
 
+            }
+        }
 
         /// <summary>
         /// This function inserts a new record of User
@@ -56,11 +66,15 @@ namespace FlightoUs.Dal
                 return lead.Id;
             }
         }
-
-        /// <summary>
-        /// This function updates User
-        /// </summary>
-        /// <param name="user"></param>
+        public void AddFreeText(Lead lead)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                Lead dbLead = entities.Leads.SingleOrDefault(p => p.Id == lead.Id);
+                dbLead.FreeText = lead.FreeText;
+                entities.SaveChanges();
+            }
+        }
         public void Update(Lead lead)
         {
             using (var entities = new ApplicationDbContext())
@@ -70,13 +84,16 @@ namespace FlightoUs.Dal
                 dbLead.LastName = lead.LastName;
                 dbLead.Email = lead.Email;
                 dbLead.Telephone = lead.Telephone;
-                dbLead.CNIC = lead.CNIC;
                 dbLead.Address = lead.Address;
                 dbLead.AssignToUser = lead.AssignToUser;
                 dbLead.AssignDate = lead.AssignDate;
                 dbLead.LeadType = lead.LeadType;
-                dbLead.LeadTypeDemand = lead.LeadTypeDemand;
                 dbLead.LeadStatus = lead.LeadStatus;
+                dbLead.LeadTitle = lead.LeadTitle;
+                dbLead.ContactCustomer = lead.ContactCustomer;
+                dbLead.ClassOfTravel = lead.ClassOfTravel;
+                dbLead.TripTyepLead = lead.TripTyepLead;
+                dbLead.CustomerType = lead.CustomerType;
                 entities.SaveChanges();
             }
         }
@@ -131,14 +148,22 @@ namespace FlightoUs.Dal
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<Lead> Search(LeadSearchFilter filters)
+        public List<LeadModel> Search(LeadSearchFilter filters)
         {
             int skip = (filters.PageIndex - 1) * filters.PageSize;
 
             using (var entities = new ApplicationDbContext())
             {
                 var query = from lead in entities.Leads
-                            select lead;
+                            select new LeadModel
+                            {
+                                Id=lead.Id,
+                                FirstName=lead.FirstName,
+                                Telephone=lead.Telephone,
+                                CreatedDate=lead.CreatedDate,
+                                LeadTitle=lead.LeadTitle,
+                                AssignDate=lead.AssignDate
+                            };
 
                 if (!string.IsNullOrEmpty(filters.UserName))
                 {
@@ -149,13 +174,13 @@ namespace FlightoUs.Dal
                 {
                     query = query.Where(p => p.Email.Contains(filters.Email));
                 }
-                //if(filters.UserType!=1)
-                //{
-                //    if (filters.User_Id.HasValue && filters.User_Id != -1)
-                //    {
-                //        query = query.Where(p => p.AssignToUser == filters.User_Id || p.CreatedBy == filters.User_Id);
-                //    }
-                //}
+                if (filters.UserType != 1)
+                {
+                    if (filters.User_Id.HasValue && filters.User_Id != -1)
+                    {
+                        query = query.Where(p => p.AssignToUser == filters.User_Id);
+                    }
+                }
 
 
                 if (string.IsNullOrEmpty(filters.Sort))
@@ -163,7 +188,13 @@ namespace FlightoUs.Dal
                     filters.Sort = "Id Desc";
                 }
 
-                return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+                var lst= query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+                foreach (var Leadss in lst)
+                {
+                    Leadss.CreatedDateStr = string.Format("{0:MM/dd/yyyy}", Leadss.CreatedDate);
+                    Leadss.TakenOnStr= string.Format("{0:MM/dd/yyyy}", Leadss.AssignDate);
+                }
+                return lst;
             }
         }
 

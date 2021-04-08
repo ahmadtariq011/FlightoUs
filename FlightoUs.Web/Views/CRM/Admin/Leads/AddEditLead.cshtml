@@ -2,6 +2,8 @@
 @using FlightoUs.Model.Data
 @using FlightoUs.Model.Enums
 @using FlightoUs.Bll.Helpers
+@using Microsoft.AspNetCore.Http;
+
 @section Scripts
 {
     <script src="~/js/CRM/Admin/Lead/AddEditLead.js?v=@DateTime.Now.Ticks.ToString()"></script>
@@ -10,12 +12,12 @@
 @section Styles
 {
     <style>
-        * {
+        /** {
             box-sizing: border-box
-        }
+        }*/
 
         /* Style tab links */
-        .tablink {
+        /*.tablink {
             background-color: #555;
             color: white;
             float: left;
@@ -29,14 +31,14 @@
 
             .tablink:hover {
                 background-color: #777;
-            }
+            }*/
 
         /* Style the tab content (and add height:100% for full page content) */
-        .tabcontent {
+        /*.tabcontent {
             display: none;
             padding: 100px 20px;
             height: 100%;
-        }
+        }*/
     </style>
 }
 @{
@@ -65,7 +67,7 @@
     string LeadType = EnumHelper.GetEnumByValue<LeadType>(data.LeadType.ToString()).ToString();
     string LeadTypeDemand = EnumHelper.GetEnumByValue<LeadTypeDemand>(data.LeadTypeDemand.ToString()).ToString();
     string LeadStatus = EnumHelper.GetEnumByValue<LeadStatus>(data.LeadStatus.ToString()).ToString();
-    string customerType= EnumHelper.GetEnumByValue<CustomerType>(data.CustomerType.ToString()).ToString();
+    string customerType = EnumHelper.GetEnumByValue<CustomerType>(data.CustomerType.ToString()).ToString();
     string Classoftravel = EnumHelper.GetEnumByValue<ClassOfTravel>(data.ClassOfTravel.ToString()).ToString();
     string LeadTripType = EnumHelper.GetEnumByValue<TripType>(data.TripTyepLead.ToString()).ToString();
 
@@ -132,6 +134,10 @@
         }
     }
 
+    var LeadStatusEnum = Enum.GetName(typeof(LeadStatus), data.LeadStatus);
+
+    var us = User.Identity.Name;
+    var u = 3;
 
 }
 @*<div class="row">
@@ -143,7 +149,8 @@
             </span>
         </button>
     </div>*@
-@if (data.Id != 0)
+<input type="hidden" value="@Convert.ToInt32( User.Identity.Name)"/>
+@*@if (data.Id != 0)
 {
     @if (TicketData.Id != 0 || HotelData.Id != 0)
     {
@@ -159,20 +166,23 @@
         </div>
     }
 
-}
-<button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">Home</button>
-<button class="tablink" onclick="openPage('Ticket', this, 'red')">
-    <span class="material-icons">
-        airplane_ticket
-    </span>
-</button>
-<button class="tablink" onclick="openPage('Hotel', this, 'red')">Hotel</button>
-<button class="tablink" onclick="openPage('Umrah', this, 'red')">Umrah</button>
+}*@
+<div class="row">
+    @*<div class="col-lg-12">
+        <div style="width:inherit;background-color: #548A94;margin-bottom: 30px;">
+            <a asp-action="" asp-controller="" asp-route-LeadId="">
+                <img style="width: 80px;" src="~/images/a.png" />
+            </a>
+
+        </div>
+
+    </div>*@
+</div>
+
 <!--
 -->
-<div id="Home" class="tabcontent">
+<div id="" class="">
     <input type="hidden" id="hfLeadId" value="@data.Id" />
-
     <div class="row">
 
         <!--
@@ -182,6 +192,45 @@
             <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
                 <div class="card-header">
                     <strong>Lead Detail</strong>
+                    @if (data.Id != 0)
+                    {
+                        <a class="btn btn-primary btn-sm float-right" asp-controller="@typeofUserLogin" asp-action="MakeRecipt" asp-route-LeadId="@data.Id">
+                            <span class="material-icons">
+                                receipt
+                            </span>
+                            <span style="position: relative;top: -6px;">Make Recipt</span>
+                        </a>
+                        <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" asp-controller="@typeofUserLogin" asp-action="MakeSalePost" asp-route-LeadId="@data.Id">
+                            <span class="material-icons">
+                                point_of_sale
+                            </span>
+                            <span style="position: relative;top: -6px;">Post Sale</span>
+                        </a>
+                        if (LeadStatusEnum == "Open" || LeadStatusEnum == "Success")
+                        {
+                            <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Success');">
+                                <span class="material-icons">
+                                    thumb_up_alt
+                                </span>
+                                <span style="position: relative;top: -6px;">Success</span>
+                            </a>
+                            <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Close');">
+                                <span class="material-icons">
+                                    trending_down
+                                </span>
+                                <span style="position: relative;top: -6px;">Close</span>
+                            </a>
+                        }
+                        if (LeadStatusEnum == "Close")
+                        {
+                            <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Open');">
+                                <span class="material-icons">
+                                    lock_open
+                                </span>
+                                <span style="position: relative;top: -6px;">Open</span>
+                            </a>
+                        }
+                    }
                 </div>
 
                 <div class="card-body card-block">
@@ -194,7 +243,7 @@
                     <div class="row form-group">
                         <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Lead ID</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtUserName" type="text" value="@data.UserName" required maxlength="20">
+                            <input class="form-control" id="txtUserName" type="text" value="@(data.Id!=0 ? data.Id :"")" disabled required maxlength="20">
                         </div>
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Contact Person</label></div>
                         <div class="col-12 col-md-3">
@@ -259,8 +308,11 @@
                         </div>
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">In Contact With Customer</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-check-input" style="margin-left:20px; margin-top:12px;" id="txtRadio1" type="radio">
-                            <label id="form-check-label" style="margin-left:40px; margin-top:5px;" for="male">Male</label><br>
+                            <input class="form-check-input" style="margin-left:20px; margin-top:12px;" id="txtRadio1" name="Radioname" @(data.ContactCustomer == "yes" ? "checked" : "") type="radio" onchange="OnchangePerson('yes')">
+                            <label id="form-check-label" style="margin-left:40px; margin-top:5px;" for="male">Yes</label>
+                            <input class="form-check-input" style="margin-left:20px; margin-top:12px;" id="txtRadio1" type="radio" name="Radioname" @(data.ContactCustomer == "no" ? "checked" : "") onchange="OnchangePerson('no')">
+                            <label id="form-check-label" style="margin-left:40px; margin-top:5px;" for="male">No</label><br>
+                            @*<label id="form-check-label" style="margin-left:40px; margin-top:5px;" for="male" >Yes</label><br>*@
                         </div>
                     </div>
 
@@ -413,11 +465,8 @@
 
 
             <div class="card-footer">
-                <button type="button" class="btn btn-primary btn-sm" onclick="SaveLeads();">
+                <button type="button" class="btn btn-primary btn-sm float-right" onclick="SaveLeads();">
                     <i class="material-icons " id="iconcss" style="">save</i>Save
-                </button>
-                <button type="reset" class="btn btn-danger btn-sm" onclick="Cancel();">
-                    <i class="material-icons" id="iconcss">cancel</i>Cancel
                 </button>
             </div>
         </div>
@@ -425,8 +474,43 @@
 
     </div>
 
+    <br />
+    @if (data.Id != 0)
+    {
+        <div class="row">
 
+            <!--
+            start Lead
+            -->
+            <div class="col-lg-12">
+                <div id="BasicInfo2" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+                    <div class="card-header">
+                        <strong>Free Text</strong>
+                    </div>
 
+                    <div class="card-body card-block" style="background-image: linear-gradient(to right, #5da9ba, #558994); ">
+                        <div id="div_messagef" class="note failure">
+                            <p>
+                                <span id="span_messagef"></span>
+                            </p>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-12 col-md-12">
+                                <textarea class="form-control" id="txtFreeText" rows="10">@data.FreeText</textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary btn-sm float-right" onclick="SaveFreeText();">
+                            <i class="material-icons " id="iconcss" style="">save</i>Save FreeText
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
     <br />
     <br />
     <div style="display:@(ViewBag.IsAdd ? "inline" : "none")">
@@ -455,29 +539,29 @@
                         </div>
                         <div class="c1 filter">
 
-                            <div class="right">
+                            @*<div class="right">
                                 Search: <input id="txtSearch" style="" type="text" class="form-control search">
                                 <a title="Search" style="cursor:pointer; margin-left:5px; " onclick="SearchUsers();"><i class="material-icons " style="position:relative; top:5px;">search</i></a>
                                 <a title="Reset" style="cursor:pointer;" onclick="ResetUsers();"><i class="material-icons" style="position:relative; top:5px;">clear</i></a>
-                            </div>
+                            </div>*@
                         </div>
 
-                        <table id="tbl" class="table">
+                        <table id="tbl1" class="table">
                             <thead>
                                 <tr>
-                                    <th class="gridSortingMenu" scope="col" sortable datafield="createdDate" caption="Created Date"></th>
-                                    <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="Details"></th>
-
-                                    <th scope="col" style="width:180px;">Actions</th>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="">CreatedDate</th>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="contactDateStr" caption="">To Contact on Date</th>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="">Details</th>
+                                   
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
-                        Show Pager
+                        @*Show Pager*@
 
                         <div id="div_no_found" class="alert alert-info hide" role="alert">
-                            No Remarks Found. Please click on Add Remarks button to add a Remark.
-                            This is a info alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+                            No Remarks Found. Please click on Add Remark button to add a Remark.
+                            @*This is a info alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.*@
                         </div>
 
 
@@ -494,11 +578,12 @@
 
     <script id="ListTemplateCustomers" type="text/x-jsrender">
         <tr>
-            <td>{{:createdDate}}</td>
+            <td>{{:createdDateStr}}</td>
+            <td>{{:contactDateStr}}</td>
             <td>{{:details}}</td>
-
             <td>
-                <a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+                
+                @*<a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>*@
             </td>
         </tr>
 

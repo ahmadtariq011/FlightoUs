@@ -1,0 +1,108 @@
+﻿@using FlightoUs.Model.Data
+@using FlightoUs.Model.Enums
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/CRM/Recipt/MakeRecipt.css?v=@DateTime.Now.Ticks.ToString()" />
+}
+@section Scripts
+{
+    <script src="~/js/CRM/Admin/Recipt/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
+
+}
+@{
+    bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+    bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+    bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+    string typeofUserLogin = "";
+    if (IsAdmin)
+    {
+        typeofUserLogin = "Admin";
+    }
+    if (IsManager)
+    {
+        typeofUserLogin = "Manager";
+    }
+    if (IsUser)
+    {
+        typeofUserLogin = "User";
+    }
+    var data = (Lead)ViewBag.data;
+    var reciptData = (Recipt)ViewBag.recipt;
+}
+<input type="hidden" value="@User.Identity.Name" id="UserId" />
+<input type="hidden" value="@typeofUserLogin" id="UserTypeLogin" />
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Recipts</strong>&nbsp; <span id="spanTotalRecords"></span>
+            </div>
+            <div class="card-body">
+                <div id="div_message" class="note failure">
+                    <p>
+                        <span id="span_message"></span>
+                    </p>
+                </div>
+                <div class="c1 filter">
+
+                    <div class="right">
+                        Search: <input id="txtSearch" style="" type="text" class="form-control search">
+                        <a title="Search" style="cursor:pointer; margin-left:5px; " onclick="SearchUsers();"><i class="material-icons " style="position:relative; top:5px;">search</i></a>
+                        <a title="Reset" style="cursor:pointer;" onclick="ResetUsers();"><i class="material-icons" style="position:relative; top:5px;">clear</i></a>
+                    </div>
+                </div>
+
+                <table id="tbl" class="table">
+                    <thead>
+                        <tr>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="reciptNo" caption="ReciptNo"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="leadTitle" caption="Lead Title"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="contactNumber" caption="Contact Number"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="Recipt Date"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="createdByStr" caption="Issued By"></th>
+                            <th scope="col" style="width:180px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                @*Show Pager*@
+
+                <div id="div_no_found" class="alert alert-info hide" role="alert">
+                    No Lead Found. Please click on Add lead button to add a Lead.
+                    @*This is a info alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.*@
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script id="ListTemplateCustomers" type="text/x-jsrender">
+    <tr>
+        <td>{{:reciptNo}}</td>
+        <td>{{:leadTitle}}</td>
+        <td>{{:contactNumber}}</td>
+        <td>{{:createdDateStr}}</td>
+        <td>{{:createdByStr}}</td>
+        <td>
+            <a href="/@typeofUserLogin/ReciptView/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">
+                <span class="material-icons">
+                    view_list
+                </span>
+            </a>
+            @if (IsAdmin)
+            {
+                <a onclick="DeleteRecipt({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+            }
+        </td>
+    </tr>
+
+
+</script>

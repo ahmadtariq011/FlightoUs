@@ -14,6 +14,8 @@ namespace FlightoUs.Model.Services
         public string TripTypeName { get; set; }
         public string ClassOfTravelName { get; set; }
         public string CustomeTypeName { get; set; }
+        public string CreatedDateStr { get; set; }
+        public string TakenOnStr { get; set; }
         //public string LeadTypeDemandName { get; set; }
     }
 }

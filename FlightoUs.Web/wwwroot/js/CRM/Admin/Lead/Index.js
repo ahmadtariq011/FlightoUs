@@ -94,7 +94,7 @@ function UpdateLeadsFilters() {
     filters =
     {
         Keyword: $("#txtSearch").val(),
-        //UserType: 2,
+        UserType: $("#useridlog").val(),
         PageIndex: 1,
         PageSize: 10,
         Sort: sortOption

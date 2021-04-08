@@ -150,7 +150,7 @@ namespace FlightoUs.Dal
                     filters.Sort = "Id Desc";
                 }
 
-                return query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
+                return query.ToList();
             }
         }
 

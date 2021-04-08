@@ -75,7 +75,6 @@ namespace FlightoUs.Model.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("AssignDate")
@@ -91,6 +90,9 @@ namespace FlightoUs.Model.Migrations
                     b.Property<int>("ClassOfTravel")
                         .HasColumnType("int");
 
+                    b.Property<string>("ContactCustomer")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
@@ -104,12 +106,10 @@ namespace FlightoUs.Model.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -136,7 +136,6 @@ namespace FlightoUs.Model.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Telephone")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -161,22 +160,57 @@ namespace FlightoUs.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("FirstServicePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("FirstServiceTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FormOfPayment")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemNo")
+                        .HasColumnType("int");
+
                     b.Property<int>("Lead_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("ReciptNo")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ReciptStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SecondServicePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("SecondServiceTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ThirdServicePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ThirdServiceTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -193,6 +227,9 @@ namespace FlightoUs.Model.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ContactDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -217,6 +254,81 @@ namespace FlightoUs.Model.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Remarks");
+                });
+
+            modelBuilder.Entity("FlightoUs.Model.Data.SalePost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Adults")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Children")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DepartureDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Lead_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("NetValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PNR")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PSF")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SalePostType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sector")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TripType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Lead_Id");
+
+                    b.HasIndex("User_Id");
+
+                    b.ToTable("SalePost");
                 });
 
             modelBuilder.Entity("FlightoUs.Model.Data.Ticket", b =>
@@ -400,6 +512,25 @@ namespace FlightoUs.Model.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Lead");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FlightoUs.Model.Data.SalePost", b =>
+                {
+                    b.HasOne("FlightoUs.Model.Data.Lead", "Lead")
+                        .WithMany()
+                        .HasForeignKey("Lead_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FlightoUs.Model.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("User_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Lead");
 

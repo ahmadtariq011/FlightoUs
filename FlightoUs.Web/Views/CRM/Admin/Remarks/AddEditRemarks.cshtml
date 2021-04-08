@@ -40,7 +40,12 @@
                     </div>
                 </div>
 
-
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Contact Date</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtContactDate" type="date" value="@remarksData.ContactDate" required maxlength="20">
+                    </div>
+                </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
@@ -57,13 +62,9 @@
             </div>
         </div>
 
-
         <div class="card-footer">
             <button type="button" class="btn btn-primary btn-sm" onclick="SaveRemarks();">
                 <i class="material-icons " id="iconcss" style="">save</i>Save
-            </button>
-            <button type="reset" class="btn btn-danger btn-sm" onclick="Cancel();">
-                <i class="material-icons" id="iconcss">cancel</i>Cancel
             </button>
         </div>
     </div>

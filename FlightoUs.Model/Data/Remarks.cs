@@ -19,7 +19,7 @@ namespace FlightoUs.Model.Data
         public string Details { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
+        public DateTime ContactDate { get; set; }
         [ForeignKey("Lead")]
         public int Lead_Id { get; set; }
         public int User_Id { get; set; }

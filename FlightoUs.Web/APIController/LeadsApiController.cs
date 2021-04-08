@@ -27,8 +27,11 @@ namespace FlightoUs.Web.APIController
         {
             try
             {
-                //filter.User_Id = Convert.ToInt32(HttpContext.User.Identity.Name);
-                //FlightoUs.Model.Data.User dbUser =bllUser.GetByPK(Convert.ToInt32(User.Identity.Name));
+
+                var userlog=bllUser.GetByPK(filter.UserType);
+                filter.User_Id = filter.UserType;
+                filter.UserType=userlog.UserType;
+                //FlightoUs.Model.Data.User dbUser = bllUser.GetByPK(Convert.ToInt32(User.Identity.Name));
                 //filter.UserType = dbUser.UserType;
                 result.Message = bllLead.Search(filter);
                 result.IsSucceeded = true;
@@ -58,7 +61,24 @@ namespace FlightoUs.Web.APIController
             }
             return result;
         }
-
+        [HttpPost]
+        public ServiceResponse SaveFreeText(LeadModel lead)
+        {
+            try
+            {
+                Lead dbLead = bllLead.GetByPK(lead.Id);
+                dbLead.FreeText = lead.FreeText;
+                bllLead.AddFreetext(dbLead);
+                result.IsSucceeded = true;
+                result.Message = "Free text is Added Successfully";
+            }
+            catch (Exception ex)
+            {
+                result.IsSucceeded = false;
+                result.Message = ex.Message + "<br>" + ex.StackTrace;
+            }
+            return result;
+        }
         [HttpPost]
         public ServiceResponse SaveLeads(LeadModel lead)
         {
@@ -77,7 +97,7 @@ namespace FlightoUs.Web.APIController
                     dbLead.AssignDate = DateTime.Now;
                     dbLead.CreatedBy = lead.CreatedBy;
                     dbLead.AssignToUser = lead.AssignToUser;
-
+                    dbLead.ContactCustomer = lead.ContactCustomer;
                     ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.LeadTypeName);
                     TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.LeadTypeName);
                     CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.LeadTypeName);
@@ -104,17 +124,17 @@ namespace FlightoUs.Web.APIController
                         dbLead.AssignToUser = lead.AssignToUser; 
                         dbLead.AssignDate = DateTime.Now;
                     }
-
+                    dbLead.ContactCustomer = lead.ContactCustomer;
                     dbLead.FirstName = lead.FirstName;
                     dbLead.LastName = lead.LastName;
-
+                    dbLead.LeadTitle = lead.LeadTitle;
                     dbLead.Email = lead.Email;
                     dbLead.Address = lead.Address;
                     dbLead.Telephone = lead.Telephone;
 
-                    ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.LeadTypeName);
-                    TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.LeadTypeName);
-                    CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.LeadTypeName);
+                    ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.ClassOfTravelName);
+                    TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.TripTypeName);
+                    CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.CustomeTypeName);
 
                     LeadType type = (LeadType)Enum.Parse(typeof(LeadType), lead.LeadTypeName);
                     LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), lead.LeadStatusName);
@@ -210,6 +230,31 @@ namespace FlightoUs.Web.APIController
             return result;
         }
 
+        [HttpPost]
+
+        public ServiceResponse ChangeStatus(LeadModel lead)
+        {
+            try
+            {
+                if(lead.Id!=0)
+                {
+                    Lead dbLead = bllLead.GetByPK(lead.Id);
+
+                    LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), lead.LeadStatusName);
+                    dbLead.LeadStatus = Convert.ToInt32(status);
+
+                    bllLead.ChangeStatus(dbLead);
+                    result.IsSucceeded = true;
+                    result.Message = "Status is updated to " + lead.LeadStatusName;
+                }
+            }
+            catch (Exception e)
+            {
+                result.IsSucceeded = false;
+                result.Message = e.Message + "<br>" + e.StackTrace;
+            }
+            return result;
+        }
 
 
 

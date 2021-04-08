@@ -1,5 +1,10 @@
 ﻿
 $(document).ready(function () {
+    var uri = window.location.toString();
+    if (uri.indexOf("?") > 0) {
+        var clean_uri = uri.substring(0, uri.indexOf("?"));
+        window.history.replaceState({}, document.title, clean_uri);
+    }
     $("#aUsers").addClass("navbar_selected");
     $("#div_AddEdit input").keyup(handler_enter);
     $("#txtExpirationDate").datepicker({ dateFormat: 'mm/dd/yy' });
@@ -60,6 +65,7 @@ function SaveRemarks() {
     {
         Id: $("#hfRemarksId").val(),
         Details: $.trim($("#txtDetails").val()),
+        ContactDate: $.trim($("#txtContactDate").val()),
         Lead_Id: $.trim($("#hfLeadId").val()),
         User_Id: $.trim($("#txtCreatedBy").val())
     };
@@ -74,7 +80,7 @@ function SaveRemarksCallback(data) {
         return;
     }
 
-    window.location.href = "/Home/RemarksIndex";
+    ShowCallbackMessage(true, data.message);
 }
 
 

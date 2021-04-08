@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlightoUs.Model.Services;
 
 namespace FlightoUs.Bll
 {
@@ -56,7 +57,7 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<Remarks> Search(RemarksSearchFilter filters)
+        public List<RemarksModel> Search(RemarksSearchFilter filters)
         {
             return dalRemarks.Search(filters);
         }
@@ -66,9 +67,9 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>Count of searched recored as integer value</returns>
-       public int GetSearchCount(int filters)
+       public int GetSearchCount(RemarksSearchFilter filter)
         {
-            return dalRemarks.GetSearchCount(filters);
+            return dalRemarks.GetSearchCount(filter);
         }
 }
 }

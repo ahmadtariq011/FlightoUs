@@ -1,6 +1,7 @@
 ﻿using FlightoUs.Dal;
 using FlightoUs.Model.Data;
 using FlightoUs.Model.Filter;
+using FlightoUs.Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,19 @@ namespace FlightoUs.Bll
         {
             return dalLead.GetByUsernameLeads(username);
         }
-        public int Insert(Lead lead)
+
+        public void ChangeStatus(Lead lead)
+        {
+            dalLead.ChangeStatus(lead);
+        }
+            public int Insert(Lead lead)
         {
             return dalLead.Insert(lead);
         }
-
+        public void AddFreetext(Lead lead)
+        {
+            dalLead.AddFreeText(lead);
+        }
         /// <summary>
         /// This function updates User
         /// </summary>
@@ -60,7 +69,7 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<Lead> Search(LeadSearchFilter filters)
+        public List<LeadModel> Search(LeadSearchFilter filters)
         {
             return dalLead.Search(filters);
         }

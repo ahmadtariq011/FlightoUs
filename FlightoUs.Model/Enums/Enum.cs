@@ -10,6 +10,11 @@ namespace FlightoUs.Model.Enums
         Manager=2,
         User = 3
     }
+    public enum FormOfPayment
+    {
+        Cash=1,
+        Cheque=2
+    }
     public enum CustomerType
     {
         New=1,
@@ -51,5 +56,11 @@ namespace FlightoUs.Model.Enums
         Pending=1,
         Approved=2,
         Rejected=3
+    }
+    public enum SalePostType
+    {
+        Ticket = 1,
+        Hotel = 2,
+        Other=3
     }
 }

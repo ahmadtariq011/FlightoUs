@@ -2,6 +2,7 @@
 using FlightoUs.Bll;
 using FlightoUs.Model.Data;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace FlightoUs.Web.Controllers.Manager
 {
@@ -70,6 +71,59 @@ namespace FlightoUs.Web.Controllers.Manager
             Remarks remarks = new Remarks();
             ViewBag.remarks = remarks;
             return View("Views/CRM/Admin/Remarks/AddRemarks.cshtml");
+        }
+        public IActionResult MakeRecipt(int LeadId)
+        {
+            ViewBag.Leadid = LeadId;
+
+            BllLead bllLead = new BllLead();
+            ViewBag.data = bllLead.GetByPK(LeadId);
+            Recipt recipt = new Recipt();
+
+
+            recipt.CreatedDate = DateTime.Now;
+            ViewBag.recipt = recipt;
+
+            return View("Views/CRM/Admin/Recipt/MakeRecipt.cshtml");
+        }
+        public IActionResult ReciptIndex()
+        {
+            return View("Views/CRM/Admin/Recipt/Index.cshtml");
+        }
+        public IActionResult ReciptView(int reciptId)
+        {
+            BllRecipt bllRecipt = new BllRecipt();
+            var recipt = bllRecipt.GetByPK(reciptId);
+            ViewBag.recipt = recipt;
+            ViewBag.Leadid = recipt.Lead_Id;
+
+            BllLead bllLead = new BllLead();
+            ViewBag.data = bllLead.GetByPK(recipt.Lead_Id);
+            return View("Views/CRM/Admin/Recipt/Index.cshtml");
+        }
+        public IActionResult MakeSalePost(int LeadId)
+        {
+            ViewBag.Leadid = LeadId;
+
+            BllLead bllLead = new BllLead();
+            ViewBag.data = bllLead.GetByPK(LeadId);
+            SalePost salePost = new SalePost();
+
+
+            salePost.CreatedDate = DateTime.Now;
+            ViewBag.salePost = salePost;
+
+            return View("Views/CRM/Admin/SalePost/AddEditSalePost.cshtml");
+        }
+        public IActionResult SalePostIndex()
+        {
+            return View("Views/CRM/Admin/SalePost/Index.cshtml");
+        }
+        public IActionResult ShowSale(int id)
+        {
+            BllSalePost bllSalePost = new BllSalePost();
+            ViewBag.salepost = bllSalePost.GetByPK(id);
+            return View("Views/CRM/Admin/SalePost/ShowSale.cshtml");
         }
     }
 }

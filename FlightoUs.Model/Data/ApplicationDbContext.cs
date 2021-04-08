@@ -25,6 +25,7 @@ namespace FlightoUs.Model.Data
         public virtual DbSet<Remarks> Remarks { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<SalePost> SalePosts { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -64,6 +65,9 @@ namespace FlightoUs.Model.Data
                .Property(p => p.Id)
                .ValueGeneratedOnAdd();
 
+            builder.Entity<SalePost>()
+               .Property(p => p.Id)
+               .ValueGeneratedOnAdd();
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
