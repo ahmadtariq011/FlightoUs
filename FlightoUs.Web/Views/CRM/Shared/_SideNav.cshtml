@@ -57,6 +57,22 @@
                             <span>Recipts</span>
                         </a>
                     </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="CashBookIndex" asp-controller="Admin">
+                            <span class="material-icons">
+                                credit_score
+                            </span>
+                            <span>Cash Book</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="RefundIndex" asp-controller="Admin">
+                            <span class="material-icons">
+                                money_off
+                            </span>
+                            <span>Refunds</span>
+                        </a>
+                    </li>
 
                 }
 
@@ -99,6 +115,14 @@
                             <span>Recipts</span>
                         </a>
                     </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="RefundIndex" asp-controller="Manager">
+                            <span class="material-icons">
+                                money_off
+                            </span>
+                            <span>Refunds</span>
+                        </a>
+                    </li>
                 }
                 @if (IsUser)
                 {
@@ -130,6 +154,14 @@
                                 receipt
                             </span>
                             <span>Recipts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="aBlogCategories" asp-action="RefundIndex" asp-controller="User">
+                            <span class="material-icons">
+                                money_off
+                            </span>
+                            <span>Refunds</span>
                         </a>
                     </li>
                 }

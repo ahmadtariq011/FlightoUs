@@ -44,6 +44,7 @@ namespace FlightoUs.Model.Data
         public string CNIC { get; set; }
 
         public int GenderType { get; set; }
+        public int UserStatus { get; set; }
 
         public virtual ICollection<Lead> Leads { get; set; }
 

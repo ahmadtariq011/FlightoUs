@@ -37,8 +37,7 @@ namespace FlightoUs.Model.Data
 
         public string City { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int Adults { get; set; }
-        public int Children { get; set; }
+        public int ClientType { get; set; }
         public string Sector { get; set; }
         public string Country { get; set; }
         public string Name { get; set; }
@@ -52,6 +51,6 @@ namespace FlightoUs.Model.Data
         public virtual User User { get; set; }
         public int TripType { get; set; }
         public virtual Lead Lead { get; set; }
-
+        public int HotelCategory { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace FlightoUs.Web.APIController
                     UserRoleType usertyp = (UserRoleType)Enum.Parse(typeof(UserRoleType), user.UserTypeName);
                     dbUser.UserType = Convert.ToInt32(usertyp);
                     dbUser.GenderType = Convert.ToInt32(gender);
-
+                    dbUser.UserStatus = Convert.ToByte(UserStatus.Active);
 
 
                     int UserId = bllUser.Insert(dbUser);
@@ -142,6 +142,29 @@ namespace FlightoUs.Web.APIController
                 result.Message = bllUser.GetByEmail(email);
             }
             catch(Exception e)
+            {
+                result.IsSucceeded = false;
+                result.Message = e.Message + "<br>" + e.StackTrace;
+            }
+            return result;
+        }
+        public ServiceResponse ChangeStatus(UserModel user)
+        {
+            try
+            {
+                if (user.Id != 0)
+                {
+                    User dbUser = bllUser.GetByPK(user.Id);
+
+                    UserStatus status = (UserStatus)Enum.Parse(typeof(UserStatus), user.UserStatusStr);
+                    dbUser.UserStatus = Convert.ToInt32(status);
+
+                    bllUser.ChangeUserStatus(dbUser);
+                    result.IsSucceeded = true;
+                    result.Message = "Status is updated to " + user.UserStatusStr;
+                }
+            }
+            catch (Exception e)
             {
                 result.IsSucceeded = false;
                 result.Message = e.Message + "<br>" + e.StackTrace;

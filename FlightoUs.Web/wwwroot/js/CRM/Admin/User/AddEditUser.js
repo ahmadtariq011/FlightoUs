@@ -197,6 +197,9 @@ function OpenTab(evt, tabName) {
     //evt.currentTarget.className += " active";
 }
 
+
+
+
 function ShowHideShipLinkCentralCredential() {
     $("#divShipLinkCentralCredential").hide();
     $("#txtShipLinkCentralUsername").removeAttr("required");

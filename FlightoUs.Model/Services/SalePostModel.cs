@@ -13,6 +13,8 @@ namespace FlightoUs.Model.Services
         public string SaleTypename { get; set; }
         public string CreatedDateStr { get; set; }
         public string CreatedByStr { get; set; }
+        public string ClientTypeStr { get; set; }
+        public string HotelCategoryStr { get; set; }
 
     }
 }

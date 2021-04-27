@@ -11,5 +11,6 @@ namespace FlightoUs.Model.Services
     {
         public string UserTypeName { get; set; }
         public string GenderTypename { get; set; }
+        public string UserStatusStr { get; set; }
     }
 }

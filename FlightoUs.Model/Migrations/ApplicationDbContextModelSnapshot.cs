@@ -19,6 +19,62 @@ namespace FlightoUs.Model.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("FlightoUs.Model.Data.AirpotCodes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Airport")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IATA")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ICAO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AirpotCodes");
+                });
+
+            modelBuilder.Entity("FlightoUs.Model.Data.CashBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PaymentMode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CashBook");
+                });
+
             modelBuilder.Entity("FlightoUs.Model.Data.Hotel", b =>
                 {
                     b.Property<int>("Id")
@@ -221,6 +277,49 @@ namespace FlightoUs.Model.Migrations
                     b.ToTable("Recipt");
                 });
 
+            modelBuilder.Entity("FlightoUs.Model.Data.Refund", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PNR")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RefundStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RefundType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalePostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sale_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TicketNo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("lead_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalePostId");
+
+                    b.ToTable("Refund");
+                });
+
             modelBuilder.Entity("FlightoUs.Model.Data.Remarks", b =>
                 {
                     b.Property<int>("Id")
@@ -263,17 +362,14 @@ namespace FlightoUs.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Adults")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Children")
-                        .HasColumnType("int");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ClientType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
@@ -287,6 +383,9 @@ namespace FlightoUs.Model.Migrations
                     b.Property<string>("From")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("HotelCategory")
+                        .HasColumnType("int");
 
                     b.Property<int>("Lead_Id")
                         .HasColumnType("int");
@@ -443,6 +542,9 @@ namespace FlightoUs.Model.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("UserStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserType")
                         .HasColumnType("int");
 
@@ -498,6 +600,16 @@ namespace FlightoUs.Model.Migrations
                     b.Navigation("Lead");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FlightoUs.Model.Data.Refund", b =>
+                {
+                    b.HasOne("FlightoUs.Model.Data.SalePost", "SalePost")
+                        .WithMany()
+                        .HasForeignKey("SalePostId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("SalePost");
                 });
 
             modelBuilder.Entity("FlightoUs.Model.Data.Remarks", b =>

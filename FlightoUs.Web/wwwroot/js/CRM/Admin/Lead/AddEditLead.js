@@ -109,6 +109,7 @@ function ChangeStatusCallback(data) {
     $("#div_message").addClass("success");
     $("#div_message").show();
     $("#span_message").html(data.message);
+    location.reload();;
 }
 
 

@@ -1,6 +1,4 @@
-﻿$(document).ready(function () {
-    $("#divLogin input").keyup(handler_enter_login);
-});
+﻿
 function handler_enter_login(e) {
     var charCode;
 
@@ -37,7 +35,7 @@ function LoginCallBack(data) {
         $("#div_message").show();
         $("#div_message").removeClass("success");
         $("#div_message").addClass("failure");
-        $("#span_message").html(data.Message);
+        $("#span_message").html(data.message);
     }
 }
 

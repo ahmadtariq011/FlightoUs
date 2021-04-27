@@ -68,6 +68,8 @@
 
                             <th class="gridSortingMenu" scope="col" sortable datafield="telephone" caption="Telephone"></th>
 
+                            <th class="gridSortingMenu" scope="col" sortable datafield="userStatusStr" caption="User Status"></th>
+
                             <th scope="col" style="width:180px;">Actions</th>
                         </tr>
                     </thead>
@@ -99,11 +101,26 @@
         <td>{{:userName}}</td>
         <td>{{:email}}</td>
         <td>{{:telephone}}</td>
+        <td>{{:userStatusStr}}</td>
+
         <td>
             <a href="/@typeofUserLogin/AddEditUser/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">
-                Edit
+                <span class="material-icons">
+                    edit
+                </span>
             </a>
-            <a onclick="DeleteUsers({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+            {{if userStatus==1}}
+            <a onclick="ChangeStatus('Block',{{:id}});" class="text-danger " style="cursor:pointer;">
+                <span class="material-icons">
+                    block
+                </span>
+            </a>
+            {{else}}
+            <a onclick="ChangeStatus('Active',{{:id}});" class="text-danger " style="cursor:pointer;">
+                <span class="material-icons">
+                    toggle_on
+                </span>
+            </a>
         </td>
     </tr>
 

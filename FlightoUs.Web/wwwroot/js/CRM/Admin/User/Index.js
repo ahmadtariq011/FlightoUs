@@ -8,6 +8,34 @@ var sortOption = ""; var sortOption_license = "";
 //    $(this).parent().addClass('pageloadnavbar').siblings().removeClass('pageloadnavbar');
 
 //});
+function ChangeStatus(NewStatus, id) {
+    $("#loader").show();
+    debugger;
+    $("#div_messagef").hide();
+    var User =
+    {
+        Id: id,
+        UserStatusStr: NewStatus
+    };
+    $.post("/api/UserApi/ChangeStatus", User, ChangeStatusCallback);
+}
+function ChangeStatusCallback(data) {
+    $("#loader").hide();
+    debugger;
+    if (!data.isSucceeded) {
+        $("#div_message").removeClass("success");
+        $("#div_message").addClass("failure");
+        $("#div_message").show();
+        $("#span_message").html(data.message);
+        return;
+    }
+
+    $("#div_message").removeClass("failure");
+    $("#div_message").addClass("success");
+    $("#div_message").show();
+    $("#span_message").html(data.message);
+    location.reload();;
+}
 
 $(document).ready(function () {
     //$(window).load(function () {

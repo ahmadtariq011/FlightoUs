@@ -125,5 +125,34 @@ namespace FlightoUs.Web.Controllers.Manager
             ViewBag.salepost = bllSalePost.GetByPK(id);
             return View("Views/CRM/Admin/SalePost/ShowSale.cshtml");
         }
+
+        //public IActionResult CashBookIndex()
+        //{
+        //    return View("Views/CRM/Admin/CashBook/Index.cshtml");
+        //}
+        public IActionResult AddEditCashBook(int id)
+        {
+            BllCashBook bllCashBook = new BllCashBook();
+            ViewBag.cashBook = bllCashBook.GetByPK(id);
+            return View("Views/CRM/Admin/CashBook/AddEditCashBook.cshtml");
+        }
+        public IActionResult AddRefundRequest(int SaleId)
+        {
+            ViewBag.SaleId = SaleId;
+
+            BllSalePost bllSalePost = new BllSalePost();
+            ViewBag.SalePostdata = bllSalePost.GetByPK(SaleId);
+            Refund Refund = new Refund();
+
+
+            Refund.CreatedDate = DateTime.Now;
+            ViewBag.refund = Refund;
+
+            return View("Views/CRM/Admin/Refunds/AddEditRefund.cshtml");
+        }
+        public IActionResult RefundIndex()
+        {
+            return View("Views/CRM/Admin/Refunds/Index.cshtml");
+        }
     }
 }

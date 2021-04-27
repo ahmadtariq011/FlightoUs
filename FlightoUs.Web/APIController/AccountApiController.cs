@@ -36,6 +36,12 @@ namespace FlightoUs.Web.APIController
                     result.Message = "Invalid Login Information";
                     return result;
                 }
+                if(dbUser.UserStatus== Convert.ToByte(UserStatus.Block))
+                {
+                    result.IsSucceeded = false;
+                    result.Message = "You Are Blocked. Contact Administration.";
+                    return result;
+                }
                 string message = "";
                 id = dbUser.Id;
 

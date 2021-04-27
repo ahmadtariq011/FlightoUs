@@ -6,16 +6,36 @@ function checktype() {
         $("#BasicInfo2").show();
         $("#BasicInfo3").hide();
         $("#BasicInfo4").hide();
+        $("#BasicInfo5").hide();
+        $("#BasicInfo6").hide();
     }
     if (typevaluein === "Hotel") {
         $("#BasicInfo3").show();
         $("#BasicInfo2").hide();
         $("#BasicInfo4").hide();
+        $("#BasicInfo5").hide();
+        $("#BasicInfo6").hide();
     }
     if (typevaluein === "Other") {
         $("#BasicInfo4").show();
         $("#BasicInfo2").hide();
         $("#BasicInfo3").hide();
+        $("#BasicInfo5").hide();
+        $("#BasicInfo6").hide();
+    }
+    if (typevaluein === "Umrah") {
+        $("#BasicInfo5").show();
+        $("#BasicInfo2").hide();
+        $("#BasicInfo3").hide();
+        $("#BasicInfo4").hide();
+        $("#BasicInfo6").hide();
+    }
+    if (typevaluein === "Visa") {
+        $("#BasicInfo6").show();
+        $("#BasicInfo2").hide();
+        $("#BasicInfo3").hide();
+        $("#BasicInfo4").hide();
+        $("#BasicInfo5").hide();
     }
 }
 $(document).ready(function () {
@@ -69,7 +89,7 @@ function handler_enter(e) {
 }
 
 function SaleTicket() {
-    if (!Validate("#BasicInfo") || !Validate("#BasicInfo2")) {
+    if (!Validate("#BasicInfo1") || !Validate("#BasicInfo2")) {
         return;
     }
 
@@ -95,8 +115,7 @@ function SaleTicket() {
         ArrivalDate: $.trim($("#txtArrivalDate").val()),
         From: $.trim($("#txtFrom").val()),
         To: $.trim($("#txtTo").val()),
-        Adults: $.trim($("#txtAdults").val()),
-        Children: $.trim($("#txtChildren").val())
+        ClientTypeStr: $.trim($("#txtClientType").val())
 
     };
 
@@ -116,7 +135,7 @@ function SaleTicketCallback(data) {
 
 
 function SaleHotel() {
-    if (!Validate("#BasicInfo") || !Validate("#BasicInfo2")) {
+    if (!Validate("#BasicInfo1") || !Validate("#BasicInfo2")) {
         return;
     }
 
@@ -135,7 +154,8 @@ function SaleHotel() {
         NetValue: $.trim($("#txtNetValue").val()),
         TotalValue: $.trim($("#txtTotalValue").val()),
 
-        Name: $.trim($("#txtHotelName").val())
+        Name: $.trim($("#txtHotelName").val()),
+        HotelCategoryStr: $.trim($("#txtHotelCategory").val())
     };
 
     $.post("/api/SalePostApi/SaleHotel", Hotel, SaleHotelCallback);
@@ -153,7 +173,7 @@ function SaleHotelCallback(data) {
 
 
 function SaleOther() {
-    if (!Validate("#BasicInfo") || !Validate("#BasicInfo2")) {
+    if (!Validate("#BasicInfo1") || !Validate("#BasicInfo2")) {
         return;
     }
 
@@ -188,7 +208,79 @@ function SaleOtherCallback(data) {
     ShowCallbackMessage(true, data.message);
 }
 
+function SaleUmrah() {
+    if (!Validate("#BasicInfo1") || !Validate("#BasicInfo5")) {
+        return;
+    }
 
+    $("#div_message").hide();
+    $("#loader").show();
+    var Hotel =
+    {
+        Id: $.trim($("#hfsalePostId").val()),
+
+        Lead_Id: $.trim($("#hfLeadId").val()),
+        User_Id: $.trim($("#txtCreatedBy").val()),
+        SaleTypename: $("#txtSaleType").val(),
+        City: $.trim($("#txtCity").val()),
+        Country: $.trim($("#txtCountry").val()),
+        PSF: $.trim($("#txtPSF").val()),
+        NetValue: $.trim($("#txtNetValue").val()),
+        TotalValue: $.trim($("#txtTotalValue").val()),
+
+        Name: $.trim($("#txtHotelUmrahName").val()),
+        HotelCategoryStr: $.trim($("#txtHotelUmrahCategory").val())
+    };
+
+    $.post("/api/SalePostApi/SaleUmrah", Hotel, SaleUmrahCallback);
+}
+
+function SaleUmrahCallback(data) {
+    $("#loader").hide();
+    if (!data.isSucceeded) {
+        ShowCallbackMessage(false, data.message);
+        return;
+    }
+
+    ShowCallbackMessage(true, data.message);
+}
+
+
+function SaleVisa() {
+    if (!Validate("#BasicInfo1") || !Validate("#BasicInfo6")) {
+        return;
+    }
+
+    $("#div_message").hide();
+    $("#loader").show();
+    var Other =
+    {
+        Id: $.trim($("#hfsalePostId").val()),
+
+        Lead_Id: $.trim($("#hfLeadId").val()),
+        User_Id: $.trim($("#txtCreatedBy").val()),
+        SaleTypename: $("#txtSaleType").val(),
+        City: $.trim($("#txtCity").val()),
+        Country: $.trim($("#txtCountry").val()),
+        PSF: $.trim($("#txtPSF").val()),
+        NetValue: $.trim($("#txtNetValue").val()),
+        TotalValue: $.trim($("#txtTotalValue").val()),
+
+        Name: $.trim($("#txtVisaNameNo").val())
+    };
+
+    $.post("/api/SalePostApi/SaleVisa", Other, SaleVisaCallback);
+}
+
+function SaleVisaCallback(data) {
+    $("#loader").hide();
+    if (!data.isSucceeded) {
+        ShowCallbackMessage(false, data.message);
+        return;
+    }
+
+    ShowCallbackMessage(true, data.message);
+}
 
 function UploadAgent() {
     if (!Validate("#UploadAgents"))

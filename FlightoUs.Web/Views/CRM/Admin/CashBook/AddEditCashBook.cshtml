@@ -1,0 +1,123 @@
+﻿
+@using FlightoUs.Model.Data
+@using FlightoUs.Model.Enums
+@using FlightoUs.Bll.Helpers
+@using System
+@section Scripts
+{
+    <script src="~/js/CRM/Admin/CashBook/AddEditCashBook.js?v=@DateTime.Now.Ticks.ToString()"></script>
+}
+@{
+    bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
+    bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
+    bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+    string typeofUserLogin = "";
+    if (IsAdmin)
+    {
+        typeofUserLogin = "Admin";
+    }
+    if (IsManager)
+    {
+        typeofUserLogin = "Manager";
+    }
+    if (IsUser)
+    {
+        typeofUserLogin = "User";
+    }
+    var data = (CashBook)ViewBag.cashBook;
+
+
+    var PaymentMode = Enum.GetValues(typeof(PaymentMode)).Cast<PaymentMode>().ToList();
+    var PaymentModes = new List<string>();
+    foreach (var g in PaymentMode)
+    {
+        PaymentModes.Add(String.Join(Environment.NewLine, g));
+    }
+
+    int ihotel = 0;
+}
+
+
+<input type="hidden" id="txtCreatedBy" value="@Convert.ToInt32( User.Identity.Name)" />
+
+<div class="row">
+
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div id="BasicInfo" class="card">
+            <div class="card-header">
+                <strong>Add CashBook</strong>
+            </div>
+
+            <div class="card-body card-block">
+                <div id="div_message" class="note failure">
+                    <p>
+                        <span id="span_message"></span>
+                    </p>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Name</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtName" type="text" value="@data.Name" required maxlength="20">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Amount</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtAmount" type="text" value="@data.Amount" required maxlength="20">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Remarks</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtRemarks" type="text" value="@data.Remarks" required maxlength="20">
+                    </div>
+                </div>
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Payment Mode</label></div>
+                    <div class="col-12 col-md-9">
+                        <select class="form-control" id="txtPaymentMode" name="txtPaymentMode" required>
+                            @foreach (var PaymentM in PaymentModes)
+                            {
+                                if (PaymentM == EnumHelper.GetEnumByValue<PaymentMode>(data.PaymentMode.ToString()).ToString())
+                                {
+                                    <option id="usertype" selected>@PaymentM</option>
+                                }
+                                else
+                                {
+                                    <option id="usertype">@PaymentM</option>
+                                }
+                                <option id="usertype">@PaymentM</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="card-footer">
+            @if (data.Id != 0)
+            {
+
+            }
+            else
+            {
+                <button type="button" class="btn btn-primary btn-sm" onclick="SaveCashBook();">
+                    <i class="material-icons " id="iconcss" style="">save</i>Add CashBook
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm" onclick="Cancel();">
+                    <i class="material-icons" id="iconcss">cancel</i>Cancel
+                </button>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="col-lg-3"></div>

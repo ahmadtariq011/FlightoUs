@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightoUs.Dal", "FlightoUs.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightoUs.Bll", "FlightoUs.Bll\FlightoUs.Bll.csproj", "{4DF05F99-E717-4804-ABE0-A7BE987D87DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightoUs.Crawlers", "FlightoUs.Crawlers\FlightoUs.Crawlers.csproj", "{9F55C4A0-093C-45CC-B0DA-B549DA64511B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4DF05F99-E717-4804-ABE0-A7BE987D87DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DF05F99-E717-4804-ABE0-A7BE987D87DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DF05F99-E717-4804-ABE0-A7BE987D87DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F55C4A0-093C-45CC-B0DA-B549DA64511B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F55C4A0-093C-45CC-B0DA-B549DA64511B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F55C4A0-093C-45CC-B0DA-B549DA64511B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F55C4A0-093C-45CC-B0DA-B549DA64511B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

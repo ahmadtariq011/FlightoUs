@@ -26,6 +26,9 @@ namespace FlightoUs.Model.Data
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<SalePost> SalePosts { get; set; }
+        public virtual DbSet<CashBook> CashBooks { get; set; }
+        public virtual DbSet<AirpotCodes> AirpotCodes { get; set; }
+        public virtual DbSet<Refund> Refunds { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -66,6 +69,18 @@ namespace FlightoUs.Model.Data
                .ValueGeneratedOnAdd();
 
             builder.Entity<SalePost>()
+               .Property(p => p.Id)
+               .ValueGeneratedOnAdd();
+
+            builder.Entity<CashBook>()
+               .Property(p => p.Id)
+               .ValueGeneratedOnAdd();
+
+            builder.Entity<AirpotCodes>()
+               .Property(p => p.Id)
+               .ValueGeneratedOnAdd();
+
+            builder.Entity<Refund>()
                .Property(p => p.Id)
                .ValueGeneratedOnAdd();
         }

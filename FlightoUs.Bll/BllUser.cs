@@ -1,5 +1,6 @@
 ﻿using FlightoUs.Dal;
 using FlightoUs.Model.Data;
+using FlightoUs.Model.Services;
 using FlightoUs.Models.Filters;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,10 @@ namespace FlightoUs.Bll
             dalUser.Update(user);
         }
 
-
+        public void ChangeUserStatus(User user)
+        {
+            dalUser.ChangeUserStatus(user);
+        }
 
         /// <summary>
         /// This function calls insert function of dal class  
@@ -80,7 +84,7 @@ namespace FlightoUs.Bll
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<User> Search(UserSearchFilter filters)
+        public List<UserModel> Search(UserSearchFilter filters)
         {
             return dalUser.Search(filters);
         }

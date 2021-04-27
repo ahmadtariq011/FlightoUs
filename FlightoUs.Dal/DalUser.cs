@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using FlightoUs.Model.Enums;
 using FlightoUs.Models.Filters;
+using FlightoUs.Model.Services;
 
 namespace FlightoUs.Dal
 {
@@ -84,6 +85,7 @@ namespace FlightoUs.Dal
                 dbUser.CNIC = user.CNIC;
                 dbUser.UserType = user.UserType;
                 dbUser.GenderType = user.GenderType;
+                dbUser.UserStatus = user.UserStatus;
                 entities.SaveChanges();
             }
         }
@@ -124,21 +126,41 @@ namespace FlightoUs.Dal
             return true;
         }
 
+
+        public void ChangeUserStatus(User user)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                User dbUser = entities.Users.SingleOrDefault(p => p.Id == user.Id);
+                dbUser.UserStatus = user.UserStatus;
+                entities.SaveChanges();
+
+            }
+        }
         /// <summary>
         /// This function performs search query after applying different filters
         /// This function also does sorting and pagination as per the parameters of filter object
         /// </summary>
         /// <param name="filters"></param>
         /// <returns>IEnumerable<dynamic></returns>
-        public List<User> Search(UserSearchFilter filters)
+        public List<UserModel> Search(UserSearchFilter filters)
         {
             int skip = (filters.PageIndex - 1) * filters.PageSize;
 
             using (var entities = new ApplicationDbContext())
             {                
                 var query = from user in entities.Users
+                            where user.UserType!=1
                             //where user.UserType == filters.UserType
-                            select user;
+                            select new UserModel { 
+                                Id=user.Id,
+                                FirstName=user.FirstName,
+                                LastName=user.LastName,
+                                UserName=user.UserName,
+                                Email=user.Email,
+                                Telephone=user.Telephone,
+                                UserStatus=user.UserStatus
+                            };
 
                 if (!string.IsNullOrEmpty(filters.Keyword))
                 {
@@ -150,7 +172,12 @@ namespace FlightoUs.Dal
                     filters.Sort = "Id Desc";
                 }
 
-                return query.ToList();
+                var lst = query.ToList();
+                foreach (var saless in lst)
+                {
+                    saless.UserStatusStr = System.Enum.Parse(typeof(UserStatus), saless.UserStatus.ToString()).ToString();
+                }
+                return lst;
             }
         }
 
@@ -164,6 +191,7 @@ namespace FlightoUs.Dal
             using (var entities = new ApplicationDbContext())
             {
                 var query = from user in entities.Users
+                            where user.UserType != 1
                             //where user.UserType == filters.UserType
                             select user;
 

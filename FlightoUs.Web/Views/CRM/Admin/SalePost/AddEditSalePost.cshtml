@@ -44,11 +44,28 @@
     {
         Triptypes.Add(String.Join(Environment.NewLine, g));
     }
+    var ClientType = Enum.GetValues(typeof(ClientType)).Cast<ClientType>().ToList();
+    var ClientTypes = new List<string>();
+    foreach (var g in ClientType)
+    {
+        ClientTypes.Add(String.Join(Environment.NewLine, g));
+    }
+
+    var HotelCategory = Enum.GetValues(typeof(HotelCategory)).Cast<HotelCategory>().ToList();
+    var HotelCategories = new List<string>();
+    foreach (var g in HotelCategory)
+    {
+        HotelCategories.Add(String.Join(Environment.NewLine, g.GetDisplayName()));
+    }
+    int iii = Convert.ToInt32(User.Identity.Name);
+    int ihotel = 0;
 }
 
 
 <input type="hidden" id="hfLeadId" value="@data.Id" />
 <input type="hidden" id="hfsalePostId" value="@salePost.Id" />
+<input type="hidden" id="txtCreatedBy" value="@Convert.ToInt32( User.Identity.Name)" />
+
 <div class="row">
 
     <!--
@@ -68,17 +85,7 @@
                 </div>
                 <br />
                 <div class="row form-group">
-                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Staff</label></div>
-                    <div class="col-12 col-md-3">
-                        <select class="form-control" id="txtCreatedBy" name="txtCreatedBy" required>
-                            <option value="">Please Select</option>
-                            @foreach (var user in userdata)
-                            {
-                                <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Sale Type</label></div>
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Sale Type</label></div>
                     <div class="col-12 col-md-3">
                         <select class="form-control" id="txtSaleType" onchange="checktype();" name="txtSaleType" required>
                             @foreach (var saless in SaleTypes)
@@ -115,9 +122,9 @@
                         <input class="form-control" id="txtTotalValue" type="text" required value="" maxlength="20">
                     </div>
                     @*<div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">TotalValue</label></div>
-                        <div class="col-12  col-md-3">
-                            <input class="form-control" id="txtTotalValue" type="text" value="" required maxlength="500">
-                        </div>*@
+                    <div class="col-12  col-md-3">
+                        <input class="form-control" id="txtTotalValue" type="text" value="" required maxlength="500">
+                    </div>*@
                 </div>
                 <br />
 
@@ -138,9 +145,9 @@
                     <div class="col-12 col-md-3">
                         <input class="form-control" id="txtSector" type="text" required value="" maxlength="20">
                     </div>
-                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Flight</label></div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Ticket No</label></div>
                     <div class="col-12  col-md-3">
-                        <input class="form-control" id="txtFlightNo" type="text" value="" required maxlength="500">
+                        <input class="form-control" id="txtFlightNo" type="text" value="" maxlength="500">
                     </div>
                 </div>
 
@@ -149,7 +156,7 @@
                     <div class="col-12 col-md-3">
                         <input class="form-control" id="txtDepartureDate" type="date" required value="" maxlength="20">
                     </div>
-                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Flight Type</label></div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Trip</label></div>
                     <div class="col-12  col-md-3">
                         <select class="form-control" id="txtTriptype" name="txtTriptype" required>
                             <option value="">Please Select</option>
@@ -183,14 +190,17 @@
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Adults</label></div>
-                    <div class="col-12 col-md-3">
-                        <input class="form-control" id="txtAdults" type="number" required value="" maxlength="20">
-                    </div>
-                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Children</label></div>
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Client Type</label></div>
                     <div class="col-12  col-md-3">
-                        <input class="form-control" id="txtChildren" type="number" value="" required maxlength="500">
+                        <select class="form-control" id="txtClientType" name="txtClientType" required>
+                            <option value="">Please Select</option>
+                            @foreach (var cl in ClientTypes)
+                            {
+                                <option id="genders">@cl</option>
+                            }
+                        </select>
                     </div>
+
                 </div>
                 <br />
 
@@ -217,6 +227,18 @@
                     <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Hotel Name</label></div>
                     <div class="col-12 col-md-3">
                         <input class="form-control" id="txtHotelName" type="text" required value="" maxlength="20">
+                    </div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Hotel Type Type</label></div>
+                    <div class="col-12  col-md-3">
+                        <select class="form-control" id="txtHotelCategory" name="txtHotelCategory" required>
+                            <option value="">Please Select</option>
+
+                            @foreach (var cl in HotelCategories)
+                            {
+                                <option id="hotelcategoies" value="@ihotel+1">@cl</option>
+
+                            }
+                        </select>
                     </div>
                 </div>
 
@@ -255,6 +277,74 @@
             <div class="card-footer">
                 <button type="button" class="btn btn-primary btn-sm float-right" onclick="SaleOther();">
                     <i class="material-icons " id="iconcss" style="">save</i>Post Other Sale
+                </button>
+            </div>
+        </div>
+
+        <div id="BasicInfo5" class="card" style="padding-bottom: 0px !important; display:none; margin-bottom: 0px; margin-top: 50px;">
+
+            <div class="card-header">
+                <strong>Umrah Sale Detail</strong>
+            </div>
+
+            <div class="card-body card-block">
+                <br />
+
+                <div class="row form-group">
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Hotel Name (Umrah)</label></div>
+                    <div class="col-12 col-md-3">
+                        <input class="form-control" id="txtHotelUmrahName" type="text" required value="" maxlength="20">
+                    </div>
+                    <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Hotel Type Type</label></div>
+                    <div class="col-12  col-md-3">
+                        <select class="form-control" id="txtHotelUmrahCategory" name="txtHotelCategory" required>
+                            <option value="">Please Select</option>
+
+                            @foreach (var cl in HotelCategories)
+                            {
+                                <option id="hotelcategoies" >@cl</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <br />
+
+
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-sm float-right" onclick="SaleUmrah();">
+                    <i class="material-icons " id="iconcss" style="">save</i>Post Umrah Sale
+                </button>
+            </div>
+        </div>
+
+
+        <div id="BasicInfo6" class="card" style="padding-bottom: 0px !important;  display:none; margin-bottom: 0px; margin-top: 50px;">
+
+            <div class="card-header">
+                <strong>Visa Sale Detail</strong>
+            </div>
+
+            <div class="card-body card-block">
+                <br />
+
+                <div class="row form-group">
+                    <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Visa Name / No</label></div>
+                    <div class="col-12 col-md-3">
+                        <input class="form-control" id="txtVisaNameNo" type="text" required value="" maxlength="20">
+                    </div>
+                </div>
+
+
+                <br />
+
+
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-sm float-right" onclick="SaleVisa();">
+                    <i class="material-icons " id="iconcss" style="">save</i>Post Visa Sale
                 </button>
             </div>
         </div>
