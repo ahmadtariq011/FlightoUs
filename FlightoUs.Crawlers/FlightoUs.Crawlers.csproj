@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.6.16" />
-    <PackageReference Include="HtmlAgilityPack.CssSelectors" Version="1.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FlightoUs.Bll\FlightoUs.Bll.csproj" />
     <ProjectReference Include="..\FlightoUs.Model\FlightoUs.Model.csproj" />
   </ItemGroup>

@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlightoUs.Bll\FlightoUs.Bll.csproj" />
-    <ProjectReference Include="..\FlightoUs.Crawlers\FlightoUs.Crawlers.csproj" />
     <ProjectReference Include="..\FlightoUs.Model\FlightoUs.Model.csproj" />
   </ItemGroup>
 

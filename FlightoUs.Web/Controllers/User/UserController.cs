@@ -133,7 +133,17 @@ namespace FlightoUs.Web.Controllers.UserC
         public IActionResult AddEditCashBook(int id)
         {
             BllCashBook bllCashBook = new BllCashBook();
-            ViewBag.cashBook = bllCashBook.GetByPK(id);
+            if (bllCashBook.GetByPK(id) == null)
+            {
+                CashBook dbCashBook = new CashBook();
+                ViewBag.cashBook = dbCashBook;
+                ViewBag.title = "Add Cash Book";
+            }
+            else
+            {
+                ViewBag.cashBook = bllCashBook.GetByPK(id);
+                ViewBag.title = "Edit Cash Book";
+            }
             return View("Views/CRM/Admin/CashBook/AddEditCashBook.cshtml");
         }
         public IActionResult AddRefundRequest(int SaleId)
