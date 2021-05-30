@@ -48,19 +48,29 @@ namespace FlightoUs.Web.Controllers.UserC
             return View("Views/CRM/Admin/Leads/AddEditLead.cshtml");
         }
 
-        public IActionResult AddEditUser(int id)
+        public IActionResult AddEditUser(int id = 0, string Code = "", string Type = "")
         {
+            if (Code == "BadFileExtenstion")
+            {
+                ViewData["Message"] = "You are only allowed to upload Image type Files.";
+            }
+            else if (Code == "FileSuccess")
+            {
+                ViewData["Message"] = "File has been successfully uploaded.";
+            }
             BllUser blluser = new BllUser();
             if (blluser.GetByPK(id) == null)
             {
                 User dbuser = new User();
                 ViewBag.data = dbuser;
                 ViewBag.title = "Add User";
+                ViewBag.IsAdd = false;
             }
             else
             {
                 ViewBag.data = blluser.GetByPK(id);
                 ViewBag.title = "Edit User";
+                ViewBag.IsAdd = true;
             }
             return View("Views/CRM/Admin/Users/AddEditUser.cshtml");
         }
@@ -70,7 +80,7 @@ namespace FlightoUs.Web.Controllers.UserC
             ViewBag.Leadid = LeadId;
             Remarks remarks = new Remarks();
             ViewBag.remarks = remarks;
-            return View("Views/CRM/Admin/Remarks/AddRemarks.cshtml");
+            return View("Views/CRM/Admin/Remarks/AddEditRemarks.cshtml");
         }
         public IActionResult MakeRecipt(int LeadId)
         {

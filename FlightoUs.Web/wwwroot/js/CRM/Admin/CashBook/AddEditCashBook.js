@@ -1,4 +1,9 @@
 ﻿var typevaluein;
+
+function OpenUser(userlogin, typeofUserLogin) {
+    window.location = typeofUserLogin + " / AddEditUser/" + userlogin;
+}
+
 function checktype() {
     debugger;
     typevaluein = $.trim($("#txtSaleType").val());

@@ -1,5 +1,16 @@
 ﻿
 $(document).ready(function () {
+    debugger;
+    if ($("#hfProductId").val() > 0) {
+        $("#hiddenPictureDiv").removeClass("hide");
+    }
+    LoadUserImage();
+
+    var uri = window.location.toString();
+    if (uri.indexOf("?") > 0) {
+        var clean_uri = uri.substring(0, uri.indexOf("?"));
+        window.history.replaceState({}, document.title, clean_uri);
+    }
     $("#aUsers").addClass("navbar_selected");
     $("#div_AddEdit input").keyup(handler_enter);
     $("#txtExpirationDate").datepicker({ dateFormat: 'mm/dd/yy' });
@@ -80,8 +91,64 @@ function SaveUserCallback(data) {
         return;
     }
 
-    window.location.href = data.message;
+    ShowCallbackMessage(true, data.message);
 }
+
+
+function LoadUserImage() {
+
+    var productId = $("#hfProductId").val();
+    var filters =
+    {
+        Id: productId
+    };
+    $.post("/api/UserAPI/GetUserImage", filters, LoadUserImageCallBack);
+}
+
+function LoadUserImageCallBack(data) {
+    $("#div_no_found").hide();
+    $("#divLogos").show();
+
+    if (data.totalCount < 1) {
+        $("#divLogos").hide();
+        $("#div_message_upload_file").hide();
+        $("#div_no_found").show();
+        return;
+    }
+
+    $("#divLogos").html($("#ListTemplateLogos").render(data.message));
+}
+
+
+function Delete(id) {
+    var r = confirm('Are you sure you want to delete?');
+    if (!r) {
+        return;
+    }
+    $("#loader").show();
+    var filters = {
+        Id: id
+    };
+    $.post("/api/UserAPI/DeletePicture", filters, function (data) {
+        $("#loader").hide();
+        if (!data.isSucceeded) {
+            $("#div_message1").removeClass("success");
+            $("#div_message1").addClass("failure");
+            $("#div_message1").show();
+            $("#span_message1").html(data.message);
+        }
+        else {
+            $("#div_message1").removeClass("failure");
+            $("#div_message1").addClass("success");
+            $("#div_message1").show();
+            $("#span_message1").html(data.message);
+        }
+        $("#div_message_upload_file").hide();
+        LoadUserImage();
+    });
+}
+
+
 
 
 

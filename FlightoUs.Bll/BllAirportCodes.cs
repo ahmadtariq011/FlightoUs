@@ -12,11 +12,18 @@ namespace FlightoUs.Bll
     {
         private DalAirportCodes dalAirportCodes = new DalAirportCodes();
 
-        public int Insert(AirpotCodes airpotCodes)
+        public AirpotCodes GetByPK(int Id)
+        {
+            return dalAirportCodes.GetByPK(Id);
+        }
+            public int Insert(AirpotCodes airpotCodes)
         {
             return dalAirportCodes.Insert(airpotCodes);
         }
 
-
+        public List<AirpotCodes> GetAllCodes()
+        {
+            return dalAirportCodes.GetAllCodes();
+        }
     }
 }

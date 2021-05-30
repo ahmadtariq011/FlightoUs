@@ -1,12 +1,13 @@
 ﻿@using FlightoUs.Model.Data
 @using FlightoUs.Model.Enums
+@using FlightoUs.Bll 
 @using FlightoUs.Bll.Helpers
 @using System
 @section Scripts
 {
     <script src="~/js/CRM/Admin/User/AddEditUser.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
-@{ 
+@{
     var data = (User)ViewBag.data;
     var Title = ViewBag.title;
 
@@ -16,16 +17,19 @@
     string typeofuser = EnumHelper.GetEnumByValue<UserRoleType>(data.UserType.ToString()).ToString();
 
     var genders = new List<string>();
-    foreach(var g in gen)
+    foreach (var g in gen)
     {
         genders.Add(String.Join(Environment.NewLine, g));
     }
 
+    BllUser bllUser = new BllUser();
     var usertypes = new List<string>();
     foreach (var g in use)
     {
         usertypes.Add(String.Join(Environment.NewLine, g));
     }
+    var LoginUserId = Convert.ToInt32( User.Identity.Name);
+    var Loguser = (User)bllUser.GetByPK(LoginUserId);
 
 }
 <input type="hidden" id="hfUserId" value="@data.Id" />
@@ -48,21 +52,21 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">First Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" required maxlength="20">
+                        <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" @(ViewBag.IsAdd ? "disabled" : "") required maxlength="20">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Last Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtLastName" type="text" value="@data.LastName" required maxlength="20">
+                        <input class="form-control" id="txtLastName" type="text" value="@data.LastName" @(ViewBag.IsAdd ? "disabled" : "") required maxlength="20">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtUserName" type="text" value="@data.UserName" required maxlength="20">
+                        <input class="form-control" id="txtUserName" type="text" value="@data.UserName" @(ViewBag.IsAdd ? "disabled" : "") required maxlength="20">
                     </div>
                 </div>
 
@@ -70,7 +74,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Email</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
+                        <input class="form-control" id="txtEmail" type="text" value="@data.Email"  required maxlength="500">
                     </div>
                 </div>
 
@@ -89,29 +93,31 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">CNIC</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtCNIC" type="text" value="@data.CNIC" required maxlength="20">
+                        <input class="form-control" id="txtCNIC" type="text" value="@data.CNIC" @(ViewBag.IsAdd ? "disabled" : "") required maxlength="20">
                     </div>
                 </div>
-
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtUserType" name="txtUserType" required>
-                            @foreach (var usertype in usertypes)
-                            {
-                                if (usertype == typeofuser)
+                @if (Loguser.UserType == 1)
+                {
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Type</label></div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="txtUserType" name="txtUserType" required>
+                                @foreach (var usertype in usertypes)
                                 {
-                                    <option id="usertype" selected>@usertype</option>
-                                }
-                                else
-                                {
-                                    <option id="usertype">@usertype</option>
-                                }
+                                    if (usertype == typeofuser)
+                                    {
+                                        <option id="usertype" selected>@usertype</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="usertype">@usertype</option>
+                                    }
 
-                            }
-                        </select>
+                                }
+                            </select>
+                        </div>
                     </div>
-                </div>
+                }
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Gender</label></div>
@@ -135,7 +141,7 @@
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Telephone</label></div>
                     <div class="col-12 col-md-9">
-                        <input class="form-control" id="txtTelephone" type="text" required value="@data.Telephone" maxlength="20">
+                        <input class="form-control" id="txtTelephone" type="text" required value="@data.Telephone" @(ViewBag.IsAdd ? "disabled" : "") maxlength="20">
                     </div>
                 </div>
             </div>
@@ -153,3 +159,84 @@
     </div>
 </div>
 <div class="col-lg-3"></div>
+
+
+<div class="row hide" id="hiddenPictureDiv">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div id="BasicInfo" class="card">
+            <div class="card-header">
+                <strong>User's Pictures</strong>
+            </div>
+            <form id="frmAgent" method="post" enctype="multipart/form-data" class="form-horizontal" asp-action="UploadPicAdmin" asp-controller="UserAPI">
+                <input type="hidden" id="hfProductId" name="hfProductId" value="@data.Id" />
+                <input type="hidden" id="hfProductId" name="hfLogId" value="@User.Identity.Name" />
+                <div class="card-body card-block">
+                    @if (ViewData["Message"] != null)
+                    {
+                        <div id="div_message_upload_file" class="note @ViewData["Type"]" style="display:block !important;">
+                            <p>
+                                <span id="span_message_upload_file">@ViewData["Message"].ToString()</span>
+                            </p>
+                        </div>
+                    }
+                    <div id="div_message1" class="note failure">
+
+                        <p>
+                            <span id="span_message1"></span>
+                        </p>
+                    </div>
+
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Picture</label></div>
+                        <div class="col-12 col-md-9">
+                            <input type="file" id="files" name="files" value="" required />
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"></div>
+                        <div class="col-12 col-md-9">
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-bottom:10px;">
+                                <i class="material-icons" id="iconcss">save</i>Upload
+                            </button>
+                        </div>
+
+                    </div>
+
+
+
+                    <div id="divLogos" class="left" style="margin:0px;  margin-left: 25.7%; margin-bottom:10px;">
+
+                    </div>
+
+                    <div id="div_no_found" class="hide alert alert-info " style="width: 40%; margin-left: 25.7%;">
+                        <h3>No Picture found.</h3>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+
+<script id="ListTemplateLogos" type="text/x-jsrender">
+
+    <div class="left thumbnailBox">
+
+        <div class="thumbnail">
+            <img src="/images/User/ProfileImage/{{:id}}/{{:picture}}" title="{{:picture}}" />
+        </div>
+
+        <div class="links">
+            <a onclick="Delete({{:id}});">Delete</a>
+        </div>
+
+
+    </div>
+
+</script>

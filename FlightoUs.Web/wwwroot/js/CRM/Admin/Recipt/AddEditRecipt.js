@@ -17,6 +17,44 @@ function PrintRecipt() {
 
 
 }
+
+function Adding() {
+    var Added;
+    var FirstOne = parseFloat($("#txtFirstOnePrice").val());
+    var SecondOne = parseFloat($("#txtSecondOnePrice").val());
+    var ThirdOne = parseFloat($("#txtThirdOnePrice").val());
+    if ($("#txtFirstOnePrice").val().length) {
+        Added = FirstOne;
+    }
+    if ($("#txtSecondOnePrice").val().length) {
+        Added += SecondOne;
+    }
+    if ($("#txtThirdOnePrice").val().length) {
+        Added += ThirdOne;
+    }
+    //Added = FirstOne + SecondOne + ThirdOne;
+    $('#txtTotalAmount').attr('value', Added);
+
+
+}
+function CheckPaid() {
+    if (!$("#txtPaid").val().length) {
+        return;
+    }
+    var Minuesvalue;
+    var Paidvalue = parseFloat($("#txtPaid").val());
+    var TotalValue = parseFloat($("#txtTotalAmount").val());
+    if (Paidvalue > TotalValue) {
+        $('#txtbalanceAmount').attr('value', '0');
+        return;
+    }
+    if ($("#txtTotalAmount").val().length) {
+        if ($("#txtPaid").val().length) {      
+            Minuesvalue = TotalValue - Paidvalue;
+        }
+        $('#txtbalanceAmount').attr('value', Minuesvalue);
+    }
+}
 function makeRecipt() {
     if (!Validate("#BasicInfo")) {
         return;
@@ -59,4 +97,37 @@ function makeReciptCallback(data) {
     $("#div_message").addClass("success");
     $("#div_message").show();
     $("#span_message").html("Recipt Is Added Successfully ");
+}
+
+function ApproveRecipt() {
+    if (!Validate("#BasicInfo")) {
+        return;
+    }
+    $("#loader").show();
+
+    $("#div_message").hide();
+
+    var Recipt =
+    {
+        Id: $("#txtReciptId").val(),
+        UserName: $("#txtUserName").val(),
+        Password: $("#txtPassword").val(),
+    };
+
+    $.post("/api/ReciptApi/AuthenticateUser", Recipt, ApproveReciptCallback);
+}
+function ApproveReciptCallback(data) {
+    $("#loader").hide();
+    if (!data.isSucceeded) {
+        $("#div_message").removeClass("success");
+        $("#div_message").addClass("failure");
+        $("#div_message").show();
+        $("#span_message").html(data.message);
+        return;
+    }
+
+    $("#div_message").removeClass("failure");
+    $("#div_message").addClass("success");
+    $("#div_message").show();
+    $("#span_message").html(data.message);
 }

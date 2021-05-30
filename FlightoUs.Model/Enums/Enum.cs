@@ -16,6 +16,12 @@ namespace FlightoUs.Model.Enums
         Cash=1,
         Cheque=2
     }
+    public enum Leadgender
+    {
+        Mr=1,
+        Mrs=2,
+        Miss=3
+    }
     public enum CustomerType
     {
         New=1,

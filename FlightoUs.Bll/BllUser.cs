@@ -24,6 +24,10 @@ namespace FlightoUs.Bll
         {
             return dalUser.GetByPK(Id);
         }
+        public User GetByUserName(string UserName)
+        {
+            return dalUser.GetByUserName(UserName);
+        }
         public User GetByEmail(string email)
         {
             return dalUser.GetByEmail(email);
@@ -52,7 +56,12 @@ namespace FlightoUs.Bll
             dalUser.Update(user);
         }
 
-        public void ChangeUserStatus(User user)
+        public Boolean DeletePicture(int Id)
+        {
+            return dalUser.DeletePicture(Id);
+        }
+
+            public void ChangeUserStatus(User user)
         {
             dalUser.ChangeUserStatus(user);
         }

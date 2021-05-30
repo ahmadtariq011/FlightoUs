@@ -33,6 +33,13 @@ namespace FlightoUs.Dal
             }
         }
   
+        public User GetByUserName(string UserName)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                return entities.Users.SingleOrDefault(p => p.UserName == UserName);
+            }
+        }
         public User GetByEmail(string email)
         {
             using (var entities = new ApplicationDbContext())
@@ -51,7 +58,7 @@ namespace FlightoUs.Dal
         //}
 
 
-       
+
 
         /// <summary>
         /// This function inserts a new record of User
@@ -68,6 +75,21 @@ namespace FlightoUs.Dal
             }
         }
 
+        public Boolean DeletePicture(int Id)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                User dbUser = entities.Users.SingleOrDefault(p => p.Id == Id);
+
+                if (dbUser == null)
+                    return false;
+                else
+                    return true;
+
+            }
+        }
+
+
         /// <summary>
         /// This function updates User
         /// </summary>
@@ -80,6 +102,7 @@ namespace FlightoUs.Dal
                 dbUser.FirstName = user.FirstName;
                 dbUser.LastName = user.LastName;
                 dbUser.Email = user.Email;
+                dbUser.Picture = user.Picture;
                 dbUser.Password = user.Password;
                 dbUser.Telephone = user.Telephone;
                 dbUser.CNIC = user.CNIC;

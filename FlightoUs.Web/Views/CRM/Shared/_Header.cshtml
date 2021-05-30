@@ -1,12 +1,29 @@
-﻿@section Scripts
-{
-}
+﻿@using FlightoUs.Bll
+@using FlightoUs.Model.Data
 @using FlightoUs.Model.Enums;
 @{
     bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
     bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
     bool IsUser = User.IsInRole(UserRoleType.User.ToString());
+    string typeofUserLogin = "";
+    if (IsAdmin)
+    {
+        typeofUserLogin = "Admin";
+    }
+    if (IsManager)
+    {
+        typeofUserLogin = "Manager";
+    }
+    if (IsUser)
+    {
+        typeofUserLogin = "User";
+    }
+
+
+
+    var userlogin = Convert.ToInt32(User.Identity.Name);
 }
+
 <!-- Header-->
 <header id="header" class="header">
     <div class="header-menu">
@@ -26,12 +43,22 @@
                             logout
                         </span>
                     </a>
+                    <a asp-action="AddEditUser" asp-controller="@typeofUserLogin" asp-route-id="@userlogin" asp-route-Code="" asp-route-Type="" style="margin-left:13px;">
+                        <span class="material-icons">
+                            account_circle
+                        </span>
+                    </a>
                 }
                 @if (IsManager)
                 {
                     <a href="#" onclick="Logout('Manager');" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="material-icons">
                             logout
+                        </span>
+                    </a>
+                    <a asp-action="AddEditUser" asp-controller="@typeofUserLogin" asp-route-id="@userlogin" asp-route-Code="" asp-route-Type="" style="margin-left:13px;" >
+                        <span class="material-icons">
+                            account_circle
                         </span>
                     </a>
                 }
@@ -42,9 +69,14 @@
                             logout
                         </span>
                     </a>
+                    <a asp-action="AddEditUser" asp-controller="@typeofUserLogin" asp-route-id="@userlogin" asp-route-Code="" asp-route-Type="" style="margin-left:13px;">
+                        <span class="material-icons">
+                            account_circle
+                        </span>
+                    </a>
                 }
 
-                
+
             </div>
         </div>
     </div>

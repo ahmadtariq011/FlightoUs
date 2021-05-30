@@ -177,7 +177,8 @@ namespace FlightoUs.Dal
             using (var entities = new ApplicationDbContext())
             {
                 var query = from remarks in entities.Remarks
-                                //where user.UserType == filters.UserType
+                            where remarks.Lead_Id==filters.LeadId 
+
                             select new RemarksModel { 
                                 Id=remarks.Id,
                                 ContactDate=remarks.ContactDate,

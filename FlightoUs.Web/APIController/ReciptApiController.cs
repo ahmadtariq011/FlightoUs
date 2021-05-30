@@ -112,6 +112,40 @@ namespace FlightoUs.Web.APIController
             return result;
         }
 
+        [HttpPost]
+        public ServiceResponse AuthenticateUser(AuthenticationClass model)
+        {
+            try
+            {
+
+                User dbUser = bllUser.Login(model.UserName, model.Password);
+                if(dbUser==null)
+                {
+                    result.IsSucceeded = false;
+                    result.Message = "There seems to be Some Problem. Make Sure you are using the right credentials";
+                    return result;
+                }
+
+                if(bllRecipt.GetByPK(model.Id)==null)
+                {
+                    result.IsSucceeded = false;
+                    result.Message = "Blocked";
+                    return result;
+                }
+                Recipt ReciptData = bllRecipt.GetByPK(model.Id);
+                ReciptData.ReciptStatus= Convert.ToByte(ReciptStatus.Approved);
+                bllRecipt.Update(ReciptData);
+                result.IsSucceeded = true;
+                result.Message = "Recipt with "+ReciptData.ReciptNo+" approved successfully";
+            }
+
+            catch (Exception e)
+            {
+                result.IsSucceeded = false;
+                result.Message = e.Message + " </br> " + e.StackTrace;
+            }
+            return result;
+        }
 
 
     }

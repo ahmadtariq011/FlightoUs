@@ -87,6 +87,8 @@ function Searchleads() {
 
 function ResetUsers() {
     $("#txtSearch").val("");
+    $("#txtSearchLeadId").val("");
+
     Searchleads();
 }
 
@@ -94,7 +96,10 @@ function UpdateLeadsFilters() {
     filters =
     {
         Keyword: $("#txtSearch").val(),
-        UserType: $("#useridlog").val(),
+        LeadId: $("#txtSearchLeadId").val(),
+        UserType: $("#userType").val(),
+        User_Id: $("#useridlog").val(),
+        LeadStatus: $("#StatusSearch").val(),
         PageIndex: 1,
         PageSize: 10,
         Sort: sortOption
@@ -134,6 +139,7 @@ function LoadLeadsWithCountCallBack(data) {
 
     CustomersGridPager.GridPager("SetPageIndexAndSize", filters.PageIndex, filters.PageSize);
     CustomersGridPager.GridPager("SetPager", data.TotalCount);
+
 }
 
 function LoadCustomerPagedCallBack(data) {

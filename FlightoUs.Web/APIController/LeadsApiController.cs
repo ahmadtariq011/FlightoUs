@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
-
+using FlightoUs.Bll.Helpers;
 
 namespace FlightoUs.Web.APIController
 {
@@ -21,18 +21,13 @@ namespace FlightoUs.Web.APIController
     {
         BllLead bllLead = new BllLead();
         BllUser bllUser = new BllUser();
+        BllAirportCodes bllAirportCodes = new BllAirportCodes();
         ServiceResponse result = new ServiceResponse();
         [HttpPost]
         public ServiceResponse GetLeadsWithCount(LeadSearchFilter filter)
         {
             try
             {
-
-                var userlog=bllUser.GetByPK(filter.UserType);
-                filter.User_Id = filter.UserType;
-                filter.UserType=userlog.UserType;
-                //FlightoUs.Model.Data.User dbUser = bllUser.GetByPK(Convert.ToInt32(User.Identity.Name));
-                //filter.UserType = dbUser.UserType;
                 result.Message = bllLead.Search(filter);
                 result.IsSucceeded = true;
                 result.TotalCount = bllLead.GetSearchCount(filter);
@@ -84,32 +79,56 @@ namespace FlightoUs.Web.APIController
         {
             try
             {
+                User user = bllUser.GetByPK(lead.Userlog);
+                if (user.UserType == 1)
+                {
+                    result.Message = "/Admin/LeadsIndex";
+                }
+                else if (user.UserType == 2)
+                {
+                    result.Message = "/Manager/LeadsIndex";
+                }
+                else
+                {
+                    result.Message = "/User/LeadsIndex";
+                }
+                var FromCode=bllAirportCodes.GetByPK(lead.FromCode);
+                var ToCode = bllAirportCodes.GetByPK(lead.ToCode);
                 if (lead.Id == 0)
                 {
-                    //int useridid=Convert.ToInt32(User.Identity.Name); 
+                
                     Lead dbLead = new Lead();
                     dbLead.FirstName = lead.FirstName;
                     dbLead.UserName = lead.UserName;
                     dbLead.Email = lead.Email;
                     dbLead.Address = lead.Address;
+                    dbLead.DepartureDate = lead.DepartureDate;
                     dbLead.Telephone = lead.Telephone;
+                    dbLead.LeadTitle = "From " + FromCode.IATA + " To " + ToCode.IATA;
                     dbLead.CreatedDate = DateTime.Now;
                     dbLead.AssignDate = DateTime.Now;
                     dbLead.CreatedBy = lead.CreatedBy;
+                    dbLead.Careof = lead.Careof;
                     dbLead.AssignToUser = lead.AssignToUser;
                     dbLead.ContactCustomer = lead.ContactCustomer;
-                    ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.LeadTypeName);
-                    TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.LeadTypeName);
-                    CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.LeadTypeName);
+                    dbLead.SecondaryPhoneNumber = lead.SecondaryPhoneNumber;
+                    dbLead.FromCode = lead.FromCode;
+                    dbLead.ToCode = lead.ToCode;
+
+                    ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.ClassOfTravelName);
+                    TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.TripTypeName);
+                    CustomerType customer = (CustomerType)Enum.Parse(typeof(CustomerType), lead.CustomeTypeName);
 
                     LeadType type = (LeadType)Enum.Parse(typeof(LeadType), lead.LeadTypeName);
                     LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), lead.LeadStatusName);
+                    Leadgender Gender = (Leadgender)Enum.Parse(typeof(Leadgender), lead.LeadGenderName);
 
                     dbLead.ClassOfTravel = Convert.ToInt32(classt);
                     dbLead.TripTyepLead = Convert.ToInt32(triptype);
                     dbLead.CustomerType = Convert.ToInt32(customer);
                     dbLead.LeadType = Convert.ToInt32(type);
                     dbLead.LeadStatus = Convert.ToInt32(status);
+                    dbLead.LeadGender = Convert.ToInt32(Gender);
 
                     int LeadId = bllLead.Insert(dbLead);
                     result.IsSucceeded = true;
@@ -121,16 +140,21 @@ namespace FlightoUs.Web.APIController
 
                     if(dbLead.AssignToUser!=lead.AssignToUser)
                     {
-                        dbLead.AssignToUser = lead.AssignToUser; 
-                        dbLead.AssignDate = DateTime.Now;
+                        dbLead.Careof = lead.AssignToUser;
+                        //dbLead.AssignToUser = lead.AssignToUser; 
+                        //dbLead.AssignDate = DateTime.Now;
                     }
                     dbLead.ContactCustomer = lead.ContactCustomer;
                     dbLead.FirstName = lead.FirstName;
                     dbLead.LastName = lead.LastName;
-                    dbLead.LeadTitle = lead.LeadTitle;
+                    dbLead.LeadTitle = "From " + FromCode.IATA + " To " + ToCode.IATA;
                     dbLead.Email = lead.Email;
                     dbLead.Address = lead.Address;
+                    dbLead.DepartureDate = lead.DepartureDate;
                     dbLead.Telephone = lead.Telephone;
+                    dbLead.SecondaryPhoneNumber = lead.SecondaryPhoneNumber;
+                    dbLead.FromCode = lead.FromCode;
+                    dbLead.ToCode = lead.ToCode;
 
                     ClassOfTravel classt = (ClassOfTravel)Enum.Parse(typeof(ClassOfTravel), lead.ClassOfTravelName);
                     TripType triptype = (TripType)Enum.Parse(typeof(TripType), lead.TripTypeName);
@@ -138,33 +162,21 @@ namespace FlightoUs.Web.APIController
 
                     LeadType type = (LeadType)Enum.Parse(typeof(LeadType), lead.LeadTypeName);
                     LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), lead.LeadStatusName);
+                    Leadgender Gender = (Leadgender)Enum.Parse(typeof(Leadgender), lead.LeadGenderName);
+
 
                     dbLead.ClassOfTravel = Convert.ToInt32(classt);
                     dbLead.TripTyepLead = Convert.ToInt32(triptype);
                     dbLead.CustomerType = Convert.ToInt32(customer);
                     dbLead.LeadType = Convert.ToInt32(type);
                     dbLead.LeadStatus = Convert.ToInt32(status);
-
+                    dbLead.LeadGender = Convert.ToInt32(Gender);
 
                     bllLead.Update(dbLead);
                     result.IsSucceeded = true;
                    
                 }
-                bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
-                bool IsManager = User.IsInRole(UserRoleType.Manager.ToString());
-                bool IsUser = User.IsInRole(UserRoleType.User.ToString());
-                if(IsAdmin)
-                {
-                    result.Message = "/Admin/UserIndex";
-                }
-                else if(IsManager)
-                {
-                    result.Message = "/Manager/UserIndex";
-                }
-                else if(IsUser)
-                {
-                    result.Message = "/User/UserIndex";
-                }
+              
 
             }
             catch (Exception e)
@@ -257,8 +269,26 @@ namespace FlightoUs.Web.APIController
         }
 
 
+        [HttpPost]
+        public ServiceResponse GEtByphoneN0(LeadModel lead)
+        {
+            var leadphone = bllLead.GetByPhoneNoLeads(lead.Telephone);
+            if (leadphone != null)
+            {
+                var Userlogin = bllUser.GetByPK(lead.Userlog);
+                var userloginType = Userlogin.UserType;
+                string LeadGenderType = EnumHelper.GetEnumByValue<UserRoleType>(userloginType.ToString()).ToString();
+                result.Message = "/"+LeadGenderType+"/AddEditLead/"+leadphone.Id;
+                result.IsSucceeded = true ;
 
 
+            }
+            else
+            {
+                result.IsSucceeded = false;
+            }
+            return result;
+        }
 
 
     }

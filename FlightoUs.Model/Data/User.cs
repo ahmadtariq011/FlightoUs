@@ -39,12 +39,14 @@ namespace FlightoUs.Model.Data
 
         public int UserType { get; set; }
 
+        public string Picture { get; set; } 
         [Required]
         [StringLength(100)]
         public string CNIC { get; set; }
 
         public int GenderType { get; set; }
         public int UserStatus { get; set; }
+        public DateTime LogTime { get; set; }
 
         public virtual ICollection<Lead> Leads { get; set; }
 

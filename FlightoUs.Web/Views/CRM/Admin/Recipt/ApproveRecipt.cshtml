@@ -1,0 +1,136 @@
+﻿@using FlightoUs.Bll
+@using FlightoUs.Model.Data
+@section Scripts
+{
+    <script src="~/js/CRM/Admin/Recipt/AddEditRecipt.js?v=@DateTime.Now.Ticks.ToString()"></script>
+}
+@{
+    var remarksData = (Remarks)ViewBag.remarks;
+    var ReciptId = ViewBag.ReciptId;
+
+
+    var ReciptData = (Recipt)ViewBag.ReciptData;
+    var i = 0;
+    BllLead bllLead = new BllLead();
+    var LEadData=bllLead.GetByPK(ReciptData.Lead_Id);
+}
+<div class="row">
+
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div id="" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+            <div class="card-header">
+                <strong>Approve Recipt</strong>
+            </div>
+
+            <div class="card-body card-block">
+             
+
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="hf-email" class=" form-control-label">Recipt Id</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtDetails" type="text" value="@ReciptData.ReciptNo" disabled/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="hf-email" class=" form-control-label">For Lead Title</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtDetails" type="text" value="@LEadData.LeadTitle" disabled/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="hf-email" class=" form-control-label">For Lead Id</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtDetails" type="text" value="@LEadData.Id" disabled/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="hf-email" class=" form-control-label">For Lead Name</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtDetails" type="text" value="@LEadData.FirstName" disabled/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="hf-email" class=" form-control-label">Recipt Total Amount</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtDetails" type="text" value="@ReciptData.TotalAmount" disabled/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="hf-email" class=" form-control-label">Recipt Balance Amount</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtDetails" type="text" value="@ReciptData.Balance" disabled/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3"></div>
+
+
+
+
+<!--
+Authentication Details
+-->
+
+<div class="row">
+
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
+            <div class="card-header">
+                <strong>Authentication Details</strong>
+            </div>
+            <div class="card-body card-block">
+                <strong>Please Verify Yourself to approve Recipt Status</strong>
+                <br />
+                <div id="div_message" class="note failure">
+                    <p>
+                        <span id="span_message"></span>
+                    </p>
+                </div>
+                <input type="hidden" id="txtReciptId" value="@ReciptData.Id" />
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">User Name</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtUserName" type="text" required maxlength="20" placeholder="Please Enter Your UserName">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Password</label></div>
+                    <div class="col-12 col-md-9">
+                        <input class="form-control" id="txtPassword" type="password" required maxlength="50" placeholder="Please Enter Yor Password" />
+                        <input id="chkShowHidePassword" type="checkbox" onchange="ShowHidePassword(this, 'txtPassword');" style="margin-top:15px;" />
+                        <label for="chkShowHidePassword" style="margin-bottom:0px;"> Show Password</label>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary btn-sm" onclick="ApproveRecipt();">
+                <span class="material-icons">
+                    domain_verification
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3"></div>

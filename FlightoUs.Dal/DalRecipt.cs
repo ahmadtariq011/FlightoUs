@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlightoUs.Model.Services;
+using FlightoUs.Model.Enums;
 
 namespace FlightoUs.Dal
 {
@@ -57,7 +58,7 @@ namespace FlightoUs.Dal
             using (var entities = new ApplicationDbContext())
             {
                 Recipt dbRecipt = entities.Recipts.SingleOrDefault(p => p.Id == recipt.Id);
-                dbRecipt.ReciptNo = recipt.ReciptNo;
+                dbRecipt.ReciptStatus = recipt.ReciptStatus;
                 entities.SaveChanges();
             }
         }
@@ -127,7 +128,8 @@ namespace FlightoUs.Dal
                                 LeadTitle=Recipt.Lead.LeadTitle,
                                 CreatedDate=Recipt.CreatedDate,
                                 ContactNumber=Recipt.Lead.Telephone,
-                                CreatedByStr=Recipt.User.FirstName
+                                CreatedByStr=Recipt.User.FirstName,
+                                ReciptStatus=Recipt.ReciptStatus
                             };
 
            
@@ -141,6 +143,9 @@ namespace FlightoUs.Dal
                 foreach (var Recipt in lst)
                 {
                     Recipt.CreatedDateStr = string.Format("{0:MM/dd/yyyy}", Recipt.CreatedDate);
+                    Recipt.StatusStr = System.Enum.Parse(typeof(ReciptStatus), Recipt.ReciptStatus.ToString()).ToString();
+                    Recipt.ReciptStatusStr = System.Enum.Parse(typeof(ReciptStatus), Recipt.ReciptStatus.ToString()).ToString();
+
                 }
                 return lst;
             }

@@ -143,6 +143,9 @@ namespace FlightoUs.Model.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Careof")
+                        .HasColumnType("int");
+
                     b.Property<int>("ClassOfTravel")
                         .HasColumnType("int");
 
@@ -172,9 +175,15 @@ namespace FlightoUs.Model.Migrations
                     b.Property<string>("FreeText")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FromCode")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("LeadGender")
+                        .HasColumnType("int");
 
                     b.Property<int>("LeadStatus")
                         .HasColumnType("int");
@@ -191,9 +200,15 @@ namespace FlightoUs.Model.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("SecondaryPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Telephone")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ToCode")
+                        .HasColumnType("int");
 
                     b.Property<int>("TripTyepLead")
                         .HasColumnType("int");
@@ -204,7 +219,7 @@ namespace FlightoUs.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignToUser");
+                    b.HasIndex("Careof");
 
                     b.ToTable("Lead");
                 });
@@ -528,10 +543,16 @@ namespace FlightoUs.Model.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime>("LogTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
@@ -576,7 +597,7 @@ namespace FlightoUs.Model.Migrations
                 {
                     b.HasOne("FlightoUs.Model.Data.User", "User")
                         .WithMany("Leads")
-                        .HasForeignKey("AssignToUser")
+                        .HasForeignKey("Careof")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

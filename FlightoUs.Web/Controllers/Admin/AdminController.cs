@@ -22,8 +22,7 @@ namespace FlightoUs.Web.Controllers.Admin
             return View("Views/CRM/Admin/Leads/Index.cshtml");
         }
 
-
-        public IActionResult AddEditLead(int id)
+        public IActionResult AddEditLead(int id=0)
         {
             BllLead blllead = new BllLead();
             BllRemarks bllRemarks = new BllRemarks();
@@ -47,20 +46,33 @@ namespace FlightoUs.Web.Controllers.Admin
 
             return View("Views/CRM/Admin/Leads/AddEditLead.cshtml");
         }
-
-        public IActionResult AddEditUser(int id)
+        public IActionResult AddEditUser(int id=0,string Code="", string Type="")
         {
+            if (Code == "BadFileExtenstion")
+            {
+                ViewData["Message"] = "You are only allowed to upload Image type Files.";
+                ViewData["Type"] = Type;
+            }
+            else if (Code == "FileSuccess")
+            {
+                ViewData["Message"] = "File has been successfully uploaded.";
+                ViewData["Type"] = Type;
+            }
             BllUser blluser = new BllUser();
             if (blluser.GetByPK(id) == null)
             {
                 User dbuser = new User();
                 ViewBag.data = dbuser;
                 ViewBag.title = "Add User";
+                ViewBag.IsAdd = false;
+
             }
             else
             {
                 ViewBag.data = blluser.GetByPK(id);
                 ViewBag.title = "Edit User";
+                ViewBag.IsAdd = false;
+
             }
             return View("Views/CRM/Admin/Users/AddEditUser.cshtml");
         }
@@ -163,6 +175,14 @@ namespace FlightoUs.Web.Controllers.Admin
         public IActionResult RefundIndex()
         {
             return View("Views/CRM/Admin/Refunds/Index.cshtml");
+        }
+        public IActionResult ApproveRecipt(int Id)
+        {
+            ViewBag.ReciptId = Id;
+
+            BllRecipt bllRecipt = new BllRecipt();
+            ViewBag.ReciptData = bllRecipt.GetByPK(Id);
+            return View("Views/CRM/Admin/Recipt/ApproveRecipt.cshtml");
         }
     }
 }

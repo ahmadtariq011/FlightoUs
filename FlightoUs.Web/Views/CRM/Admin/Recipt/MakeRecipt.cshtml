@@ -156,21 +156,21 @@
                                 <td><input type="text" id="txtFirstOne" class="form-control" required /></td>
                                 <td></td>
                                 <td class="text-95"></td>
-                                <td class="text-secondary-d2"><input type="text" id="txtFirstOnePrice" required class="form-control" /></td>
+                                <td class="text-secondary-d2"><input type="text" id="txtFirstOnePrice" onchange="Adding();" required class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>2</td>
                                 <td><input type="text" id="txtSecondOne" class="form-control"  /></td>
                                 <td></td>
                                 <td class="text-95"></td>
-                                <td class="text-secondary-d2"><input type="text" id="txtSecondOnePrice"  class="form-control" /></td>
+                                <td class="text-secondary-d2"><input type="text" id="txtSecondOnePrice" onchange="Adding();" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>3</td>
                                 <td><input type="text" id="txtThirdOne"  class="form-control" /></td>
                                 <td></td>
                                 <td class="text-95"></td>
-                                <td class="text-secondary-d2"><input type="text"  id="txtThirdOnePrice" class="form-control" /></td>
+                                <td class="text-secondary-d2"><input type="text"  id="txtThirdOnePrice" onchange="Adding();" class="form-control" /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -198,7 +198,7 @@
                                 Paid
                             </div>
                             <div class="col-5">
-                                <span class="text-120 text-secondary-d1"><input required id="txtPaid" class="form-control" /></span>
+                                <span class="text-120 text-secondary-d1"><input required id="txtPaid" onchange="CheckPaid();" class="form-control" /></span>
                             </div>
                         </div>
 

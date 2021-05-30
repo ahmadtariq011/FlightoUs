@@ -2,15 +2,18 @@
 @using FlightoUs.Model.Data
 @using FlightoUs.Model.Enums
 @using FlightoUs.Bll.Helpers
+@using FlightoUs.Model.Services 
 @using Microsoft.AspNetCore.Http;
 
 @section Scripts
 {
     <script src="~/js/CRM/Admin/Lead/AddEditLead.js?v=@DateTime.Now.Ticks.ToString()"></script>
+    <script src="~/select2-develop/dist/js/select2.min.js"></script>
 
 }
 @section Styles
 {
+    <link href="~/select2-develop/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         /** {
             box-sizing: border-box
@@ -59,6 +62,13 @@
         typeofUserLogin = "User";
     }
     var data = (Lead)ViewBag.data;
+
+    int year = data.DepartureDate.Year;
+    int month = data.DepartureDate.Month;
+    int day = data.DepartureDate.Day;
+
+
+    var CreatedDateStr = string.Format("{0}/{1}/{2}", year, month, day);
     var Title = ViewBag.title;
     BllUser bllUser = new BllUser();
     var userdata = bllUser.GetAllUsers();
@@ -70,6 +80,7 @@
     string customerType = EnumHelper.GetEnumByValue<CustomerType>(data.CustomerType.ToString()).ToString();
     string Classoftravel = EnumHelper.GetEnumByValue<ClassOfTravel>(data.ClassOfTravel.ToString()).ToString();
     string LeadTripType = EnumHelper.GetEnumByValue<TripType>(data.TripTyepLead.ToString()).ToString();
+    string LeadGenderType = EnumHelper.GetEnumByValue<Leadgender>(data.LeadGender.ToString()).ToString();
 
 
     var typ = Enum.GetValues(typeof(LeadType)).Cast<LeadType>().ToList();
@@ -105,6 +116,12 @@
     {
         Classoftravels.Add(String.Join(Environment.NewLine, g));
     }
+    var gender = Enum.GetValues(typeof(Leadgender)).Cast<Leadgender>().ToList();
+    var LeadsGendrs = new List<string>();
+    foreach (var g in gender)
+    {
+        LeadsGendrs.Add(String.Join(Environment.NewLine, g));
+    }
 
     Ticket TicketData = new Ticket();
     Hotel HotelData = new Hotel();
@@ -136,8 +153,16 @@
 
     var LeadStatusEnum = Enum.GetName(typeof(LeadStatus), data.LeadStatus);
 
-    var us = User.Identity.Name;
+    BllAirportCodes bllAirportCodes = new BllAirportCodes();
+    var AirportCodes=bllAirportCodes.GetAllCodes();
+
+
+    var us = Convert.ToInt32(User.Identity.Name);
+    var LoginUserData = bllUser.GetByPK(us);
+
     var u = 3;
+
+    var createduser = bllUser.GetByPK(data.CreatedBy);
 
 }
 @*<div class="row">
@@ -149,34 +174,34 @@
             </span>
         </button>
     </div>*@
-<input type="hidden" value="@Convert.ToInt32( User.Identity.Name)"/>
+<input type="hidden" value="@Convert.ToInt32( User.Identity.Name)" id="Userlog" />
 @*@if (data.Id != 0)
-{
-    @if (TicketData.Id != 0 || HotelData.Id != 0)
     {
-        <div>
-            <div class="right mt10">
-                <a class="btn btn-success btn-dark" onclick="MakeRecipt();">
-                    <span style="position: relative; top: -5px;"> Make Recipt</span>
-                    <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
-                        add_circle
-                    </span>
-                </a>
+        @if (TicketData.Id != 0 || HotelData.Id != 0)
+        {
+            <div>
+                <div class="right mt10">
+                    <a class="btn btn-success btn-dark" onclick="MakeRecipt();">
+                        <span style="position: relative; top: -5px;"> Make Recipt</span>
+                        <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
+                            add_circle
+                        </span>
+                    </a>
+                </div>
             </div>
-        </div>
-    }
+        }
 
-}*@
+    }*@
 <div class="row">
     @*<div class="col-lg-12">
-        <div style="width:inherit;background-color: #548A94;margin-bottom: 30px;">
-            <a asp-action="" asp-controller="" asp-route-LeadId="">
-                <img style="width: 80px;" src="~/images/a.png" />
-            </a>
+            <div style="width:inherit;background-color: #548A94;margin-bottom: 30px;">
+                <a asp-action="" asp-controller="" asp-route-LeadId="">
+                    <img style="width: 80px;" src="~/images/a.png" />
+                </a>
 
-        </div>
+            </div>
 
-    </div>*@
+        </div>*@
 </div>
 
 <!--
@@ -192,48 +217,51 @@
             <div id="BasicInfo" class="card" style="padding-bottom: 0px !important; margin-bottom: 0px;">
                 <div class="card-header">
                     <strong>Lead Detail</strong>
-                    @if (data.Id != 0 )
+                        @if(data.Careof == Convert.ToInt32(User.Identity.Name))
+                        {
+                    @if (data.Id != 0)
                     {
-                        if(LeadStatusEnum != "Close")
-                        { 
-                        <a class="btn btn-primary btn-sm float-right" asp-controller="@typeofUserLogin" asp-action="MakeRecipt" asp-route-LeadId="@data.Id">
-                            <span class="material-icons">
-                                receipt
-                            </span>
-                            <span style="position: relative;top: -6px;">Make Recipt</span>
-                        </a>
-                        <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" asp-controller="@typeofUserLogin" asp-action="MakeSalePost" asp-route-LeadId="@data.Id">
-                            <span class="material-icons">
-                                point_of_sale
-                            </span>
-                            <span style="position: relative;top: -6px;">Post Sale</span>
-                        </a>
+                        if (LeadStatusEnum != "Close")
+                        {
+                    <a class="btn btn-primary btn-sm float-right" asp-controller="@typeofUserLogin" asp-action="MakeRecipt" asp-route-LeadId="@data.Id">
+                        <span class="material-icons">
+                            receipt
+                        </span>
+                        <span style="position: relative;top: -6px;">Make Recipt</span>
+                    </a>
+                    <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" asp-controller="@typeofUserLogin" asp-action="MakeSalePost" asp-route-LeadId="@data.Id">
+                        <span class="material-icons">
+                            point_of_sale
+                        </span>
+                        <span style="position: relative;top: -6px;">Post Sale</span>
+                    </a>
                         }
                         if (LeadStatusEnum == "Open" || LeadStatusEnum == "Success")
                         {
-                            <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Success');">
-                                <span class="material-icons">
-                                    thumb_up_alt
-                                </span>
-                                <span style="position: relative;top: -6px;">Success</span>
-                            </a>
-                            <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Close');">
-                                <span class="material-icons">
-                                    trending_down
-                                </span>
-                                <span style="position: relative;top: -6px;">Close</span>
-                            </a>
+                    <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Success');">
+                        <span class="material-icons">
+                            thumb_up_alt
+                        </span>
+                        <span style="position: relative;top: -6px;">Success</span>
+                    </a>
+                    <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Close');">
+                        <span class="material-icons">
+                            trending_down
+                        </span>
+                        <span style="position: relative;top: -6px;">Close</span>
+                    </a>
                         }
                         if (LeadStatusEnum == "Close")
                         {
-                            <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Open');">
-                                <span class="material-icons">
-                                    lock_open
-                                </span>
-                                <span style="position: relative;top: -6px;">Open</span>
-                            </a>
+                    <a class="btn btn-primary btn-sm float-right" style="margin-right: 20px;" onclick="ChangeStatus('Open');">
+                        <span class="material-icons">
+                            lock_open
+                        </span>
+                        <span style="position: relative;top: -6px;">Open</span>
+                    </a>
                         }
                     }
+                        }
                 </div>
 
                 <div class="card-body card-block">
@@ -246,43 +274,49 @@
                     <div class="row form-group">
                         <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Lead ID</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtUserName" type="text" value="@(data.Id!=0 ? data.Id :"")" disabled required maxlength="20">
+                            <input class="form-control" id="txtUserName" type="text" value="@(data.Id!=0 ? data.Id :"")" disabled maxlength="20">
                         </div>
-                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Contact Person</label></div>
+                        <div class="col offset-md-1 col-md-2">
+                            <label for="hf-email" class=" form-control-label">
+                                Name &nbsp;
+                                <span class="input-group-addon">
+                                    <select name="txtLeadgender" id="txtLeadgender">
+                                        @foreach (var c in LeadsGendrs)
+                                        {
+                                            if (c == LeadGenderType)
+                                            {
+                                                <option id="genders" selected>@c</option>
+                                            }
+                                            else
+                                            {
+                                                <option id="genders">@c</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </span>
+                            </label>
+                        </div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" required maxlength="20">
+                            <input class="form-control" id="txtFirstName" type="text" value="@data.FirstName" @(ViewBag.IsAdd ? "disabled" : "") maxlength="20">
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Primary Phone</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtTelephone" type="text" required onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
+                            <input class="form-control" id="txtTelephone" type="text" @(ViewBag.IsAdd ? "disabled" : "") onchange="CheckForUser();" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.Telephone" maxlength="20">
                         </div>
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Email</label></div>
                         <div class="col-12  col-md-3">
-                            <input class="form-control" id="txtEmail" type="text" value="@data.Email" required maxlength="500">
+                            <input class="form-control" id="txtEmail" type="text" value="@data.Email" maxlength="500">
                         </div>
                     </div>
 
                     <div class="row form-group">
-                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Care of</label></div>
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Secondary Phone No</label></div>
                         <div class="col-12 col-md-3">
-                            <select class="form-control" id="txtCreatedBy" name="txtCreatedBy" required @(ViewBag.IsAdd ? "disabled" : "")>
-                                <option value="">Please Select</option>
-                                @foreach (var user in userdata)
-                                {
-                                    if (user.Id == data.CreatedBy)
-                                    {
-                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                    }
-
-                                }
-                            </select>
+                            <input class="form-control" id="txtSecondaryPhoneNumber" type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="@data.SecondaryPhoneNumber" maxlength="20">
                         </div>
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Customer Type</label></div>
                         <div class="col-12 col-md-3">
@@ -307,7 +341,7 @@
                     <div class="row form-group">
                         <div class="col  col-md-2"><label for="hf-email" class=" form-control-label">Location</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtAddress" type="text" value="@data.Address" required maxlength="500">
+                            <input class="form-control" id="txtAddress" type="text" value="@data.Address" maxlength="500">
                         </div>
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">In Contact With Customer</label></div>
                         <div class="col-12 col-md-3">
@@ -328,29 +362,72 @@
                         </div>
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Departure Date</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtDepartureDateL" type="datetime" value="@data.DepartureDate" required maxlength="20">
+                            <input class="form-control" id="txtDepartureDateL" type="date" value="@data.DepartureDate" maxlength="20">
                         </div>
                     </div>
 
                     <div class="row form-group">
-                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Return Date</label></div>
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Sector From</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtArrivalDateL" type="datetime" value="@data.ReturnDate" required maxlength="20">
+                            <select class="form-control" id='selUserFrom' name="selUserFrom" required>
+                                <option value="">Please Select</option>
+                                @foreach (var code in AirportCodes)
+                                {
+                                    if (code.Id == data.FromCode)
+                                    {
+                                        <option value="@code.Id" selected>@code.IATA , @code.Location</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@code.Id">@code.IATA , @code.Location</option>
+                                    }
+                                }
+                            </select>
                         </div>
-                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Lead Title</label></div>
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Sector To</label></div>
                         <div class="col-12 col-md-3">
-                            <input class="form-control" id="txtLeadTitle" type="text" value="@data.LeadTitle" required maxlength="20">
+                            <select class="form-control" id="selUserTo" name="selUserTo" required>
+                                <option value="">Please Select</option>
+                                @foreach (var code in AirportCodes)
+                                {
+                                    if (code.Id == data.ToCode)
+                                    {
+                                        <option value="@code.Id" selected>@code.IATA , @code.Location</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@code.Id">@code.IATA , @code.Location</option>
+                                    }
+                                }
+                            </select>
                         </div>
+
                     </div>
 
                     <div class="row form-group">
                         <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Created By</label></div>
                         <div class="col-12 col-md-3">
-                            <select class="form-control" id="" name="" required @(ViewBag.IsAdd ? "disabled" : "")>
+                            @if (data.Id != 0)
+                            {
+                                <input class="form-control" type="text" value="@createduser.FirstName" required disabled maxlength="20">
+                                <input type="hidden" value="@data.CreatedBy" id="txtCreatedBy" />
+                            }
+                            else
+                            {
+                                <input class="form-control" type="text" value="@LoginUserData.FirstName" required disabled maxlength="20">
+                                <input type="hidden" value="@LoginUserData.Id" id="txtCreatedBy" />
+                            }
+
+                        </div>
+
+
+                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Care of</label></div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control" id="txtCareOf" name="txtCareOf" required @(ViewBag.IsAdd ? "disabled" : "")>
                                 <option value="">Please Select</option>
                                 @foreach (var user in userdata)
                                 {
-                                    if (user.Id == data.CreatedBy)
+                                    if (user.Id == data.Careof)
                                     {
                                         <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
                                     }
@@ -362,31 +439,13 @@
                                 }
                             </select>
                         </div>
-                        <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Taken Over By</label></div>
-                        <div class="col-12  col-md-3">
-                            <select class="form-control" id="txtAssignTo" name="txtAssignTo" required>
-                                <option value="">Please Select</option>
-                                @foreach (var user in userdata)
-                                {
-                                    if (user.Id == data.AssignToUser)
-                                    {
-                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                                    }
-                                }
-                            </select>
-                        </div>
-
                     </div>
 
 
                     <div class="row form-group">
                         <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Status</label></div>
                         <div class="col-12 col-md-3">
-                            <select class="form-control" id="txtLeadStatus" name="txtLeadStatus" required>
+                            <select class="form-control" id="txtLeadStatus" name="txtLeadStatus" required @(ViewBag.IsAdd ? "disabled" : "")>
                                 @foreach (var stat in LeadStatuses)
                                 {
                                     if (stat == LeadStatus)
@@ -418,13 +477,12 @@
                                 }
                             </select>
                         </div>
-
                     </div>
 
                     <div class="row form-group">
                         <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Trip Type</label></div>
                         <div class="col-12 col-md-3">
-                            <select class="form-control" id="txttripType" name="txtTripType" required>
+                            <select class="form-control" id="txttripType" name="txtTripType" required onchange="ShowHideReturnDate();">
                                 @foreach (var stat in TripTypes)
                                 {
                                     if (stat == LeadTripType)
@@ -439,7 +497,6 @@
                                 }
                             </select>
                         </div>
-
 
                         <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Lead Type</label></div>
                         <div class="col-12 col-md-3">
@@ -459,6 +516,36 @@
                             </select>
                         </div>
                     </div>
+
+
+                    <div class="row form-group">
+                        <div class="col col-md-2"><label for="hf-email" class=" form-control-label">Return Date</label></div>
+                        <div class="col-12 col-md-3">
+                            <input class="form-control hide" id="txtArrivalDateL" type="date" value="@data.ReturnDate" maxlength="20">
+                        </div>
+
+                        @if (data.Id != 0 && typeofUserLogin == "Admin")
+                        {
+                            <div class="col offset-md-1 col-md-2"><label for="hf-email" class=" form-control-label">Taken Over By</label></div>
+                            <div class="col-12  col-md-3">
+                                <select class="form-control" id="txtAssignTo" name="txtAssignTo" required>
+                                    <option value="">Please Select</option>
+                                    @foreach (var user in userdata)
+                                    {
+                                        if (user.Id == data.Careof)
+                                        {
+                                            <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }
+                    </div>
+
                     <br />
 
 
@@ -517,15 +604,17 @@
     <br />
     <br />
     <div style="display:@(ViewBag.IsAdd ? "inline" : "none")">
-        <div class="right mT10">
-            <a class="btn btn-success btn-sm" asp-action="AddEditRemarks" asp-controller="@typeofUserLogin" asp-route-LeadId="@data.Id">
-                <span style="position: relative; top: -5px;">Add Remarks</span>
-                <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
-                    add_circle
-                </span>
-            </a>
-        </div>
-
+        @if (data.Careof == Convert.ToInt32(User.Identity.Name))
+        {
+            <div class="right mT10">
+                <a class="btn btn-success btn-sm" asp-action="AddEditRemarks" asp-controller="@typeofUserLogin" asp-route-LeadId="@data.Id">
+                    <span style="position: relative; top: -5px;">Add Remarks</span>
+                    <span class="material-icons mr-1" style="position: relative; top: 3px; width: 20px;">
+                        add_circle
+                    </span>
+                </a>
+            </div>
+        }
 
         <div class="clearfix"></div>
         <div class="row">
@@ -552,10 +641,10 @@
                         <table id="tbl1" class="table">
                             <thead>
                                 <tr>
-                                    <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="">CreatedDate</th>
-                                    <th class="gridSortingMenu" scope="col" sortable datafield="contactDateStr" caption="">To Contact on Date</th>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="">Created Date</th>
+                                    <th class="gridSortingMenu" scope="col" sortable datafield="contactDateStr" caption="">Follow Up Date</th>
                                     <th class="gridSortingMenu" scope="col" sortable datafield="details" caption="">Details</th>
-                                   
+
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -585,7 +674,7 @@
             <td>{{:contactDateStr}}</td>
             <td>{{:details}}</td>
             <td>
-                
+
                 @*<a onclick="DeleteLeads({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>*@
             </td>
         </tr>

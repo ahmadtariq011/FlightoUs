@@ -61,6 +61,7 @@
                             <th class="gridSortingMenu" scope="col" sortable datafield="contactNumber" caption="Contact Number"></th>
                             <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="Recipt Date"></th>
                             <th class="gridSortingMenu" scope="col" sortable datafield="createdByStr" caption="Issued By"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="reciptStatusStr" caption="Recipt Status"></th>
                             <th scope="col" style="width:180px;">Actions</th>
                         </tr>
                     </thead>
@@ -91,16 +92,25 @@
         <td>{{:contactNumber}}</td>
         <td>{{:createdDateStr}}</td>
         <td>{{:createdByStr}}</td>
+        <td>{{:reciptStatusStr}}</td>
         <td>
             <a href="/@typeofUserLogin/ReciptView/{{:id}}" class="text-primary mr-3" style="cursor:pointer;">
                 <span class="material-icons">
                     view_list
                 </span>
             </a>
+            @*{{if statusStr =='Approved'}}*@
             @if (IsAdmin)
             {
-                <a onclick="DeleteRecipt({{:id}});" class="text-danger " style="cursor:pointer;"><i class="material-icons">delete_outline</i></a>
+                <a href="/Admin/ApproveRecipt/{{:id}}" class="text-danger " style="cursor:pointer;">
+                    <span class="material-icons">
+                        done_outline
+                    </span>
+                </a>
             }
+            @*{{/if}}*@
+
+
         </td>
     </tr>
 

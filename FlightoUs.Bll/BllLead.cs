@@ -22,6 +22,11 @@ namespace FlightoUs.Bll
         {
             return dalLead.GetByEmailLeads(email);
         }
+
+        public Lead GetByPhoneNoLeads(string email)
+        {
+            return dalLead.GetByPhoneNoLeads(email);
+        }
         public Lead GetByUsernameLeads(string username)
         {
             return dalLead.GetByUsernameLeads(username);
@@ -73,7 +78,6 @@ namespace FlightoUs.Bll
         {
             return dalLead.Search(filters);
         }
-
         /// <summary>
         /// This function executes count query after applying different filters
         /// </summary>
@@ -82,6 +86,11 @@ namespace FlightoUs.Bll
         public int GetSearchCount(LeadSearchFilter filters)
         {
             return dalLead.GetSearchCount(filters);
+        }
+
+        public int GetSearchCountAdmin(LeadSearchFilter filters)
+        {
+            return dalLead.GetSearchCountAdmin(filters);
         }
     }
 }

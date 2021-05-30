@@ -8,3 +8,7 @@
 function logoutcallback(data) {
     window.location.href = data.message;
 }
+
+function OpenUser(userlogin, typeofUserLogin) {
+    window.location = "AddEditUser/"+userlogin;
+}

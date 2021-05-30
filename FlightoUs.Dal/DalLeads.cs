@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlightoUs.Model.Services;
+using FlightoUs.Model.Enums;
 
 namespace FlightoUs.Dal
 {
@@ -32,6 +33,13 @@ namespace FlightoUs.Dal
             using (var entities = new ApplicationDbContext())
             {
                 return entities.Leads.FirstOrDefault(p => p.Email == email);
+            }
+        }
+        public Lead GetByPhoneNoLeads(string email)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                return entities.Leads.FirstOrDefault(p => p.Telephone == email);
             }
         }
         public Lead GetByUsernameLeads(string username)
@@ -90,10 +98,15 @@ namespace FlightoUs.Dal
                 dbLead.LeadType = lead.LeadType;
                 dbLead.LeadStatus = lead.LeadStatus;
                 dbLead.LeadTitle = lead.LeadTitle;
+                dbLead.DepartureDate = lead.DepartureDate;
                 dbLead.ContactCustomer = lead.ContactCustomer;
                 dbLead.ClassOfTravel = lead.ClassOfTravel;
                 dbLead.TripTyepLead = lead.TripTyepLead;
                 dbLead.CustomerType = lead.CustomerType;
+                dbLead.LeadGender = lead.LeadGender;
+                dbLead.SecondaryPhoneNumber = lead.SecondaryPhoneNumber;
+                dbLead.FromCode = lead.FromCode;
+                dbLead.ToCode = lead.ToCode;
                 entities.SaveChanges();
             }
         }
@@ -151,10 +164,13 @@ namespace FlightoUs.Dal
         public List<LeadModel> Search(LeadSearchFilter filters)
         {
             int skip = (filters.PageIndex - 1) * filters.PageSize;
+            LeadStatus status = (LeadStatus)Enum.Parse(typeof(LeadStatus), filters.LeadStatus);
+            int stats = Convert.ToInt32(status);
 
             using (var entities = new ApplicationDbContext())
             {
                 var query = from lead in entities.Leads
+                            where lead.CreatedBy==filters.User_Id || lead.Careof == filters.User_Id
                             select new LeadModel
                             {
                                 Id=lead.Id,
@@ -162,26 +178,26 @@ namespace FlightoUs.Dal
                                 Telephone=lead.Telephone,
                                 CreatedDate=lead.CreatedDate,
                                 LeadTitle=lead.LeadTitle,
-                                AssignDate=lead.AssignDate
+                                AssignDate=lead.AssignDate,
+                                UserName=lead.UserName,
+                                Email=lead.Email,
+                                DepartureDate=lead.DepartureDate,
+                                LeadStatus=lead.LeadStatus,
+                                LeadGender=lead.LeadGender
                             };
 
-                if (!string.IsNullOrEmpty(filters.UserName))
+                if (!string.IsNullOrEmpty(filters.Keyword))
                 {
-                    query = query.Where(p => p.UserName.Contains(filters.UserName));
+                    query = query.Where(p => p.Telephone.Contains(filters.Keyword));
                 }
-
-                if (!string.IsNullOrEmpty(filters.Email))
+                if(stats!=0)
                 {
-                    query = query.Where(p => p.Email.Contains(filters.Email));
+                    query = query.Where(p => p.LeadStatus == stats);
                 }
-                if (filters.UserType != 1)
+                if (filters.LeadId.HasValue && filters.LeadId != -1)
                 {
-                    if (filters.User_Id.HasValue && filters.User_Id != -1)
-                    {
-                        query = query.Where(p => p.AssignToUser == filters.User_Id);
-                    }
+                    query = query.Where(p => p.Id == filters.LeadId);
                 }
-
 
                 if (string.IsNullOrEmpty(filters.Sort))
                 {
@@ -191,12 +207,15 @@ namespace FlightoUs.Dal
                 var lst= query.OrderBy(filters.Sort).Skip(skip).Take(filters.PageSize).ToList();
                 foreach (var Leadss in lst)
                 {
-                    Leadss.CreatedDateStr = string.Format("{0:MM/dd/yyyy}", Leadss.CreatedDate);
+                    Leadss.CreatedDateStr = string.Format("{0:MM/dd/yyyy}", Leadss.DepartureDate);
                     Leadss.TakenOnStr= string.Format("{0:MM/dd/yyyy}", Leadss.AssignDate);
+                    Leadss.LeadGenderName = System.Enum.Parse(typeof(Leadgender), Leadss.LeadGender.ToString()).ToString();
                 }
                 return lst;
             }
         }
+
+      
 
         /// <summary>
         /// This function executes count query after applying different filters
@@ -207,8 +226,32 @@ namespace FlightoUs.Dal
         {
             using (var entities = new ApplicationDbContext())
             {
+                var query = from lead in entities.Leads
+                            where lead.CreatedBy == filters.User_Id || lead.Careof == filters.User_Id || lead.AssignToUser == filters.User_Id
+                            select lead;
+
+
+                if (!string.IsNullOrEmpty(filters.UserName))
+                {
+                    query = query.Where(p => p.UserName.Contains(filters.UserName));
+                }
+
+                if (!string.IsNullOrEmpty(filters.Email))
+                {
+                    query = query.Where(p => p.Email.Contains(filters.Email));
+                }
+
+
+
+
+                return query.Count();
+            }
+        }
+        public int GetSearchCountAdmin(LeadSearchFilter filters)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
                 var query = from Lead in entities.Leads
-                                //where user.UserType == filters.UserType
                             select Lead;
 
 

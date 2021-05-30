@@ -15,7 +15,13 @@
 
 //// Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
+
+
+
 $(document).ready(function () {
+    $("#selUserFrom").select2();
+    $("#selUserTo").select2();
+
     $("#aUsers").addClass("navbar_selected");
     $("#div_AddEdit input").keyup(handler_enter);
     $("#txtExpirationDate").datepicker({ dateFormat: 'mm/dd/yy' });
@@ -52,6 +58,15 @@ $(document).ready(function () {
     //    }
     //});
 });
+function ShowHideReturnDate() {
+    typevaluein = $.trim($("#txttripType").val());
+    if (typevaluein === "Return") {
+        $("#txtArrivalDateL").show();
+    }
+    if (typevaluein === "OneWay") {
+        $("#txtArrivalDateL").hide();
+    }
+}
 function handler_enter(e) {
     var charCode;
 
@@ -109,10 +124,33 @@ function ChangeStatusCallback(data) {
     $("#div_message").addClass("success");
     $("#div_message").show();
     $("#span_message").html(data.message);
-    location.reload();;
+    location.reload();
 }
 
+function CheckForUser() {
+    $("#loader").show();
 
+    $("#div_messagef").hide();
+
+    var User =
+    {
+        Telephone: $.trim($("#txtTelephone").val()),
+        Userlog: $.trim($("#Userlog").val()),
+    };
+
+    $.post("/api/LeadsApi/GEtByphoneN0", User, CheckForUserCallback);
+}
+function CheckForUserCallback(data) {
+    if (!data.isSucceeded) {
+        $("#loader").hide();
+        return;
+    }
+    else {
+        window.location.href = data.message;
+        $("#loader").hide();
+
+    }
+}
 function SaveFreeText() {
     if (!Validate("#BasicInfo2")) {
         return;
@@ -163,6 +201,7 @@ function SaveLeads() {
         Telephone: $.trim($("#txtTelephone").val()),
         Email: $.trim($("#txtEmail").val()),
         CreatedBy: $.trim($("#txtCreatedBy").val()),
+        Careof: $.trim($("#txtCareOf").val()),
         Address: $.trim($("#txtAddress").val()),
         DepartureDate: $.trim($("#txtDepartureDateL").val()),
         ReturnDate: $.trim($("#txtArrivalDateL").val()),
@@ -173,6 +212,11 @@ function SaveLeads() {
         LeadStatusName: $.trim($("#txtLeadStatus").val()),
         LeadTypeName: $.trim($("#txtLeadTypeN").val()),
         CustomeTypeName: $.trim($("#txtCustomerType").val()),
+        LeadGenderName: $.trim($("#txtLeadgender").val()),
+        Userlog: $.trim($("#Userlog").val()),
+        SecondaryPhoneNumber: $.trim($("#txtSecondaryPhoneNumber").val()),
+        FromCode: $.trim($("#selUserFrom").val()),
+        ToCode: $.trim($("#selUserTo").val()),
         ContactCustomer: ContactPersonValue
     };
 
@@ -192,7 +236,7 @@ function SaveLeadCallback(data) {
     $("#div_message").removeClass("failure");
     $("#div_message").addClass("success");
     $("#div_message").show();
-    $("#span_message").html("Lead is Successfully Addeed ");
+    window.location = data.message;
 }
 function SaveTicket() {
     if (!Validate("#BasicInfo")) {
@@ -281,7 +325,9 @@ function LoadRemarksWithCount() {
     debugger;
     filters =
     {
-        LeadId: $("#hfLeadId").val()
+        LeadId: $("#hfLeadId").val(),
+        CreatedBy: $.trim($("#txtCreatedBy").val()),
+        CareOf: $.trim($("#txtCareOf").val()),
     };
     if (IsHTML5) {
         sessionStorage["CustomerFilters"] = JSON.stringify(filters);

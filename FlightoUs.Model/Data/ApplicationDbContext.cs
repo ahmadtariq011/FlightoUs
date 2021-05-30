@@ -33,7 +33,7 @@ namespace FlightoUs.Model.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(AppConfiguration.ConnectionString);
+            optionsBuilder.UseSqlServer(AppConfiguration.ConnectionString, options => options.EnableRetryOnFailure());
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -83,6 +83,7 @@ namespace FlightoUs.Model.Data
             builder.Entity<Refund>()
                .Property(p => p.Id)
                .ValueGeneratedOnAdd();
+
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

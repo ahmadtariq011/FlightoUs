@@ -1,5 +1,6 @@
 ﻿
 @using FlightoUs.Model.Enums
+@using FlightoUs.Bll
 
 @{
     bool IsAdmin = User.IsInRole(UserRoleType.Admin.ToString());
@@ -18,12 +19,28 @@
     {
         typeofUserLogin = "User";
     }
+
+    var loguser = Convert.ToInt32(User.Identity.Name);
+    BllUser bllUser = new BllUser();
+    var logusertype = bllUser.GetByPK(loguser);
+    var userdata = bllUser.GetAllUsers();
+    var sta = Enum.GetValues(typeof(LeadStatus)).Cast<LeadStatus>().ToList();
+    var LeadStatuses = new List<string>();
+    foreach (var g in sta)
+    {
+        LeadStatuses.Add(String.Join(Environment.NewLine, g));
+    }
+
 }
 @section Scripts
 {
     <script src="~/js/CRM/Admin/Lead/Index.js?v=@DateTime.Now.Ticks.ToString()"></script>
 }
-<input type="hidden"id="useridlog" value="@User.Identity.Name"/>
+<input type="hidden" id="userType" value="@logusertype.UserType" />
+@if (logusertype.UserType != 1)
+{
+    <input type="hidden" id="useridlog" value="@loguser" />
+}
 <div class="right mT10">
     <a class="btn btn-success btn-sm" asp-action="AddEditLead" asp-controller="@typeofUserLogin" asp-route-Id="0">
         <span style="position: relative; top: -5px;"> Create Lead</span>
@@ -50,8 +67,44 @@
                 <div class="c1 filter">
 
                     <div class="right">
-                        Search: <input id="txtSearch" style="" type="text" class="form-control search">
-                        <a title="Search" style="cursor:pointer; margin-left:5px; " onclick="SearchUsers();"><i class="material-icons " style="position:relative; top:5px;">search</i></a>
+                        Search
+                        @if (logusertype.UserType == 1)
+                        {
+                            <span>By User</span>
+                            <select class="form-control search" id="useridlog" name="useridlog" onchange="Searchleads();">
+                                <option value="">Please Select</option>
+                                @foreach (var user in userdata)
+                                {
+                                    if (loguser == user.Id)
+                                    {
+                                        <option value="@user.Id" selected>@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
+                                    }
+                                }
+                            </select>
+                        }
+                        <span>By Lead Status</span>
+                        <select class="form-control search" id="StatusSearch" name="StatusSearch" onchange="Searchleads();">
+                            <option value="">Please Select</option>
+                            @foreach (var stat in LeadStatuses)
+                            {
+                                if (stat == "Open")
+                                {
+                                    <option id="genders" selected>@stat</option>
+                                }
+                                else
+                                {
+                                    <option id="genders">@stat</option>
+                                }
+                            }
+                        </select>
+                        
+                        By Lead Id: <input id="txtSearchLeadId" style="" type="text" class="form-control search">
+                        By Phone No: <input id="txtSearch" style="" type="text" class="form-control search">
+                        <a title="Search" style="cursor:pointer; margin-left:5px; " onclick="Searchleads();"><i class="material-icons " style="position:relative; top:5px;">search</i></a>
                         <a title="Reset" style="cursor:pointer;" onclick="ResetUsers();"><i class="material-icons" style="position:relative; top:5px;">clear</i></a>
                     </div>
                 </div>
@@ -63,7 +116,7 @@
                             <th class="gridSortingMenu" scope="col" sortable datafield="firstName" caption="Contact Person"></th>
                             <th class="gridSortingMenu" scope="col" sortable datafield="telephone" caption="Contact Number"></th>
                             <th class="gridSortingMenu" scope="col" sortable datafield="createdDateStr" caption="Service Date"></th>
-                            <th class="gridSortingMenu" scope="col" sortable datafield="leadTitle" caption="Lead Title"></th>
+                            <th class="gridSortingMenu" scope="col" sortable datafield="leadTitle" caption="Sector"></th>
                             <th class="gridSortingMenu" scope="col" sortable datafield="takenOnStr" caption="Taken On"></th>
 
                             <th scope="col" style="width:180px;">Actions</th>
@@ -92,7 +145,7 @@
 <script id="ListTemplateCustomers" type="text/x-jsrender">
     <tr>
         <td>{{:id}}</td>
-        <td>{{:firstName}}</td>
+        <td>{{:leadGenderName}}&nbsp;{{:firstName}}</td>
         <td>{{:telephone}}</td>
         <td>{{:createdDateStr}}</td>
         <td>{{:leadTitle}}</td>

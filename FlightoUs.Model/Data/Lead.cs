@@ -33,8 +33,8 @@ namespace FlightoUs.Model.Data
 
         public DateTime CreatedDate { get; set; }
         public DateTime AssignDate { get; set; }
-
         [ForeignKey("User")]
+        public int Careof { get; set; }
         public int AssignToUser { get; set; }
 
         [StringLength(100)]
@@ -48,7 +48,12 @@ namespace FlightoUs.Model.Data
         public int CustomerType { get; set; }
         public DateTime DepartureDate { get; set; }
         public int ClassOfTravel { get; set; }
+        public int LeadGender { get; set; }
         public int TripTyepLead { get; set; }
+
+        public string SecondaryPhoneNumber { get; set; }
+        public int ToCode { get; set; }
+        public int FromCode { get; set; }
 
         public string FreeText { get; set; }
         public string LeadTitle { get; set; }

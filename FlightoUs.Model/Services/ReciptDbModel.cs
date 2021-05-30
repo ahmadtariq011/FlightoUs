@@ -12,8 +12,12 @@ namespace FlightoUs.Model.Services
         public string LeadTitle { get; set; }
         public string ContactNumber { get; set; }
         public string CreatedDateStr { get; set; }
+        public string ReciptStatusStr { get; set; }
+
         public int Usertype { get; set; }
         public string CreatedByStr { get; set; }
+
+        public string StatusStr { get; set; }
 
     }
 }

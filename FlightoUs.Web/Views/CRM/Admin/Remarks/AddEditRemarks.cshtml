@@ -13,7 +13,7 @@
 
 }
 <input type="hidden" id="hfLeadId" value="@leadid" />
-
+<input type="hidden" id="txtCreatedBy" value="@User.Identity.Name"/>
 <div class="row">
 
     <div class="col-lg-3"></div>
@@ -47,18 +47,6 @@
                     </div>
                 </div>
 
-                <div class="row form-group">
-                    <div class="col col-md-3"><label for="hf-email" class=" form-control-label">Created By</label></div>
-                    <div class="col-12 col-md-9">
-                        <select class="form-control" id="txtCreatedBy" name="txtCreatedBy" required>
-                            <option value="">Please Select</option>
-                            @foreach (var user in userdata)
-                            {
-                                <option value="@user.Id">@Html.Raw(user.FirstName + ' ' + user.LastName)</option>
-                            }
-                        </select>
-                    </div>
-                </div>
             </div>
         </div>
 

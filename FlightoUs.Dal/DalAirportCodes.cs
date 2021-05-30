@@ -9,6 +9,14 @@ namespace FlightoUs.Dal
 {
     public class DalAirportCodes
     {
+        public AirpotCodes GetByPK(int Id)
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+                return entities.AirpotCodes.FirstOrDefault(p => p.Id == Id);
+            }
+        }
+
         public int Insert(AirpotCodes airpotCodes)
         {
             using (var entities = new ApplicationDbContext())
@@ -18,5 +26,15 @@ namespace FlightoUs.Dal
                 return airpotCodes.Id;
             }
         }
+
+        public List<AirpotCodes> GetAllCodes()
+        {
+            using (var entities = new ApplicationDbContext())
+            {
+
+                return entities.AirpotCodes.ToList();
+            }
+        }
+
     }
 }
